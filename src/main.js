@@ -1,6 +1,6 @@
-import Player from './class/Player.js';
-import InputHandler from './class/InputHandler.js';
-import World from './class/World.js';
+import Player from './classes/Player.js';
+import InputHandler from './classes/InputHandler.js';
+import World from './classes/World.js';
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');

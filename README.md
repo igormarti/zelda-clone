@@ -17,9 +17,9 @@ Unlike early prototypes, this project is now structured using **ES Modules** and
 /
 ├── .github/
 │   └── copilot-instructions.md  # Core AI Rules & Guidelines
+│   ├── agents/                  # AI Agent Personas (Architect, Analyst, Dev, QA)
 ├── assets/                      # Sprites and visual assets
 ├── docs/
-│   ├── agents/                  # AI Agent Personas (Architect, Analyst, Dev, QA)
 │   └── features/                # Feature-driven documentation
 ├── src/
 │   ├── classes/                 # Core logic modules
