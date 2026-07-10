@@ -21,7 +21,7 @@ function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     // Atualização
-    player.update(input.keys);
+    player.update(input.keys, world);
     world.update(player);
     
     // Desenho
