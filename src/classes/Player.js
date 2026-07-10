@@ -11,6 +11,8 @@ export default class Player {
         this.currentFrame = 0;
         this.animationSpeed = 10;
         this.animationTimer = 0;
+        this.collisionBox = { x: 24, y: 36, width: 48, height: 48 };
+        this.doorCooldown = 0;
     }
 
     getAnimationConfig(state, direction) {
@@ -23,7 +25,16 @@ export default class Player {
         return map[state][direction];
     }
 
-    update(keys) {
+    getCollisionRect(x = this.x, y = this.y) {
+        return {
+            x: x + this.collisionBox.x,
+            y: y + this.collisionBox.y,
+            width: this.collisionBox.width,
+            height: this.collisionBox.height
+        };
+    }
+
+    update(keys, world = null) {
         if (this.state === 'die') return;
 
         if (this.state === 'attack') {
@@ -41,15 +52,40 @@ export default class Player {
         }
 
         let isMoving = false;
-        if (keys['w'] || keys['ArrowUp'])      { this.y -= this.speed; this.direction = 'back'; isMoving = true; }
-        else if (keys['s'] || keys['ArrowDown'])    { this.y += this.speed; this.direction = 'front'; isMoving = true; }
-        else if (keys['a'] || keys['ArrowLeft'])    { this.x -= this.speed; this.direction = 'side'; this.facing = 'left'; isMoving = true; }
-        else if (keys['d'] || keys['ArrowRight'])   { this.x += this.speed; this.direction = 'side'; this.facing = 'right'; isMoving = true; }
+        let moveX = 0;
+        let moveY = 0;
+
+        if (keys['w'] || keys['ArrowUp'])      { moveY -= this.speed; this.direction = 'back'; isMoving = true; }
+        else if (keys['s'] || keys['ArrowDown'])    { moveY += this.speed; this.direction = 'front'; isMoving = true; }
+
+        if (keys['a'] || keys['ArrowLeft'])    { moveX -= this.speed; this.direction = 'side'; this.facing = 'left'; isMoving = true; }
+        else if (keys['d'] || keys['ArrowRight'])   { moveX += this.speed; this.direction = 'side'; this.facing = 'right'; isMoving = true; }
 
         if (keys[' ']) {
             this.state = 'attack';
             this.currentFrame = 0;
             return;
+        }
+
+        const nextX = this.x + moveX;
+        const nextY = this.y + moveY;
+        const collisionRectX = this.getCollisionRect(nextX, this.y);
+        const collisionRectY = this.getCollisionRect(this.x, nextY);
+        const canMoveX = !world || (
+            !world.isPositionBlocked(collisionRectX.x, collisionRectX.y, collisionRectX.width, collisionRectX.height) &&
+            nextX >= 0 && nextX + this.width <= world.SCREEN_WIDTH
+        );
+        const canMoveY = !world || (
+            !world.isPositionBlocked(collisionRectY.x, collisionRectY.y, collisionRectY.width, collisionRectY.height) &&
+            nextY >= 0 && nextY + this.height <= world.SCREEN_HEIGHT
+        );
+
+        if (moveX !== 0 && canMoveX) {
+            this.x = nextX;
+        }
+
+        if (moveY !== 0 && canMoveY) {
+            this.y = nextY;
         }
 
         this.state = isMoving ? 'move' : 'idle';
