@@ -1,4 +1,4 @@
-import Enviroment from "./Enviroment.js";
+import Environment from './Enviroment.js';
 
 export default class Player {
 
@@ -93,6 +93,10 @@ export default class Player {
             this.y = nextY;
         }
 
+        if(Environment.isDeveloperMode()){
+            console.log(`Sala atual: (${world.currentRoom.x}, ${world.currentRoom.y})`);
+            console.log(`Player em: x=${Math.floor(this.x)}, y=${Math.floor(this.y)}`);
+        }
         this.state = isMoving ? 'move' : 'idle';
         this.animationTimer++;
         if (this.animationTimer >= this.animationSpeed) {
@@ -124,7 +128,7 @@ export default class Player {
         } else {
             ctx.drawImage(spriteSheetImage, sx, sy, FRAME_SIZE, FRAME_SIZE, this.x, this.y, this.width, this.height);
         }
-        Enviroment.isDeveloperMode() && this.drawHitbox(ctx);
+        Environment.isDeveloperMode() && this.drawHitbox(ctx);
         ctx.restore();
     }
 }

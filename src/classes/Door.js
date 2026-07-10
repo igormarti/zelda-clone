@@ -9,9 +9,11 @@ export default class Door {
     }
 
     intersects(player) {
-        return player.x < this.x + this.width &&
-            player.x + player.width > this.x &&
-            player.y < this.y + this.height &&
-            player.y + player.height > this.y;
+        // 1. Pega a hitbox real do jogador (a que ajustamos antes)
+        const rect = player.getCollisionRect();
+        return rect.x < this.x + this.width &&
+            rect.x + rect.width > this.x &&
+            rect.y < this.y + this.height &&
+            rect.y + rect.height > this.y;
     }
 }

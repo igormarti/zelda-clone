@@ -1,5 +1,5 @@
-import Door from "./Door.js";
-import Environment from "./Enviroment.js";
+import Door from './Door.js';
+import Environment from './Enviroment.js';
 
 export default class World {
     constructor(SCREEN_WIDTH, SCREEN_HEIGHT) {
@@ -15,14 +15,19 @@ export default class World {
                     { x: 520, y: 300, width: 110, height: 90 }
                 ],
                 doors: [
-                    new Door(790, 220, 10, 100, "1,0", { x: 20, y: 240 }),
-                    new Door(360, 0, 100, 10, "0,-1", { x: 350, y: 480 })
+                    new Door(790, 220, 10, 100, "1,0", { x: -18, y: 200 }),
+                    new Door(360, 0, 100, 10, "0,-1", { x: 350, y: 504 }),
+                    new Door(360, 590, 100, 10, "0,1", { x: 350, y: -45 })
                 ]
             },
-            "1,0": { name: "Caverna Sombria", color: "#2e3b4e", obstacles: [], doors: [] },
-            "0,1": { name: "Deserto do Sul", color: "#6e3a3a", obstacles: [], doors: [] },
+            "1,0": { name: "Caverna Sombria", color: "#2e3b4e", obstacles: [], doors: [
+                new Door(0, 220, 10, 100, "0,0", { x: 725, y: 220 })
+            ] },
+            "0,1": { name: "Deserto do Sul", color: "#6e3a3a", obstacles: [], doors: [
+                new Door(350, 0, 100, 10, "0,0", { x: 350, y: 496 })
+            ] },
             "0,-1": { name: "Cemitério", color: "#5a3a6e", obstacles: [], doors: [
-                new Door(350, 590, 100, 10, "0,0", { x: 370, y: 23 }),
+                new Door(350, 590, 100, 10, "0,0", { x: 370, y: -41 }),
             ] }
         };
         this.locationUI = { active: false, timer: 0, text: "" };
@@ -42,30 +47,17 @@ export default class World {
                     this.currentRoom.y = targetY;
                     player.x = door.spawnPoint.x;
                     player.y = door.spawnPoint.y;
-                    player.doorCooldown = 10;
+                    player.doorCooldown = 20;
+
+                    if(Environment.isDeveloperMode()){
+                        console.log(`Transição de sala para ${door.targetRoomKey}`);
+                        console.log(`Posição do jogador após a transição: (${player.x}, ${player.y})`);
+                    }
+
                     this.triggerLocationUI();
                     return;
                 }
             }
-        }
-
-        // Transição de salas
-        if (player.x > this.SCREEN_WIDTH) {
-            this.currentRoom.x++;
-            player.x = 5;
-            this.triggerLocationUI();
-        } else if (player.x < -player.width) {
-            this.currentRoom.x--;
-            player.x = this.SCREEN_WIDTH - player.width - 5;
-            this.triggerLocationUI();
-        } else if (player.y > this.SCREEN_HEIGHT) {
-            this.currentRoom.y++;
-            player.y = 5;
-            this.triggerLocationUI();
-        } else if (player.y < -player.height) {
-            this.currentRoom.y--;
-            player.y = this.SCREEN_HEIGHT - player.height - 5;
-            this.triggerLocationUI();
         }
 
         // Timer da UI
@@ -79,7 +71,7 @@ export default class World {
         const roomKey = `${this.currentRoom.x},${this.currentRoom.y}`;
         const room = this.worldMap[roomKey];
         if (room) {
-            this.locationUI.text = `${room.name} - (${this.currentRoom.x}, ${this.currentRoom.y})`;
+            this.locationUI.text = `${room.name} - região ${this.currentRoom.x} | ${this.currentRoom.y}`;
         } else {
             this.locationUI.text = "Entrou no além, cuidado!";
         }
@@ -129,12 +121,12 @@ export default class World {
 
         // Desenha UI
         if (this.locationUI.active) {
-            ctx.fillStyle = this.worldMap[roomKey] ? "rgba(0, 0, 0, 0.7)" : "rgba(255, 255, 255, 0.6)";
-            ctx.fillRect(this.SCREEN_WIDTH / 2 - 150, 50, 300, 50);
+            ctx.fillStyle = this.worldMap[roomKey] ? "rgba(159, 157, 157, 0.4)" : "rgba(235, 233, 233, 0.4)";
+            ctx.fillRect(this.SCREEN_WIDTH / 2 - 390, 10, 300, 50);
             ctx.fillStyle = "white";
             ctx.font = "20px Arial";
             ctx.textAlign = "center";
-            ctx.fillText(this.locationUI.text, this.SCREEN_WIDTH / 2, 85);
+            ctx.fillText(this.locationUI.text, this.SCREEN_WIDTH / 2 -250, 40);
         }
     }
 }
