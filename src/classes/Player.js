@@ -1,4 +1,7 @@
+import Enviroment from "./Enviroment.js";
+
 export default class Player {
+
     constructor() {
         this.x = 400;
         this.y = 300;
@@ -11,7 +14,7 @@ export default class Player {
         this.currentFrame = 0;
         this.animationSpeed = 10;
         this.animationTimer = 0;
-        this.collisionBox = { x: 24, y: 36, width: 48, height: 48 };
+        this.collisionBox = { x: 32, y: 58, width: 32, height: 30 };
         this.doorCooldown = 0;
     }
 
@@ -71,13 +74,15 @@ export default class Player {
         const nextY = this.y + moveY;
         const collisionRectX = this.getCollisionRect(nextX, this.y);
         const collisionRectY = this.getCollisionRect(this.x, nextY);
+
         const canMoveX = !world || (
             !world.isPositionBlocked(collisionRectX.x, collisionRectX.y, collisionRectX.width, collisionRectX.height) &&
-            nextX >= 0 && nextX + this.width <= world.SCREEN_WIDTH
+            collisionRectX.x >= 0 && (collisionRectX.x + collisionRectX.width) <= world.SCREEN_WIDTH
         );
+
         const canMoveY = !world || (
             !world.isPositionBlocked(collisionRectY.x, collisionRectY.y, collisionRectY.width, collisionRectY.height) &&
-            nextY >= 0 && nextY + this.height <= world.SCREEN_HEIGHT
+            collisionRectY.y >= 0 && (collisionRectY.y + collisionRectY.height) <= world.SCREEN_HEIGHT
         );
 
         if (moveX !== 0 && canMoveX) {
@@ -95,6 +100,14 @@ export default class Player {
             const config = this.getAnimationConfig(this.state, this.direction);
             this.currentFrame = (this.currentFrame + 1) % config.frames;
         }
+
+    }
+
+    drawHitbox(ctx) {
+        const rect = this.getCollisionRect();
+        ctx.strokeStyle = 'red'; // Cor visível para debug
+        ctx.lineWidth = 2;
+        ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
     }
 
     draw(ctx, spriteSheetImage, FRAME_SIZE) {
@@ -103,6 +116,7 @@ export default class Player {
         const sy = config.row * FRAME_SIZE;
         const shouldFlip = (this.direction === 'side' && this.facing === 'left');
 
+
         ctx.save();
         if (shouldFlip) {
             ctx.scale(-1, 1);
@@ -110,6 +124,7 @@ export default class Player {
         } else {
             ctx.drawImage(spriteSheetImage, sx, sy, FRAME_SIZE, FRAME_SIZE, this.x, this.y, this.width, this.height);
         }
+        Enviroment.isDeveloperMode() && this.drawHitbox(ctx);
         ctx.restore();
     }
 }
