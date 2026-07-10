@@ -1,4 +1,5 @@
 import Door from "./Door.js";
+import Environment from "./Enviroment.js";
 
 export default class World {
     constructor(SCREEN_WIDTH, SCREEN_HEIGHT) {
@@ -14,14 +15,14 @@ export default class World {
                     { x: 520, y: 300, width: 110, height: 90 }
                 ],
                 doors: [
-                    new Door(770, 220, 30, 100, "1,0", { x: 20, y: 240 }),
-                    new Door(360, 0, 80, 30, "0,-1", { x: 350, y: 480 })
+                    new Door(790, 220, 10, 100, "1,0", { x: 20, y: 240 }),
+                    new Door(360, 0, 100, 10, "0,-1", { x: 350, y: 480 })
                 ]
             },
             "1,0": { name: "Caverna Sombria", color: "#2e3b4e", obstacles: [], doors: [] },
             "0,1": { name: "Deserto do Sul", color: "#6e3a3a", obstacles: [], doors: [] },
             "0,-1": { name: "Cemitério", color: "#5a3a6e", obstacles: [], doors: [
-                new Door(350, 570, 100, 30, "0,0", { x: 370, y: 23 }),
+                new Door(350, 590, 100, 10, "0,0", { x: 370, y: 23 }),
             ] }
         };
         this.locationUI = { active: false, timer: 0, text: "" };
@@ -41,7 +42,7 @@ export default class World {
                     this.currentRoom.y = targetY;
                     player.x = door.spawnPoint.x;
                     player.y = door.spawnPoint.y;
-                    player.doorCooldown = 20;
+                    player.doorCooldown = 10;
                     this.triggerLocationUI();
                     return;
                 }
@@ -90,7 +91,16 @@ export default class World {
         const roomKey = `${this.currentRoom.x},${this.currentRoom.y}`;
         const room = this.worldMap[roomKey] || { obstacles: [] };
 
-        return room.obstacles.some(obstacle => this.rectsOverlap(x, y, width, height, obstacle.x, obstacle.y, obstacle.width, obstacle.height));
+
+
+        if(Environment.isDeveloperMode()){
+            const collision = room.obstacles.some(obstacle => this.rectsOverlap(x, y, width, height, obstacle.x, obstacle.y, obstacle.width, obstacle.height));
+            if(collision){
+                console.log(`Colisão detectada com um obstáculo na sala ${roomKey} para retângulo (${x}, ${y}, ${width}, ${height})`);
+            }
+            return collision;
+        }
+        return room.obstacles.some(obstacle => this.rectsOverlap(x, y, width, height, obstacle.x, obstacle.y, obstacle.width, obstacle.height)); 
     }
 
     rectsOverlap(x1, y1, width1, height1, x2, y2, width2, height2) {
