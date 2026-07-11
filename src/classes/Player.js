@@ -1,8 +1,10 @@
+import Character from './Character.js';
 import Environment from './Enviroment.js';
 
-export default class Player {
+export default class Player extends Character {
 
     constructor() {
+        super();
         this.x = 400;
         this.y = 300;
         this.width = 48 * 2; // FRAME_SIZE * SCALE_FACTOR
@@ -25,7 +27,9 @@ export default class Player {
             'move':   { 'front': {row: 3, frames: 6}, 'side': {row: 4, frames: 6}, 'back': {row: 5, frames: 6} },
             'attack': { 'front': {row: 6, frames: 4}, 'side': {row: 7, frames: 4}, 'back': {row: 8, frames: 4} }
         };
-        return map[state][direction];
+        const stateConfig = map[state] || map['idle'];
+        const directionConfig = stateConfig[direction] || stateConfig['front'];
+        return directionConfig;
     }
 
     getCollisionRect(x = this.x, y = this.y) {

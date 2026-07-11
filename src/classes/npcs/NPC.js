@@ -1,7 +1,9 @@
+import Character from '../Character.js';
 import BehaviorFactory from './BehaviorFactory.js';
 
-export default class NPC {
+export default class NPC extends Character {
     constructor(config, context, savedState = {}) {
+        super();
         this.id = config.id;
         this.name = config.name || 'NPC';
         this.spritePath = config.sprite;

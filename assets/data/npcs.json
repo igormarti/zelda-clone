@@ -11,9 +11,9 @@
       "behavior": {
         "type": "randomWalk",
         "params": {
-          "speed": 0.8,
-          "moveDuration": 120,
-          "pauseDuration": 90,
+          "speed": 0.7,
+          "moveDuration": 110,
+          "pauseDuration": 150,
           "radius": 100
         }
       },
