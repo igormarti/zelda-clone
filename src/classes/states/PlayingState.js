@@ -4,39 +4,59 @@ import State from './State.js';
 
 export default class PlayingState extends State {
     enter() {
-        // Limpando o estado de pausa, se houver
-        // Nada específico necessário aqui no enter
+        const roomKey = `${this.context.world.currentRoom.x},${this.context.world.currentRoom.y}`;
+        if (this.context.npcManager) {
+            this.context.npcManager.loadForRoom(roomKey);
+        }
+        this.currentRoomKey = roomKey;
     }
 
     update() {
-        const { player, world, input } = this.context;
+        const { player, world, input, npcManager, dialogManager } = this.context;
 
-        // Atualização do jogo
-        player.update(input.keys, world);
-        world.update(player);
+        const isDialogActive = dialogManager?.isActive();
+        if (isDialogActive) {
+            dialogManager.update(input);
+        } else {
+            player.update(input.keys, world);
+            world.update(player);
+        }
 
-        // Detecta morte
+        const roomKey = `${world.currentRoom.x},${world.currentRoom.y}`;
+        if (npcManager) {
+            if (roomKey !== this.currentRoomKey) {
+                npcManager.loadForRoom(roomKey);
+                this.currentRoomKey = roomKey;
+            }
+            npcManager.update({ input });
+        }
+
         if (player.state === 'die') {
             this.stateManager.changeState(GameOverState);
             return;
         }
 
-        // Detecta pausa (ESC)
         if (input.keys['Escape']) {
-            input.keys['Escape'] = false; // Consome a tecla
+            input.keys['Escape'] = false;
             this.stateManager.changeState(PausedState);
         }
     }
 
     draw(ctx) {
-        const { world, player, spriteSheet, FRAME_SIZE } = this.context;
+        const { world, player, spriteSheet, FRAME_SIZE, npcManager, dialogManager, canvas } = this.context;
 
-        // Renderiza mundo
         world.draw(ctx);
 
-        // Renderiza player
+        if (npcManager) {
+            npcManager.draw(ctx);
+        }
+
         if (spriteSheet.complete) {
             player.draw(ctx, spriteSheet, FRAME_SIZE);
+        }
+
+        if (dialogManager) {
+            dialogManager.draw(ctx, canvas);
         }
     }
 

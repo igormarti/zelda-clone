@@ -1,0 +1,31 @@
+{
+  "0,-1": [
+    {
+      "id": "cemiterio_srpoo_01",
+      "name": "Sr. Poo",
+      "sprite": "assets/sprites/srpoo-sheet.png",
+      "frameSize": 48,
+      "scale": 2,
+      "position": { "x": 240, "y": 180 },
+      "collisionBox": { "x": 16, "y": 34, "width": 32, "height": 28 },
+      "behavior": {
+        "type": "randomWalk",
+        "params": {
+          "speed": 0.8,
+          "moveDuration": 120,
+          "pauseDuration": 90,
+          "radius": 100
+        }
+      },
+      "dialogueId": "cemiterio_srpoo_01_intro",
+      "persistentKey": "npc.cemiterio_srpoo_01",
+      "frameCount": 6,
+      "animationSpeed": 10,
+      "animationMap": {
+        "idle": { "front": 0, "side": 1, "back": 2 },
+        "move": { "front": 3, "side": 4, "back": 5 }
+      },
+      "zOrder": "auto"
+    }
+  ]
+}
