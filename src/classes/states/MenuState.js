@@ -9,7 +9,7 @@ export default class MenuState extends State {
         this.context.player.state = 'idle';
         this.context.player.direction = 'front';
         this.context.player.currentFrame = 0;
-        this.context.world.currentRoom = { x: 0, y: 0 };
+        this.context.world.currentRoom = { x: 0, y: -1 };
     }
 
     update() {
