@@ -36,7 +36,7 @@ export default class PlayingState extends State {
             return;
         }
 
-        if (input.keys['Escape']) {
+        if (!dialogManager?.isActive() && input.keys['Escape']) {
             input.keys['Escape'] = false;
             this.stateManager.changeState(PausedState);
         }

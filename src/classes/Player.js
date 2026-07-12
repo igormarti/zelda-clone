@@ -35,11 +35,12 @@ export default class Player extends Character {
     }
 
     getCollisionRect(x = this.x, y = this.y) {
+        const FRAME_SIZE = 48;
         return {
-            x: x + this.collisionBox.x,
-            y: y + this.collisionBox.y,
-            width: this.collisionBox.width,
-            height: this.collisionBox.height
+            x: x,
+            y: y,
+            width: FRAME_SIZE,
+            height: FRAME_SIZE
         };
     }
 
@@ -61,12 +62,13 @@ export default class Player extends Character {
             this.direction = dy > 0 ? 'front' : 'back';
         }
 
-        if (dist < minDistance) {
-            const safePosition = this.findSafePositionNearTarget(target, world, minDistance);
-            if (safePosition) {
-                this.x = safePosition.x;
-                this.y = safePosition.y;
-            }
+        // Sempre tenta reposicionar o jogador para uma distância adequada de diálogo,
+        // seja vindo de perto ou de longe. A função `findSafePositionNearTarget` já
+        // valida limites e obstáculos.
+        const safePosition = this.findSafePositionNearTarget(target, world, minDistance);
+        if (safePosition) {
+            this.x = safePosition.x;
+            this.y = safePosition.y;
         }
     }
 

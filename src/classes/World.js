@@ -5,7 +5,8 @@ export default class World {
     constructor(SCREEN_WIDTH, SCREEN_HEIGHT) {
         this.SCREEN_WIDTH = SCREEN_WIDTH;
         this.SCREEN_HEIGHT = SCREEN_HEIGHT;
-        this.currentRoom = { x: 0, y: 0 };
+        this.currentRoom = { x: 0, y: -1 };
+        this.progressionState = new Map();
         this.worldMap = {
             "0,0": {
                 name: "Floresta Inicial",
@@ -15,9 +16,9 @@ export default class World {
                     { x: 520, y: 300, width: 110, height: 90 }
                 ],
                 doors: [
-                    new Door(790, 220, 10, 100, "1,0", { x: -18, y: 200 }),
+                    new Door(790, 220, 10, 100, "1,0", { x: 0, y: 200 }),
                     new Door(360, 0, 100, 10, "0,-1", { x: 350, y: 504 }),
-                    new Door(360, 590, 100, 10, "0,1", { x: 350, y: -45 })
+                    new Door(360, 590, 100, 10, "0,1", { x: 350, y: 0 })
                 ]
             },
             "1,0": { name: "Caverna Sombria", color: "#2e3b4e", obstacles: [], doors: [
@@ -32,7 +33,9 @@ export default class World {
                  { x: 120, y: 400, width: 80, height: 80 },
                  { x: 600, y: 400, width: 80, height: 80 }
             ], doors: [
-                new Door(350, 590, 100, 10, "0,0", { x: 370, y: -41 }),
+                new Door(350, 590, 100, 10, "0,0", { x: 370, y: 0 }, {
+                    requiresProgression: { roomKey: '0,-1', interactionId: 'cemiterio_srpoo_01' }
+                }),
             ] }
         };
         this.locationUI = { active: false, timer: 0, text: "" };
@@ -46,7 +49,11 @@ export default class World {
             const room = this.worldMap[roomKey] || { doors: [] };
 
             for (const door of room.doors) {
-                if (door.intersects(player)) {
+                if (door.requiresProgression && !this.isProgressionCompleted(door.requiresProgression)) {
+                    continue;
+                }
+
+                    if (door.intersects(player, this)) {
                     const [targetX, targetY] = door.targetRoomKey.split(',').map(Number);
                     this.currentRoom.x = targetX;
                     this.currentRoom.y = targetY;
@@ -70,6 +77,35 @@ export default class World {
             this.locationUI.timer--;
             if (this.locationUI.timer <= 0) this.locationUI.active = false;
         }
+    }
+
+    completeProgression(roomKey, interactionId) {
+        if (!roomKey || !interactionId) {
+            return;
+        }
+
+        this.progressionState.set(`${roomKey}:${interactionId}`, true);
+    }
+
+    isProgressionCompleted(requirement) {
+        if (!requirement) {
+            return true;
+        }
+
+        const roomKey = typeof requirement === 'string' ? requirement : requirement.roomKey;
+        const interactionId = typeof requirement === 'string' ? null : requirement.interactionId;
+
+        if (!roomKey || !interactionId) {
+            return true;
+        }
+
+        return this.progressionState.has(`${roomKey}:${interactionId}`);
+    }
+
+    reset() {
+        this.currentRoom = { x: 0, y: -1 };
+        this.progressionState.clear();
+        this.locationUI = { active: false, timer: 0, text: "" };
     }
 
     triggerLocationUI() {
@@ -117,8 +153,9 @@ export default class World {
         });
 
         // Desenha portas
-        ctx.fillStyle = "#7c4a1d";
         (room.doors || []).forEach(door => {
+            const isLocked = Boolean(door.requiresProgression) && !this.isProgressionCompleted(door.requiresProgression);
+            ctx.fillStyle = isLocked ? '#4f3b2a' : '#7c4a1d';
             ctx.fillRect(door.x, door.y, door.width, door.height);
         });
 

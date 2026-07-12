@@ -41,8 +41,8 @@ export default class Character {
         const targetCenterX = targetRect.x + targetRect.width / 2;
         const targetCenterY = targetRect.y + targetRect.height / 2;
         const rect = this.getCollisionRect();
-        const collisionCenterOffsetX = this.collisionBox?.x ?? 0;
-        const collisionCenterOffsetY = this.collisionBox?.y ?? 0;
+        const collisionCenterOffsetX = rect.x - this.x;
+        const collisionCenterOffsetY = rect.y - this.y;
 
         const currentX = this.x + collisionCenterOffsetX + rect.width / 2;
         const currentY = this.y + collisionCenterOffsetY + rect.height / 2;
