@@ -11,6 +11,7 @@ export default class NPCManager {
         this.npcs = [];
         this.stateStore = new NPCStateStore();
         this.currentRoomKey = null;
+        this.pendingProgression = null;
         this.onDialogEnd = this.onDialogEnd.bind(this);
         this.dialogManager.onEnd(this.onDialogEnd);
     }
@@ -103,11 +104,18 @@ export default class NPCManager {
             this.player.faceTarget(npc, this.world);
         }
         this.npcs.forEach(item => item.pause());
+        this.pendingProgression = { roomKey: this.currentRoomKey, npcId: npc.id };
         this.dialogManager.start(npc.dialogueId, { npc });
     }
 
     onDialogEnd() {
         this.npcs.forEach(npc => npc.resume());
+
+        if (this.pendingProgression && this.world?.completeProgression) {
+            this.world.completeProgression(this.pendingProgression.roomKey, this.pendingProgression.npcId);
+        }
+
+        this.pendingProgression = null;
     }
 
 }

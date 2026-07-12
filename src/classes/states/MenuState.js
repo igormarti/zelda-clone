@@ -3,13 +3,15 @@ import State from './State.js';
 
 export default class MenuState extends State {
     enter() {
-        // Reset do player e mundo ao retornar ao menu
-        this.context.player.x = 400;
-        this.context.player.y = 300;
-        this.context.player.state = 'idle';
-        this.context.player.direction = 'front';
-        this.context.player.currentFrame = 0;
-        this.context.world.currentRoom = { x: 0, y: -1 };
+        const { player, world } = this.context;
+
+        player.x = 400;
+        player.y = 300;
+        player.state = 'idle';
+        player.direction = 'front';
+        player.currentFrame = 0;
+        player.doorCooldown = 0;
+        world.reset();
     }
 
     update() {

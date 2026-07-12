@@ -1,14 +1,18 @@
 export default class InputHandler {
     constructor() {
         this.keys = {};
-        window.addEventListener('keydown', e => { 
+        window.addEventListener('keydown', e => {
+            const normalizedKey = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+            this.keys[normalizedKey] = true;
             this.keys[e.key] = true;
-            // Previne comportamento padrão para teclas especiais
+
             if (e.key === 'Escape' || e.key === 'Enter') {
                 e.preventDefault();
             }
         });
-        window.addEventListener('keyup', e => { 
+        window.addEventListener('keyup', e => {
+            const normalizedKey = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+            this.keys[normalizedKey] = false;
             this.keys[e.key] = false;
         });
     }

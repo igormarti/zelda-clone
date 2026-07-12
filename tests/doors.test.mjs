@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
+
+import Door from '../src/classes/Door.js';
 import Player from '../src/classes/Player.js';
 import World from '../src/classes/World.js';
-import Door from '../src/classes/Door.js';
 
 const world = new World(800, 600);
 world.currentRoom = { x: 0, y: 0 };
@@ -29,6 +30,8 @@ world.currentRoom = { x: 0, y: -1 };
 player.x = 350;
 player.y = 570;
 player.doorCooldown = 0;
+// Marca progressão para liberar a porta do cemitério (comportamento da slice)
+world.completeProgression('0,-1', 'cemiterio_srpoo_01');
 world.update(player);
 assert.equal(world.currentRoom.y, 0, 'a porta do cemitério deve levar de volta para a sala inicial');
 assert.equal(player.x, 370, 'o jogador deve aparecer no ponto de spawn da sala de destino');
