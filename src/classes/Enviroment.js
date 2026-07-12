@@ -5,7 +5,7 @@ class Environment {
     }
 
     isDeveloperMode() {
-        return window.location.search.includes('dev=true') || this.developMode;
+        return (typeof window !== 'undefined' && window.location?.search?.includes('dev=true')) || this.developMode;
     }
 }
 

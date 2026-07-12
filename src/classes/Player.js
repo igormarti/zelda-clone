@@ -5,6 +5,8 @@ export default class Player extends Character {
 
     constructor() {
         super();
+        this.id = 'player';
+        this.name = 'Joaquim';
         this.x = 400;
         this.y = 300;
         this.width = 48 * 2; // FRAME_SIZE * SCALE_FACTOR
@@ -39,6 +41,33 @@ export default class Player extends Character {
             width: this.collisionBox.width,
             height: this.collisionBox.height
         };
+    }
+
+    faceTarget(target, world) {
+        if (!target) {
+            return;
+        }
+
+        const dx = target.x - this.x;
+        const dy = target.y - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const minDistance = 60;
+        const isEixoHorizontal = Math.abs(dx) > Math.abs(dy);
+
+        if (isEixoHorizontal) {
+            this.direction = 'side';
+            this.facing = dx > 0 ? 'right' : 'left';
+        } else {
+            this.direction = dy > 0 ? 'front' : 'back';
+        }
+
+        if (dist < minDistance) {
+            const safePosition = this.findSafePositionNearTarget(target, world, minDistance);
+            if (safePosition) {
+                this.x = safePosition.x;
+                this.y = safePosition.y;
+            }
+        }
     }
 
     update(keys, world = null) {

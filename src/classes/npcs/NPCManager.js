@@ -95,14 +95,12 @@ export default class NPCManager {
     }
 
     startDialogueWithNpc(npc) {
-        // 1. Faz o NPC olhar para o Player
         if (typeof npc.faceTarget === 'function') {
-            npc.faceTarget(this.player);
+            npc.faceTarget(this.player, this.world);
         }
 
-        // 2. Faz o Player olhar para o NPC
         if (typeof this.player.faceTarget === 'function') {
-            this.player.faceTarget(npc);
+            this.player.faceTarget(npc, this.world);
         }
         this.npcs.forEach(item => item.pause());
         this.dialogManager.start(npc.dialogueId, { npc });
