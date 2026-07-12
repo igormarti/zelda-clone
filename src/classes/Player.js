@@ -1,5 +1,5 @@
 import Character from './Character.js';
-import Environment from './Enviroment.js';
+import Environment from './Environment.js';
 
 export default class Player extends Character {
 
@@ -27,6 +27,7 @@ export default class Player extends Character {
         this.attackRange = 70;
         this.attackCooldown = 0;
         this.attackCooldownFrames = 20;
+        this.inventory = null;
     }
 
     getAnimationConfig(state, direction) {
@@ -87,7 +88,12 @@ export default class Player extends Character {
         }
     }
 
-    update(keys, world = null) {
+    heal(amount) {
+        this.health = Math.min(this.health + amount, this.maxHealth);
+        console.log(`Player curado! Vida atual: ${this.health}/${this.maxHealth}`);
+    }
+
+    update(keys, world = null, inventory = null) {
         if (this.state === 'die') return;
 
         if (this.attackCooldown > 0) {
