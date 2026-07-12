@@ -1,11 +1,12 @@
 import Door from './Door.js';
+import Enemy from './Enemy.js';
 import Environment from './Enviroment.js';
 
 export default class World {
     constructor(SCREEN_WIDTH, SCREEN_HEIGHT) {
         this.SCREEN_WIDTH = SCREEN_WIDTH;
         this.SCREEN_HEIGHT = SCREEN_HEIGHT;
-        this.currentRoom = { x: 0, y: -1 };
+        this.currentRoom = { x: 0, y: 0 };
         this.progressionState = new Map();
         this.worldMap = {
             "0,0": {
@@ -19,14 +20,17 @@ export default class World {
                     new Door(790, 220, 10, 100, "1,0", { x: 0, y: 200 }),
                     new Door(360, 0, 100, 10, "0,-1", { x: 350, y: 504 }),
                     new Door(360, 590, 100, 10, "0,1", { x: 350, y: 0 })
+                ],
+                enemies: [
+                    new Enemy({ x: 240, y: 220, maxHealth: 3, attackDamage: 1 , collisionBox:{ x: 32, y: 58, width: 32, height: 30 }}),
                 ]
             },
             "1,0": { name: "Caverna Sombria", color: "#2e3b4e", obstacles: [], doors: [
                 new Door(0, 220, 10, 100, "0,0", { x: 725, y: 220 })
-            ] },
+            ], enemies: [] },
             "0,1": { name: "Deserto do Sul", color: "#6e3a3a", obstacles: [], doors: [
-                new Door(350, 0, 100, 10, "0,0", { x: 350, y: 496 })
-            ] },
+                new Door(350, 0, 100, 10, "0,0", { x: 350, y: 485 })
+            ], enemies: [] },
             "0,-1": { name: "Cemitério", color: "#5a3a6e", obstacles: [
                  { x: 120, y: 100, width: 80, height: 80 },
                  { x: 600, y: 100, width: 80, height: 80 },
@@ -36,7 +40,7 @@ export default class World {
                 new Door(350, 590, 100, 10, "0,0", { x: 370, y: 0 }, {
                     requiresProgression: { roomKey: '0,-1', interactionId: 'cemiterio_srpoo_01' }
                 }),
-            ] }
+            ], enemies: [] }
         };
         this.locationUI = { active: false, timer: 0, text: "" };
     }
@@ -79,6 +83,12 @@ export default class World {
         }
     }
 
+    getRoomEnemies() {
+        const roomKey = `${this.currentRoom.x},${this.currentRoom.y}`;
+        const room = this.worldMap[roomKey] || { enemies: [] };
+        return room.enemies || [];
+    }
+
     completeProgression(roomKey, interactionId) {
         if (!roomKey || !interactionId) {
             return;
@@ -103,7 +113,7 @@ export default class World {
     }
 
     reset() {
-        this.currentRoom = { x: 0, y: -1 };
+        this.currentRoom = { x: 0, y: 0 };
         this.progressionState.clear();
         this.locationUI = { active: false, timer: 0, text: "" };
     }
@@ -157,6 +167,13 @@ export default class World {
             const isLocked = Boolean(door.requiresProgression) && !this.isProgressionCompleted(door.requiresProgression);
             ctx.fillStyle = isLocked ? '#4f3b2a' : '#7c4a1d';
             ctx.fillRect(door.x, door.y, door.width, door.height);
+        });
+
+        // Desenha inimigos
+        (room.enemies || []).forEach(enemy => {
+            if (enemy && typeof enemy.draw === 'function') {
+                enemy.draw(ctx);
+            }
         });
 
         // Desenha UI

@@ -1,3 +1,4 @@
+import CombatSystem from './classes/CombatSystem.js';
 import DialogManager from './classes/DialogManager.js';
 import InputHandler from './classes/InputHandler.js';
 import NPCManager from './classes/npcs/NPCManager.js';
@@ -18,6 +19,7 @@ const input = new InputHandler();
 const player = new Player();
 const world = new World(SCREEN_WIDTH, SCREEN_HEIGHT);
 const dialogManager = new DialogManager();
+const combatSystem = new CombatSystem();
 
 const assetCache = new Map();
 function loadImage(path) {
@@ -54,7 +56,8 @@ async function init() {
         FRAME_SIZE,
         spriteSheet: spriteSheetImage,
         dialogManager,
-        npcManager
+        npcManager,
+        combatSystem
     });
 
     stateManager.changeState(MenuState);

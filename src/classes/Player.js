@@ -20,6 +20,13 @@ export default class Player extends Character {
         this.animationTimer = 0;
         this.collisionBox = { x: 32, y: 58, width: 32, height: 30 };
         this.doorCooldown = 0;
+        this.maxHealth = 5;
+        this.health = this.maxHealth;
+        this.invulnerableTimer = 0;
+        this.attackDamage = 2;
+        this.attackRange = 70;
+        this.attackCooldown = 0;
+        this.attackCooldownFrames = 20;
     }
 
     getAnimationConfig(state, direction) {
@@ -35,12 +42,20 @@ export default class Player extends Character {
     }
 
     getCollisionRect(x = this.x, y = this.y) {
-        const FRAME_SIZE = 48;
         return {
-            x: x,
-            y: y,
-            width: FRAME_SIZE,
-            height: FRAME_SIZE
+            x: x + this.collisionBox.x,
+            y: y + this.collisionBox.y,
+            width: this.collisionBox.width,
+            height: this.collisionBox.height
+        };
+    }
+
+    getVisualCollisionRect(x = this.x, y = this.y) {
+        return {
+            x: x + this.collisionBox.x,
+            y: y + this.collisionBox.y,
+            width: this.collisionBox.width,
+            height: this.collisionBox.height
         };
     }
 
@@ -75,6 +90,14 @@ export default class Player extends Character {
     update(keys, world = null) {
         if (this.state === 'die') return;
 
+        if (this.attackCooldown > 0) {
+            this.attackCooldown--;
+        }
+
+        if (this.invulnerableTimer > 0) {
+            this.invulnerableTimer--;
+        }
+
         if (this.state === 'attack') {
             this.animationTimer++;
             if (this.animationTimer >= this.animationSpeed) {
@@ -99,9 +122,10 @@ export default class Player extends Character {
         if (keys['a'] || keys['ArrowLeft'])    { moveX -= this.speed; this.direction = 'side'; this.facing = 'left'; isMoving = true; }
         else if (keys['d'] || keys['ArrowRight'])   { moveX += this.speed; this.direction = 'side'; this.facing = 'right'; isMoving = true; }
 
-        if (keys[' ']) {
+        if (keys[' '] && this.attackCooldown <= 0) {
             this.state = 'attack';
             this.currentFrame = 0;
+            this.attackCooldown = this.attackCooldownFrames;
             return;
         }
 
@@ -142,9 +166,64 @@ export default class Player extends Character {
 
     }
 
-    drawHitbox(ctx) {
+    getAttackRect() {
         const rect = this.getCollisionRect();
+        const offset = 20; // Distância que a caixa se desloca em direção ao ataque
+        const FRAME_SIZE = 48;
+
+
+        let offsetX = 0;
+        let offsetY = 0;
+
+        // Define o deslocamento baseada na direção
+        if (this.direction === 'side') {
+            offsetX = (this.facing === 'right' ? offset : -offset);
+        } else if (this.direction === 'front') {
+            offsetY = 0;
+        } else if (this.direction === 'back') {
+            offsetY = -offset+15; // Ajuste para que o ataque para trás seja mais alto
+        }
+
+        return {
+            x: (rect.x - 10) + offsetX,
+            y: (rect.y - 20) + offsetY,
+            // Mantemos o tamanho um pouco maior que o corpo para garantir o acerto
+            width: FRAME_SIZE * 1.2,
+            height: FRAME_SIZE * 1.2
+        };
+    }
+
+    takeDamage(amount) {
+        if (this.isDead() || this.invulnerableTimer > 0) {
+            return false;
+        }
+
+        this.health = Math.max(0, this.health - amount);
+        this.invulnerableTimer = 40;
+        this.state = 'hit';
+        console.log(`[PLAYER] Took ${amount} damage! Health: ${this.health}`);
+        if (this.health <= 0) {
+            this.state = 'die';
+            console.log(`[PLAYER] Player died!`);
+        }
+        return true;
+    }
+
+    isDead() {
+        return this.health <= 0;
+    }
+
+    drawHitbox(ctx) {
+        const rect = this.getVisualCollisionRect();
         ctx.strokeStyle = 'red'; // Cor visível para debug
+        ctx.lineWidth = 2;
+        ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+    }
+
+     drawHitboxAttack(ctx) {
+        const rect = this.getAttackRect();
+        console.log(`[DEBUG] Attack Rect: x=${rect.x}, y=${rect.y}, width=${rect.width}, height=${rect.height}`);
+        ctx.strokeStyle = 'blue'; // Cor visível para debug
         ctx.lineWidth = 2;
         ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
     }
@@ -163,7 +242,10 @@ export default class Player extends Character {
         } else {
             ctx.drawImage(spriteSheetImage, sx, sy, FRAME_SIZE, FRAME_SIZE, this.x, this.y, this.width, this.height);
         }
-        Environment.isDeveloperMode() && this.drawHitbox(ctx);
         ctx.restore();
+        if(Environment.isDeveloperMode()){
+            this.drawHitbox(ctx);
+            this.drawHitboxAttack(ctx);
+        }
     }
 }
