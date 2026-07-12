@@ -7,7 +7,7 @@
       "frameSize": 48,
       "scale": 2,
       "position": { "x": 0, "y": 180 },
-      "collisionBox": { "x": 16, "y": 34, "width": 32, "height": 28 },
+      "collisionBox": { "x": 32, "y": 58, "width": 32, "height": 30 },
       "behavior": {
         "type": "randomWalk",
         "params": {
