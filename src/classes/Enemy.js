@@ -1,5 +1,5 @@
 import Character from './Character.js';
-import Environment from './Enviroment.js';
+import Environment from './Environment.js';
 
 export default class Enemy extends Character {
     constructor({ x = 0, y = 0, maxHealth = 3, attackDamage = 1, speed = 0.8, collisionBox = { x: 12, y: 20, width: 24, height: 24 }} = {}) {
@@ -79,7 +79,6 @@ export default class Enemy extends Character {
         this.health = Math.max(0, this.health - amount);
         this.state = 'hit';
         this.invulnerableTimer = 8;
-        console.log(`[ENEMY] Took ${amount} damage! Health: ${this.health}`);
         return true;
     }
 

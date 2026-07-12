@@ -20,7 +20,7 @@ export default class PlayingState extends State {
     }
 
     update() {
-        const { player, world, input, npcManager, dialogManager } = this.context;
+        const { player, world, input, npcManager, dialogManager, inventory } = this.context;
 
         const isDialogActive = dialogManager?.isActive();
 
@@ -102,10 +102,10 @@ export default class PlayingState extends State {
         }
 
         ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
-        ctx.fillRect(16, 16, 180, 48);
+        ctx.fillRect(580, 16, 180, 48);
         ctx.fillStyle = 'white';
         ctx.font = '16px Arial';
-        ctx.fillText(`Vida: ${Math.max(player.health, 0)}/${player.maxHealth}`, 60, 42);
+        ctx.fillText(`Vida: ${Math.max(player.health, 0)}/${player.maxHealth}`, 640, 42);
     }
 
     exit() {}

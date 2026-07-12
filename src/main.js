@@ -1,6 +1,7 @@
 import CombatSystem from './classes/CombatSystem.js';
 import DialogManager from './classes/DialogManager.js';
 import InputHandler from './classes/InputHandler.js';
+import { Inventory } from './classes/Inventory.js';
 import NPCManager from './classes/npcs/NPCManager.js';
 import Player from './classes/Player.js';
 import StateManager from './classes/StateManager.js';
@@ -16,7 +17,9 @@ const SCREEN_HEIGHT = 600;
 const FRAME_SIZE = 48;
 
 const input = new InputHandler();
+const inventory = new Inventory(8);
 const player = new Player();
+player.inventory = inventory;
 const world = new World(SCREEN_WIDTH, SCREEN_HEIGHT);
 const dialogManager = new DialogManager();
 const combatSystem = new CombatSystem();
@@ -57,7 +60,8 @@ async function init() {
         spriteSheet: spriteSheetImage,
         dialogManager,
         npcManager,
-        combatSystem
+        combatSystem,
+        inventory
     });
 
     stateManager.changeState(MenuState);
