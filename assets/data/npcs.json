@@ -6,7 +6,7 @@
       "sprite": "assets/sprites/srpoo-sheet.png",
       "frameSize": 48,
       "scale": 2,
-      "position": { "x": 240, "y": 180 },
+      "position": { "x": 0, "y": 180 },
       "collisionBox": { "x": 16, "y": 34, "width": 32, "height": 28 },
       "behavior": {
         "type": "randomWalk",

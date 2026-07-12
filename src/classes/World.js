@@ -26,7 +26,12 @@ export default class World {
             "0,1": { name: "Deserto do Sul", color: "#6e3a3a", obstacles: [], doors: [
                 new Door(350, 0, 100, 10, "0,0", { x: 350, y: 496 })
             ] },
-            "0,-1": { name: "Cemitério", color: "#5a3a6e", obstacles: [], doors: [
+            "0,-1": { name: "Cemitério", color: "#5a3a6e", obstacles: [
+                 { x: 120, y: 100, width: 80, height: 80 },
+                 { x: 600, y: 100, width: 80, height: 80 },
+                 { x: 120, y: 400, width: 80, height: 80 },
+                 { x: 600, y: 400, width: 80, height: 80 }
+            ], doors: [
                 new Door(350, 590, 100, 10, "0,0", { x: 370, y: -41 }),
             ] }
         };
@@ -83,15 +88,13 @@ export default class World {
         const roomKey = `${this.currentRoom.x},${this.currentRoom.y}`;
         const room = this.worldMap[roomKey] || { obstacles: [] };
 
-
-
         if(Environment.isDeveloperMode()){
             const collision = room.obstacles.some(obstacle => this.rectsOverlap(x, y, width, height, obstacle.x, obstacle.y, obstacle.width, obstacle.height));
             if(collision){
                 console.log(`Colisão detectada com um obstáculo na sala ${roomKey} para retângulo (${x}, ${y}, ${width}, ${height})`);
             }
             return collision;
-        }
+        } 
         return room.obstacles.some(obstacle => this.rectsOverlap(x, y, width, height, obstacle.x, obstacle.y, obstacle.width, obstacle.height)); 
     }
 

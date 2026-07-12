@@ -55,6 +55,32 @@ export default class NPC extends Character {
         return !this.paused && this.dialogueId && this.isNearPlayer(player);
     }
 
+    faceTarget(target, world) {
+        if (!target) {
+            return;
+        }
+
+        const dx = target.x - this.x;
+        const dy = target.y - this.y;
+
+        if (Math.abs(dx) > Math.abs(dy)) {
+            this.direction = 'side';
+            this.facing = dx > 0 ? 'right' : 'left';
+        } else {
+            this.direction = dy > 0 ? 'front' : 'back';
+        }
+
+        const minDistance = 60;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < minDistance) {
+            const safePosition = this.findSafePositionNearTarget(target, world, minDistance);
+            if (safePosition) {
+                this.x = safePosition.x;
+                this.y = safePosition.y;
+            }
+        }
+    }
+
     update(context) {
         if (this.paused || context.dialogManager.isActive()) {
             return;

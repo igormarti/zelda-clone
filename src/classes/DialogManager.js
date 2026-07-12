@@ -7,6 +7,10 @@ export default class DialogManager {
         this.dialogData = { step: 0, lines: [] };
         this.dialogues = null;
         this.isLoading = false;
+        this.displayedText = ""; // O texto que está aparecendo gradualmente
+        this.charIndex = 0;
+        this.typingSpeed = 2; // Quantos frames por caractere
+        this.typingTimer = 0;
     }
 
     start(dialogueId, options = {}) {
@@ -30,6 +34,7 @@ export default class DialogManager {
         this.npc = null;
         this.dialogData = { step: 0, lines: [] };
         this.onEndCallbacks.forEach(callback => callback());
+         this.resetTyping();
     }
 
     isActive() {
@@ -69,6 +74,7 @@ export default class DialogManager {
         const lines = this.dialogData.lines || [];
         if (this.dialogData.step < lines.length - 1) {
             this.dialogData.step += 1;
+            this.resetTyping();
             return;
         }
         this.end();
@@ -76,9 +82,28 @@ export default class DialogManager {
 
     update(input) {
         if (!this.active) return;
+       
+        const fullText = this.dialogData.lines[this.dialogData.step] || "";
+
+        // Efeito de digitação
+        if (this.charIndex < fullText.length) {
+            this.typingTimer++;
+            if (this.typingTimer >= this.typingSpeed) {
+                this.charIndex++;
+                this.displayedText = fullText.substring(0, this.charIndex);
+                this.typingTimer = 0;
+            }
+        }
+
         if (input.keys['x']) {
             input.keys['x'] = false;
-            this.advance();
+
+            if (this.charIndex < fullText.length) {
+                this.charIndex = fullText.length;
+                this.displayedText = fullText;
+            } else {
+                this.advance();
+            }
         }
     }
 
@@ -90,7 +115,7 @@ export default class DialogManager {
         const x = (canvas.width - width) / 2;
         const y = canvas.height - height - 30;
 
-        ctx.fillStyle = 'rgba(53, 52, 52, 0.4)';
+        ctx.fillStyle = 'rgba(89, 87, 87, 0.2)';
         ctx.fillRect(x, y, width, height);
         ctx.strokeStyle = '#fff';
         ctx.lineWidth = 3;
@@ -103,8 +128,8 @@ export default class DialogManager {
         ctx.font = '18px Arial';
         ctx.textAlign = 'left';
         ctx.fillText(`${this.npc?.name || '...'}: `, x + 20, y + 35);
-        ctx.fillText(text, x + 20, y + 70);
-        ctx.fillText('Pressione X para avançar ou encerrar.', x + 20, y + 110);
+        this.drawWrappedText(ctx, this.displayedText, x + 20, y + 65, width - 40, 25);
+        ctx.fillText('Pressione X para avançar ou encerrar.', x + 200, y + 130);
 
         if (lines.length > 1) {
             ctx.fillText(`(${this.dialogData.step + 1}/${lines.length})`, x + 20, y + 135);
@@ -117,5 +142,30 @@ export default class DialogManager {
             throw new Error(`Falha ao carregar dialogues.json: ${response.statusText}`);
         }
         return response.json();
+    }
+
+    drawWrappedText(ctx, text, x, y, maxWidth, lineHeight) {
+        const words = text.split(' ');
+        let line = '';
+        let testY = y;
+
+        for (let i = 0; i < words.length; i++) {
+            let testLine = line + words[i] + ' ';
+            let metrics = ctx.measureText(testLine);
+            if (metrics.width > maxWidth && i > 0) {
+                ctx.fillText(line, x, testY);
+                line = words[i] + ' ';
+                testY += lineHeight;
+            } else {
+                line = testLine;
+            }
+        }
+        ctx.fillText(line, x, testY);
+    }
+
+    resetTyping() {
+        this.displayedText = "";
+        this.charIndex = 0;
+        this.typingTimer = 0;
     }
 }
