@@ -3,6 +3,7 @@ export default class DialogManager {
         this.active = false;
         this.dialogueId = null;
         this.npc = null;
+        this.player = null;
         this.onEndCallbacks = [];
         this.dialogData = { step: 0, lines: [] };
         this.dialogues = null;
@@ -11,20 +12,44 @@ export default class DialogManager {
         this.charIndex = 0;
         this.typingSpeed = 2; // Quantos frames por caractere
         this.typingTimer = 0;
+        this.hasAlreadyReward = false;
     }
 
     start(dialogueId, options = {}) {
         if (!dialogueId || this.active) return;
+
+        this.hasAlreadyReward = options.hasAlreadyReward;
         this.active = true;
         this.dialogueId = dialogueId;
         this.npc = options.npc || null;
+        this.player = options.player || null;
         this.dialogData = { step: 0, lines: [] };
 
         if (this.dialogues) {
-            this.dialogData.lines = this.dialogues[this.dialogueId] || [];
+            this.dialogData.lines = this.dialogues[!this.hasAlreadyReward ? this.dialogueId: `${this.dialogueId}_after_reward`] || [];
         } else {
             this.ensureDialoguesLoaded();
         }
+    }
+
+    /**
+     * NOVO: Inicia um diálogo de informação simples passando o texto diretamente
+     * Pode receber uma string única ou um array de strings para múltiplas telas
+     */
+    showInfo(text, options = {}) {
+        if (this.active) return;
+
+        this.active = true;
+        this.isInfoDialog = true;
+        this.infoTitle = options.title || "Informação";
+        this.npc = null;
+        this.player = options.player || null;
+        
+        // Se passar apenas uma string, converte para array de 1 posição
+        const lines = Array.isArray(text) ? text : [text];
+        this.dialogData = { step: 0, lines: lines };
+        
+        this.resetTyping();
     }
 
     end() {
@@ -34,7 +59,7 @@ export default class DialogManager {
         this.npc = null;
         this.dialogData = { step: 0, lines: [] };
         this.onEndCallbacks.forEach(callback => callback());
-         this.resetTyping();
+        this.resetTyping();
     }
 
     isActive() {
@@ -59,7 +84,7 @@ export default class DialogManager {
         this.isLoading = true;
         try {
             this.dialogues = await this.loadJSONDialogues();
-            this.dialogData.lines = this.dialogues[this.dialogueId] || [];
+            this.dialogData.lines = this.dialogues[!this.hasAlreadyReward ? this.dialogueId: `${this.dialogueId}_after_reward`] || [];
         } catch (error) {
             console.warn('DialogManager: não foi possível carregar diálogos.', error);
             this.dialogues = {};
@@ -128,7 +153,7 @@ export default class DialogManager {
         ctx.font = '18px Arial';
         ctx.textAlign = 'left';
         ctx.fillText(`${this.npc?.name || '...'}: `, x + 20, y + 35);
-        this.drawWrappedText(ctx, this.displayedText, x + 20, y + 65, width - 40, 25);
+        this.drawWrappedText(ctx, this.displayedText.replace('${name}', this.player?.name), x + 20, y + 65, width - 40, 25);
         ctx.fillText('Pressione X para avançar ou encerrar.', x + 200, y + 130);
 
         if (lines.length > 1) {

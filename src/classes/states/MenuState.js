@@ -5,12 +5,20 @@ export default class MenuState extends State {
     enter() {
         const { player, world } = this.context;
 
+        // 1. Dados de posicionamento (continuam direto no player)
         player.x = 400;
         player.y = 300;
-        player.state = 'idle';
-        player.direction = 'front';
-        player.currentFrame = 0;
-        player.doorCooldown = 0;
+
+        // 2. Estados e Direções (funcionam via setters do player)
+        player.stateComponent.state = 'idle';
+        player.stateComponent.direction = 'front';
+        player.stateComponent.health = player.stateComponent.maxHealth; // Restaura a saúde do jogador
+
+        // 3. Frame de animação (ajustado para usar o método de reset do componente)
+        player.animationComponent.reset(); 
+
+        // 4. Cooldowns e atributos físicos (ajustados para acessar o componente correto)
+        player.stateComponent.doorCooldown = 0;
         world.reset();
     }
 

@@ -6,7 +6,7 @@ export default class Item {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.type = type; // Ex: 'heart', 'key', 'potion'
+        this.type = type; // Ex: 'heart', 'key', 'potion', 'weapon'
         this.spriteIndex = spriteIndex;
         this.color = color;
         this.isCollected = false;
@@ -31,5 +31,9 @@ export default class Item {
             ctx.fillStyle = this.color;
             ctx.fillRect(this.x, this.y, this.width, this.height);
         }
+    }
+
+    onUse(player){
+
     }
 }

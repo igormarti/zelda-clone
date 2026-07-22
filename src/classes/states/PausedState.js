@@ -24,10 +24,10 @@ export default class PausedState extends State {
     }
 
     draw(ctx) {
-        const { world, player, spriteSheet, FRAME_SIZE } = this.context;
+        const { world, player, spriteSheet, FRAME_SIZE, npcManager } = this.context;
 
         // Renderiza mundo e player congelados (sem atualizar)
-        world.draw(ctx);
+        world.draw(ctx, player, spriteSheet, FRAME_SIZE, npcManager);
 
         if (spriteSheet.complete) {
             player.draw(ctx, spriteSheet, FRAME_SIZE);
