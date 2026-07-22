@@ -1,38 +1,55 @@
-import Character from '../Character.js';
+import NpcAnimationComponent from '../../components/NpcAnimationComponent.js';
+import NpcRenderer from '../../components/NpcRenderer.js';
+import { Entity } from '../Entity.js';
 import BehaviorFactory from './BehaviorFactory.js';
 
-export default class NPC extends Character {
+export default class NPC extends Entity {
     constructor(config, context, savedState = {}) {
-        super();
+        const x = typeof savedState?.x === 'number' ? savedState.x : (typeof config.position?.x === 'number' ? config.position.x : 0);
+        const y = typeof savedState?.y === 'number' ? savedState.y : (typeof config.position?.y === 'number' ? config.position.y : 0);
+        super(x, y);
+        
         this.id = config.id;
         this.name = config.name || 'NPC';
         this.spritePath = config.sprite;
         this.sprite = context.spriteSheetLoader ? context.spriteSheetLoader(config.sprite) : null;
         this.frameSize = config.frameSize || 48;
         this.scale = config.scale || 1;
-        const position = config.position || { x: 0, y: 0 };
-        this.x = typeof savedState?.x === 'number' ? savedState.x : (typeof position.x === 'number' ? position.x : 0);
-        this.y = typeof savedState?.y === 'number' ? savedState.y : (typeof position.y === 'number' ? position.y : 0);
         this.collisionBox = config.collisionBox || { x: 16, y: 34, width: 32, height: 28 };
-        this.behavior = BehaviorFactory.createBehavior(config.behavior?.type || 'static', config.behavior?.params || {});
+        this.reward = config.reward || null;
         this.dialogueId = config.dialogueId || null;
         this.persistentKey = config.persistentKey || null;
-        this.state = 'idle';
-        this.direction = 'front';
-        this.facing = 'right';
-        this.currentFrame = 0;
-        this.animationTimer = 0;
-        this.animationSpeed = config.animationSpeed || 12;
-        this.frameCount = config.frameCount || 6;
-        this.animationMap = config.animationMap || {
-            idle: { front: 0, side: 1, back: 2 },
-            move: { front: 3, side: 4, back: 5 }
-        };
+
+        this.dialogueId = config.dialogueId || null;
+        this.persistentKey = config.persistentKey || null;
         this.paused = false;
         this.zOrder = config.zOrder || 'auto';
 
+        // Estados dinâmicos do NPC
+        this.state = 'idle';
+        this.direction = 'front';
+        this.facing = 'right';
+
+        // Comportamento de IA externa
+        this.behavior = BehaviorFactory.createBehavior(config.behavior?.type || 'static', config.behavior?.params || {});
+
+        // Instanciação do componente de animação dedicado do NPC
+        this.animationComponent = new NpcAnimationComponent(this, {
+            animationSpeed: config.animationSpeed || 12,
+            frameCount: config.frameCount || 6,
+            animationMap: config.animationMap || {
+                idle: { front: 0, side: 1, back: 2 },
+                move: { front: 3, side: 4, back: 5 },
+                talking: config.animationMap?.talking || { front: 0, side: 1, back: 2 } // Suporta sprites de conversa customizadas
+            }
+        });
+        
+        this.renderer = new NpcRenderer(this);
+
         this.behavior.enter(this, context);
     }
+
+    get currentFrame() { return this.animationComponent.currentFrame; }
 
     getCollisionRect(x = this.x, y = this.y) {
         return {
@@ -56,9 +73,7 @@ export default class NPC extends Character {
     }
 
     faceTarget(target, world) {
-        if (!target) {
-            return;
-        }
+        if (!target) return;
 
         const dx = target.x - this.x;
         const dy = target.y - this.y;
@@ -82,16 +97,23 @@ export default class NPC extends Character {
     }
 
     update(context) {
-        if (this.paused || context.dialogManager.isActive()) {
+        // Se o diálogo estiver ativo, o NPC entra em modo de conversação olhando para o player
+        if (context.dialogManager && context.dialogManager.isActive() && this.isNearPlayer(context.player)) {
+            this.state = 'talking';
+            this.faceTarget(context.player, context.world);
+            this.animationComponent.update(this.state, this.direction, false);
+            return;
+        }
+
+        if (this.paused) {
             return;
         }
 
         const movement = this.behavior.update(this, context);
-        if (!movement) {
-            return;
-        }
+        if (!movement) return;
 
         const isMoving = movement.dx !== 0 || movement.dy !== 0;
+        
         if (isMoving) {
             this.direction = Math.abs(movement.dx) > Math.abs(movement.dy) ? 'side' : (movement.dy > 0 ? 'front' : 'back');
             if (Math.abs(movement.dx) > Math.abs(movement.dy)) {
@@ -105,6 +127,7 @@ export default class NPC extends Character {
         const nextX = this.x + movement.dx;
         const nextY = this.y + movement.dy;
         const rect = this.getCollisionRect(nextX, nextY);
+        
         const canMove = !context.world.isPositionBlocked(rect.x, rect.y, rect.width, rect.height) &&
             rect.x >= 0 && rect.y >= 0 &&
             rect.x + rect.width <= context.world.SCREEN_WIDTH &&
@@ -115,54 +138,16 @@ export default class NPC extends Character {
             this.y = nextY;
         }
 
-        this.animationTimer++;
-        if (this.animationTimer >= this.animationSpeed) {
-            this.animationTimer = 0;
-            if (isMoving) {
-                this.currentFrame = (this.currentFrame + 1) % this.frameCount;
-            } else {
-                this.currentFrame = 0;
-            }
-        }
+        // Atualiza a animação com base no estado atualizado
+        this.animationComponent.update(this.state, this.direction, isMoving);
     }
 
     draw(ctx) {
-        const width = this.frameSize * this.scale;
-        const height = this.frameSize * this.scale;
-        const animationConfig = this.animationMap[this.state] || this.animationMap.idle;
-        const row = animationConfig[this.direction] ?? animationConfig.front ?? 0;
-        const frame = this.currentFrame % this.frameCount;
-        const sx = frame * this.frameSize;
-        const sy = row * this.frameSize;
-        const shouldFlip = this.direction === 'side' && this.facing === 'left';
-
-        if (this.sprite && this.sprite.complete) {
-            ctx.save();
-            if (shouldFlip) {
-                ctx.translate(this.x + width, this.y);
-                ctx.scale(-1, 1);
-                ctx.drawImage(this.sprite, sx, sy, this.frameSize, this.frameSize, 0, 0, width, height);
-            } else {
-                ctx.drawImage(this.sprite, sx, sy, this.frameSize, this.frameSize, this.x, this.y, width, height);
-            }
-            ctx.restore();
-        } else {
-            ctx.fillStyle = '#d1b17d';
-            ctx.fillRect(this.x, this.y, width, height);
-            ctx.strokeStyle = '#000';
-            ctx.strokeRect(this.x, this.y, width, height);
-            ctx.fillStyle = '#000';
-            ctx.fillText(this.name, this.x, this.y - 6);
-        }
+        this.renderer.draw(ctx);
     }
 
-    pause() {
-        this.paused = true;
-    }
-
-    resume() {
-        this.paused = false;
-    }
+    pause() { this.paused = true; }
+    resume() { this.paused = false; }
 
     serializeState() {
         return {

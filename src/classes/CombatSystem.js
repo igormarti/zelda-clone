@@ -31,16 +31,15 @@ export default class CombatSystem {
             }
 
             // 2. Verificação de Cooldown (Atacante não pode atacar se estiver em recarga)
-            if (attacker.attackCooldown > 0) {
+            if (attacker.equipmentComponent.attackCooldown > 0) {
                 continue;
             }
-
             // 3. Verificação de Alcance (usando a lógica AABB que discutimos)
             const inRange = this.isWithinAttackRange(attacker, target);
 
             if (inRange) {
                 // Aplica o dano
-                const damage = attacker.attackDamage ?? 1;
+                const damage = attacker.equipmentComponent.attackDamage ?? 1;
                 target.takeDamage(damage);
                 
                 hits.push(target);
@@ -49,7 +48,7 @@ export default class CombatSystem {
 
         // 4. Se houve algum acerto, coloca o atacante em estado de ataque e inicia o cooldown
         if (hits.length > 0) {
-            attacker.attackCooldown = attacker.attackCooldownFrames ?? 12;
+            attacker.equipmentComponent.attackCooldown = attacker.equipmentComponent.attackCooldownFrames ?? 12;
             attacker.state = 'attack';
         }
 
@@ -76,14 +75,15 @@ export default class CombatSystem {
             (targetRect.x + targetRect.width / 2) - (attackerRect.x + attackerRect.width / 2),
             (targetRect.y + targetRect.height / 2) - (attackerRect.y + attackerRect.height / 2)
         );
-
-        const contactRange = attacker.contactRange ?? 36;
+        
+        const contactRange = attacker.equipmentComponent.contactRange ?? attacker.contactRange ?? 36;
         if (distance > contactRange) {
             return false;
         }
 
         if (typeof target.takeDamage === 'function') {
-            target.takeDamage(attacker.attackDamage ?? 1);
+            const damage = attacker.equipmentComponent.attackDamage ?? attacker.attackDamage ?? 1;
+            target.takeDamage(damage);
             return true;
         }
 

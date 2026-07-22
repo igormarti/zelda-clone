@@ -1,9 +1,9 @@
 {
   "0,-1": [
     {
-      "id": "cemiterio_srpoo_01",
+      "id": "srpoo_01",
       "name": "Sr. Poo",
-      "sprite": "assets/sprites/srpoo-sheet.png",
+      "sprite": "assets/sprites/npcs/srpoo-sheet.png",
       "frameSize": 48,
       "scale": 2,
       "position": { "x": 0, "y": 180 },
@@ -17,7 +17,7 @@
           "radius": 100
         }
       },
-      "dialogueId": "cemiterio_srpoo_01_intro",
+      "dialogueId": "cemiterio_srpoo_01",
       "persistentKey": "npc.cemiterio_srpoo_01",
       "frameCount": 6,
       "animationSpeed": 10,
@@ -25,7 +25,22 @@
         "idle": { "front": 0, "side": 1, "back": 2 },
         "move": { "front": 3, "side": 4, "back": 5 }
       },
-      "zOrder": "auto"
+      "zOrder": "auto",
+      "reward": {
+           "type": "weapon",          
+            "className": "Sword",      
+            "flagToUnlock": "received_iron_sword_from_srpoo",
+            "config": {
+                "id": "iron_sword_01",
+                "name": "Espada de Ferro",
+                "description": "Espada de ferro pesada.",
+                "spritePath": "assets/sprites/weapon/sword-simple-sheet.png",
+                "damage": 2,
+                "scale": 2,
+                "cooldownFrames": 20,
+                "offsetPrecision": 10
+            }
+        }
     }
   ]
 }

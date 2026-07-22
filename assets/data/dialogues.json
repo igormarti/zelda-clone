@@ -1,8 +1,12 @@
 {
-  "cemiterio_srpoo_01_intro": [
+  "cemiterio_srpoo_01": [
     "Olá, viajante. Atualmente moro aqui no cemitério. Desde que aquele monstro apareceu a situação se tornou perigosa.",
     "Ele vem explorando a população com altos impostos e até serviços escravos.",
     "Seus capangas são horríveis, não respeitam ninguém. Por isso eu me escondi aqui.",
-    "Se não me engano o nome dele é 'Imperador Taxazo', tenha cuidado, ele é muito perigoso."
+    "Se não me engano o nome dele é 'Imperador Taxazo', tenha cuidado, ele é muito perigoso.",
+    "Vou te entregar essa espada, ela é a única arma que tenho. Use-a com sabedoria."
+  ],
+  "cemiterio_srpoo_01_after_reward":[
+    "Boa sorte ${name}, espero que você nos salve daquele monstro!"
   ]
 }

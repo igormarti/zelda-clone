@@ -1,3 +1,4 @@
+import AssetManager from './classes/AssetManager.js';
 import CombatSystem from './classes/CombatSystem.js';
 import DialogManager from './classes/DialogManager.js';
 import InputHandler from './classes/InputHandler.js';
@@ -16,52 +17,52 @@ const SCREEN_WIDTH = 800;
 const SCREEN_HEIGHT = 600;
 const FRAME_SIZE = 48;
 
+const assetManager = new AssetManager();
+
+const gameContext = {
+    SCREEN_WIDTH,
+    SCREEN_HEIGHT,
+    FRAME_SIZE,
+    canvas,
+    ctx,
+    assetManager,
+    input:null,
+    inventory:null,
+    player:null, 
+    world:null,
+    dialogManager:null,
+    combatSystem:null,
+}
+
 const input = new InputHandler();
-const inventory = new Inventory(8);
-const player = new Player();
-player.inventory = inventory;
+const inventory = new Inventory(8, 5);
 const world = new World(SCREEN_WIDTH, SCREEN_HEIGHT);
 const dialogManager = new DialogManager();
 const combatSystem = new CombatSystem();
+const player = new Player(400, 300, gameContext);
 
-const assetCache = new Map();
-function loadImage(path) {
-    if (!assetCache.has(path)) {
-        const image = new Image();
-        image.src = path;
-        assetCache.set(path, image);
-    }
-    return assetCache.get(path);
-}
+player.inventory = inventory;
+world.initWorldMap(gameContext, player);
 
-async function loadJSON(path) {
-    const response = await fetch(path);
-    if (!response.ok) {
-        throw new Error(`Falha ao carregar ${path}: ${response.statusText}`);
-    }
-    return response.json();
-}
+gameContext.input = input;
+gameContext.inventory = inventory;
+gameContext.player = player;
+gameContext.world = world;
+gameContext.dialogManager = dialogManager;
+gameContext.combatSystem = combatSystem;
 
-let spriteSheetImage = loadImage('assets/sprites/player-sheet.png');
+
+
+let spriteSheetImage = assetManager.loadImage('assets/sprites/player/player-sheet-without-sword.png');
 
 async function init() {
-    const npcData = await loadJSON('assets/data/npcs.json');
-    const npcManager = new NPCManager(world, player, dialogManager, loadImage, npcData);
+    const npcData = await assetManager.loadJSON('assets/data/npcs.json');
+    const npcManager = new NPCManager(world, player, dialogManager, assetManager.loadImage.bind(assetManager), npcData);
 
     const stateManager = new StateManager({
-        player,
-        world,
-        input,
-        canvas,
-        ctx,
-        SCREEN_WIDTH,
-        SCREEN_HEIGHT,
-        FRAME_SIZE,
+        ...gameContext,
         spriteSheet: spriteSheetImage,
-        dialogManager,
-        npcManager,
-        combatSystem,
-        inventory
+        npcManager
     });
 
     stateManager.changeState(MenuState);

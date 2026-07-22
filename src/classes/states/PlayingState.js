@@ -1,5 +1,6 @@
 import CombatSystem from '../CombatSystem.js';
 import GameOverState from './GameOverState.js';
+import InventoryState from './InventoryState.js';
 import PausedState from './PausedState.js';
 import State from './State.js';
 
@@ -20,7 +21,7 @@ export default class PlayingState extends State {
     }
 
     update() {
-        const { player, world, input, npcManager, dialogManager, inventory } = this.context;
+        const { player, world, input, npcManager, dialogManager, inventory} = this.context;
 
         const isDialogActive = dialogManager?.isActive();
 
@@ -64,6 +65,9 @@ export default class PlayingState extends State {
         }
 
         for (const enemy of enemies) {
+
+            dialogManager?.isActive()? enemy?.pause() : enemy.resume();
+
             if (enemy && typeof enemy.update === 'function' && !enemy.isDead?.()) {
                 enemy.update(player, world);
                 if (!enemy.isDead?.() && this.combatSystem.resolveContactDamage(enemy, player)) {
@@ -82,20 +86,28 @@ export default class PlayingState extends State {
             input.keys['Escape'] = false;
             this.stateManager.changeState(PausedState);
         }
+
+        if(!dialogManager?.isActive() && (input.keys['i'] || input.keys['I'])){
+            input.keys['i'] = input.keys['I'] = false;
+            this.stateManager.changeState(InventoryState);
+        }
+
+        if (!dialogManager?.isActive() && (input.keys['X'] || input.keys['x'])) {
+            input.keys['X'] = input.keys['x'] = false;
+
+            // Tenta interagir com baús próximos
+            const opened = world.interactWithChests(player);
+            if (typeof opened === 'object' && opened !== null) {
+                dialogManager.showInfo(opened.text ?? '', { player });
+            }
+            
+        }
     }
 
     draw(ctx) {
         const { world, player, spriteSheet, FRAME_SIZE, npcManager, dialogManager, canvas } = this.context;
 
-        world.draw(ctx);
-
-        if (npcManager) {
-            npcManager.draw(ctx);
-        }
-
-        if (spriteSheet.complete) {
-            player.draw(ctx, spriteSheet, FRAME_SIZE);
-        }
+        world.draw(ctx, player, spriteSheet, FRAME_SIZE,  npcManager);
 
         if (dialogManager) {
             dialogManager.draw(ctx, canvas);

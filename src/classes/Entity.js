@@ -1,4 +1,12 @@
-export default class Character {
+export class Entity {
+
+    constructor(x, y) {
+
+        this.x = x;
+        this.y = y;
+
+    }
+
     getCollisionRect(x = this.x, y = this.y) {
         return { x, y, width: 0, height: 0 };
     }
@@ -88,4 +96,11 @@ export default class Character {
 
         return null;
     }
-}   
+
+    update(delta) {}
+
+    draw(ctx) {}
+
+    
+
+}
