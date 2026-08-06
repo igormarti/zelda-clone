@@ -5,6 +5,7 @@ import InputHandler from './classes/InputHandler.js';
 import { Inventory } from './classes/Inventory.js';
 import NPCManager from './classes/npcs/NPCManager.js';
 import Player from './classes/Player.js';
+import SaveManager from './classes/persistence/SaveManager.js';
 import StateManager from './classes/StateManager.js';
 import MenuState from './classes/states/MenuState.js';
 import World from './classes/World.js';
@@ -39,6 +40,7 @@ const inventory = new Inventory(8, 5);
 const world = new World(SCREEN_WIDTH, SCREEN_HEIGHT);
 const dialogManager = new DialogManager();
 const combatSystem = new CombatSystem();
+const saveManager = new SaveManager();
 const player = new Player(400, 300, gameContext);
 
 player.inventory = inventory;
@@ -50,6 +52,7 @@ gameContext.player = player;
 gameContext.world = world;
 gameContext.dialogManager = dialogManager;
 gameContext.combatSystem = combatSystem;
+gameContext.saveManager = saveManager;
 
 
 

@@ -1,6 +1,8 @@
 
 export default class Item {
 
+    static _nextAutoId = 1;
+
     constructor(x, y, width, height, type, spriteIndex=0, color='yellow') {
         this.x = x;
         this.y = y;
@@ -10,6 +12,8 @@ export default class Item {
         this.spriteIndex = spriteIndex;
         this.color = color;
         this.isCollected = false;
+        // Gera um id único se não for definido pela subclasse
+        this.id = this.id || `${type}_auto_${Item._nextAutoId++}`;
     }
 
     // Método abstrato que será sobrescrito pelas subclasses

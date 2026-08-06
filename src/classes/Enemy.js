@@ -4,6 +4,8 @@ import StateComponent from '../components/StateComponent.js';
 import { Entity } from './Entity.js';
 
 export default class Enemy extends Entity {
+    static _nextAutoId = 1;
+
     constructor({ 
         x = 0, 
         y = 0, 
@@ -21,12 +23,18 @@ export default class Enemy extends Entity {
         spriteSheet = null,         // Caminho opcional para sprite SVG/PNG
         spriteFrames = 4,           // Quantos frames no sheet
         spriteFrameWidth = 48,      // Largura de cada frame
-        spriteFrameHeight = 48      // Altura de cada frame
+        spriteFrameHeight = 48,      // Altura de cada frame
+
+        // --- FLAG DE PERSISTÊNCIA ---
+        // Se true, o inimigo NÃO renasce após morrer (chefes/únicos).
+        // Se false (padrão), o inimigo sempre renasce ao entrar na sala,
+        // mesmo que tenha sido morto antes e o jogo tenha sido salvo.
+        persistent = false
     } = {}) {
         super(x, y);
 
-        this.id = "Enemy_00";
-        this.name = "Enemy 00";
+        this.id = `enemy_${Enemy._nextAutoId++}`;
+        this.name = "Enemy";
         this.width = 48;
         this.height = 48;
         this.color = color;
@@ -37,6 +45,14 @@ export default class Enemy extends Entity {
         this.detectionRange = detectionRange;
 
         this.paused = false;
+
+        // Flag de persistência: controla se o inimigo deve renascer
+        // ao entrar novamente na sala (independentemente de save/load).
+        this.persistent = persistent;
+
+        // Posição inicial guardada para permitir o respawn no ponto de origem
+        this._initialX = x;
+        this._initialY = y;
 
         // Configurações de IA
         this.aiType = aiType; 
@@ -254,6 +270,47 @@ export default class Enemy extends Entity {
 
     pause() { this.paused = true; }
     resume() { this.paused = false; }
+
+    /**
+     * Reseta o inimigo para o estado inicial (vida cheia, posição original, etc.).
+     *
+     * Comportamento conforme a flag `persistent`:
+     *  - persistent: true  → Se já estiver morto, mantém morto (chefes/únicos).
+     *  - persistent: false → Sempre revive (comportamento padrão de respawn).
+     *
+     * Chamado quando o player entra/sai da sala e também pelo save/load
+     * para garantir que inimigos comuns nunca fiquem permanentemente mortos.
+     */
+    reset() {
+        // Inimigos persistentes que já morreram permanecem como estão.
+        if (this.persistent && this.isDead()) {
+            return;
+        }
+
+        // Restaura posição inicial (garante que o inimigo volta para
+        // o local onde foi colocado na definição do mapa).
+        this.x = this._initialX;
+        this.y = this._initialY;
+
+        // Reseta timers e estados de IA
+        this.patrolDirection = 1;
+        this.randomMoveTimer = 0;
+        this.randomDir = { x: 0, y: 0 };
+        this.paused = false;
+
+        // Restaura vida e estado via StateComponent
+        if (this.stateComponent) {
+            this.stateComponent.health = this.stateComponent.maxHealth;
+            this.stateComponent.invulnerableTimer = 0;
+            // setState só aceita mudar se o estado atual não for 'die',
+            // então forçamos a transição resetando a referência interna.
+            this.stateComponent.state = 'idle';
+        }
+
+        if (this.equipmentComponent) {
+            this.equipmentComponent.attackCooldownFrames = 40;
+        }
+    }
 
     draw(ctx) {
         if (this.isDead()) return;
