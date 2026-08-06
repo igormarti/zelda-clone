@@ -6,6 +6,7 @@ import { TileGenerator } from './generators/TileGenerator.js';
 import { HeartItem } from './items/HeartItem.js';
 import { InventoryItem } from './items/InventoryItem.js';
 import { WeaponItem } from './items/WeaponItem.js';
+import SacredTree from './SacredTree.js';
 import SignPost from './SignPost.js';
 import Bow from './weapon/Bow.js';
 
@@ -177,52 +178,58 @@ export default class World {
                 ],
                 enemies: [
 
-                    // 1. Inimigo Estático (Tipo Padrão)
-                    new Enemy({ 
-                        x: 200, y: 40, 
-                        maxHealth: 3, attackDamage: 1 , 
+                    // 1. Inimigo Estático (Tipo Padrão) - RENASCE SEMPRE
+                    new Enemy({
+                        x: 200, y: 40,
+                        maxHealth: 3, attackDamage: 1 ,
                         collisionBox:{ x: 32, y: 58, width: 32, height: 30 },
-                        aiType: 'stationary', 
+                        aiType: 'stationary',
                         color:'orange',
-                        gameContext 
+                        gameContext,
+                        persistent: false
                     }),
 
-                    // 2. Inimigo de Patrulha Horizontal
-                    new Enemy({ 
-                        x: 460, y: 300, 
-                        maxHealth: 3, attackDamage: 1 , 
+                    // 2. Inimigo de Patrulha Horizontal - PERSISTENTE (chefe local)
+                    // Uma vez derrotado, permanece morto mesmo após save/load.
+                    new Enemy({
+                        x: 460, y: 300,
+                        maxHealth: 3, attackDamage: 1 ,
                         collisionBox:{ x: 32, y: 58, width: 32, height: 30 },
-                        aiType: 'patrol_linear', 
-                        patrolAxis: 'horizontal', 
-                        speed: 1, 
+                        aiType: 'patrol_linear',
+                        patrolAxis: 'horizontal',
+                        speed: 1,
                         color:'yellow',
-                        gameContext 
+                        gameContext,
+                        persistent: true
                     }),
 
-                    // 2b. Inimigo de Patrulha Vertical (em um corredor por exemplo)
-                    new Enemy({ 
-                        x: 500, y: 550, 
-                        maxHealth: 3, attackDamage: 1 , 
+                    // 2b. Inimigo de Patrulha Vertical (em um corredor por exemplo) - RENASCE SEMPRE
+                    new Enemy({
+                        x: 500, y: 550,
+                        maxHealth: 3, attackDamage: 1 ,
                         collisionBox:{ x: 32, y: 58, width: 32, height: 30 },
-                        aiType: 'patrol_linear', 
-                        patrolAxis: 'vertical', 
-                        speed: 1, 
+                        aiType: 'patrol_linear',
+                        patrolAxis: 'vertical',
+                        speed: 1,
                         color:'pink',
-                        gameContext 
+                        gameContext,
+                        persistent: false
                     }),
 
-                    // 3. Inimigo Vagante/Aleatório
-                    new Enemy({ 
-                        x: 550, y: 250, 
-                        maxHealth: 3, attackDamage: 1 , 
+                    // 3. Inimigo Vagante/Aleatório - PERSISTENTE (chefe local)
+                    // Uma vez derrotado, permanece morto mesmo após save/load.
+                    new Enemy({
+                        x: 550, y: 250,
+                        maxHealth: 3, attackDamage: 1 ,
                         collisionBox:{ x: 32, y: 58, width: 32, height: 30 },
-                        aiType: 'patrol_random', 
-                        speed: 0.8, 
+                        aiType: 'patrol_random',
+                        speed: 0.8,
                         detectionRange: 120, // Raio de visão maior!
                         color:'blue',
-                        gameContext 
+                        gameContext,
+                        persistent: true
                     })
-                ], 
+                ],
                 items: [
                     new InventoryItem(745, 10,'health_potion_01', "health_potion", "Poção de Saúde", 3, null, "#ff0000"),
                     new WeaponItem(540, 25, 32, 32, 
@@ -238,7 +245,12 @@ export default class World {
                     )
                 ]
             },
-            "1,0": { name: "Caverna Sombria", color: "#2e3b4e", obstacles: [], doors: [
+            "1,0": { name: "Caverna Sombria", color: "#2e3b4e", obstacles: [
+                new SacredTree(400, 280, 48, 64, [
+                    "A Árvore Sagrada pulsa com uma energia ancestral.",
+                    "Pressione X para registrar seu progresso aqui."
+                ])
+            ], doors: [
                 new Door(0, 220, 10, 100, "0,0", { x: 725, y: 220 })
             ], enemies: [],
              items: [
@@ -276,7 +288,7 @@ export default class World {
         if (!room) return false;
 
         const objects = room.obstacles.filter((o) => 
-            o instanceof Chest || o instanceof SignPost
+            o instanceof Chest || o instanceof SignPost || o instanceof SacredTree
         );
 
         return objects.length > 0;
@@ -322,10 +334,52 @@ export default class World {
         return false;
     }
 
+    /**
+     * Procura por Árvore Sagrada próxima ao jogador
+     * Retorna true se encontrou e o player está perto
+     */
+    interactWithSacredTree(player) {
+        const roomKey = `${this.currentRoom.x},${this.currentRoom.y}`;
+        const room = this.worldMap[roomKey];
+        if (!room) return false;
+
+        const trees = room.obstacles.filter((o) => o instanceof SacredTree);
+
+        if(trees.length < 1) return false;
+
+        for (const tree of trees) {
+            if (tree.isPlayerNearby(player)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     getRoomEnemies() {
         const roomKey = `${this.currentRoom.x},${this.currentRoom.y}`;
         const room = this.worldMap[roomKey] || { enemies: [] };
         return room.enemies || [];
+    }
+
+    /**
+     * Reseta todos os inimigos de uma sala.
+     *
+     * Chamado automaticamente quando o player entra em uma sala.
+     * Respeita a flag `persistent` de cada inimigo:
+     *  - persistent: false → Sempre renasce com vida cheia
+     *  - persistent: true  → Se já morreu, permanece morto
+     *
+     * @param {string} roomKey - Chave da sala (ex: "0,0")
+     */
+    resetRoomEnemies(roomKey) {
+        const room = this.worldMap[roomKey];
+        if (!room || !room.enemies || room.enemies.length === 0) return;
+
+        room.enemies.forEach(enemy => {
+            if (enemy && typeof enemy.reset === 'function') {
+                enemy.reset();
+            }
+        });
     }
 
    /**
@@ -435,10 +489,17 @@ export default class World {
         if (this.rectsOverlap(rectPlayer.x, rectPlayer.y, rectPlayer.width, rectPlayer.height, item.x, item.y, item.width, item.height)) {
             // Delegação polimórfica: o item decide o que fazer com o player
             const collected = item.onCollect(player);
-            // Se coletou com sucesso, retorna false para remover do array do mapa
-            return !collected;
+            // Se coletou com sucesso, marca o item como coletado.
+            // IMPORTANTE: NÃO removemos o item do array room.items,
+            // pois isso impede o sistema de save/load de saber quais
+            // itens já foram coletados (o array ficaria vazio para itens
+            // já coletados). O Item.draw() já verifica isCollected
+            // e não renderiza itens coletados.
+            if (collected) {
+                item.isCollected = true;
+            }
         }
-        return true;
+        return item.isCollected;
         
     }
 
@@ -459,11 +520,17 @@ export default class World {
 
                 if (door.intersects(player, this)) {
                     const [targetX, targetY] = door.targetRoomKey.split(',').map(Number);
+                    const newRoomKey = `${targetX},${targetY}`;
+                    
                     this.currentRoom.x = targetX;
                     this.currentRoom.y = targetY;
                     player.x = door.spawnPoint.x;
                     player.y = door.spawnPoint.y;
                     player.doorCooldown = 20;
+
+                    // Reseta todos os inimigos da nova sala,
+                    // respeitando a flag `persistent` de cada um.
+                    this.resetRoomEnemies(newRoomKey);
 
                     if(Environment.isDeveloperMode()){
                         console.log(`Transição de sala para ${door.targetRoomKey}`);
@@ -475,9 +542,13 @@ export default class World {
                 }
             }
 
-            // CÓDIGO NOVO (CORRETO):
+            // Atualiza os itens da sala (verifica colisão e coleta)
             if (room.items && room.items.length > 0) {
-                room.items = room.items.filter(item => this.updateItems(player, item));
+                room.items.forEach(item => {
+                    if (!item.isCollected) {
+                        this.updateItems(player, item);
+                    }
+                });
             }
 
 
