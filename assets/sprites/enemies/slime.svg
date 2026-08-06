@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="192" height="48"
+     viewBox="0 0 192 48"
+     shape-rendering="crispEdges"
+     image-rendering="pixelated">
+
+  <title>Slime Sheet (4 frames, 48x48)</title>
+  <desc>Slime verde estilo Zelda - 4 frames de pulo (idle/walk)</desc>
+
+  <!-- Paleta:
+       #548a3c grama clara (corpo principal)
+       #3e6b2a grama escura (sombra)
+       #1a1a1a preto (olhos/contorno)
+       #f0d090 highlight (brilho)
+  -->
+
+  <defs>
+    <!-- Definição reutilizável do slime base 48x48 -->
+    <g id="slime-base">
+      <!-- Sombra no chão -->
+      <rect x="8" y="40" width="32" height="4" fill="#1a1a1a" opacity="0.35"/>
+
+      <!-- Slime "esmagado" (frame de chão) - forma larga -->
+      <!-- Borda inferior larga -->
+      <rect x="6"  y="22" width="36" height="14" fill="#3e6b2a"/>
+      <!-- Base principal -->
+      <rect x="8"  y="20" width="32" height="14" fill="#548a3c"/>
+      <rect x="10" y="18" width="28" height="2"  fill="#548a3c"/>
+      <!-- Highlight topo -->
+      <rect x="14" y="14" width="6"  height="2"  fill="#f0d090"/>
+      <!-- Olhinhos -->
+      <rect x="16" y="26" width="4"  height="6"  fill="#1a1a1a"/>
+      <rect x="28" y="26" width="4"  height="6"  fill="#1a1a1a"/>
+      <!-- Brilho nos olhos -->
+      <rect x="17" y="27" width="1"  height="1"  fill="#f0d090"/>
+      <rect x="29" y="27" width="1"  height="1"  fill="#f0d090"/>
+    </g>
+  </defs>
+
+  <!-- Frame 0: Slime achatado no chão (início do pulo) -->
+  <g transform="translate(0,0)">
+    <g transform="translate(0,8)">
+      <rect x="6"  y="26" width="36" height="10" fill="#3e6b2a"/>
+      <rect x="8"  y="24" width="32" height="10" fill="#548a3c"/>
+      <rect x="10" y="22" width="28" height="2"  fill="#548a3c"/>
+      <rect x="14" y="20" width="6"  height="2"  fill="#f0d090"/>
+      <rect x="16" y="28" width="4"  height="4"  fill="#1a1a1a"/>
+      <rect x="28" y="28" width="4"  height="4"  fill="#1a1a1a"/>
+      <rect x="17" y="29" width="1"  height="1"  fill="#f0d090"/>
+      <rect x="29" y="29" width="1"  height="1"  fill="#f0d090"/>
+      <rect x="8" y="40" width="32" height="4" fill="#1a1a1a" opacity="0.35"/>
+    </g>
+  </g>
+
+  <!-- Frame 1: Subindo (mais alto, mais estreito) -->
+  <g transform="translate(48,0)">
+    <g transform="translate(0,2)">
+      <rect x="10" y="22" width="28" height="14" fill="#3e6b2a"/>
+      <rect x="12" y="20" width="24" height="14" fill="#548a3c"/>
+      <rect x="14" y="18" width="20" height="2"  fill="#548a3c"/>
+      <rect x="16" y="16" width="6"  height="2"  fill="#f0d090"/>
+      <rect x="16" y="26" width="4"  height="6"  fill="#1a1a1a"/>
+      <rect x="28" y="26" width="4"  height="6"  fill="#1a1a1a"/>
+      <rect x="17" y="27" width="1"  height="1"  fill="#f0d090"/>
+      <rect x="29" y="27" width="1"  height="1"  fill="#f0d090"/>
+      <rect x="8" y="42" width="32" height="3" fill="#1a1a1a" opacity="0.25"/>
+    </g>
+  </g>
+
+  <!-- Frame 2: No topo do pulo (esticado, mais alto) -->
+  <g transform="translate(96,0)">
+    <rect x="12" y="14" width="24" height="22" fill="#3e6b2a"/>
+    <rect x="14" y="12" width="20" height="22" fill="#548a3c"/>
+    <rect x="16" y="10" width="16" height="2"  fill="#548a3c"/>
+    <rect x="18" y="8"  width="6"  height="2"  fill="#f0d090"/>
+    <rect x="16" y="18" width="4"  height="6"  fill="#1a1a1a"/>
+    <rect x="28" y="18" width="4"  height="6"  fill="#1a1a1a"/>
+    <rect x="17" y="19" width="1"  height="1"  fill="#f0d090"/>
+    <rect x="29" y="19" width="1"  height="1"  fill="#f0d090"/>
+    <!-- Sombra bem fina embaixo -->
+    <rect x="10" y="44" width="28" height="2" fill="#1a1a1a" opacity="0.2"/>
+  </g>
+
+  <!-- Frame 3: Caindo (igual ao frame 1, mas com boca diferente) -->
+  <g transform="translate(144,0)">
+    <g transform="translate(0,2)">
+      <rect x="10" y="22" width="28" height="14" fill="#3e6b2a"/>
+      <rect x="12" y="20" width="24" height="14" fill="#548a3c"/>
+      <rect x="14" y="18" width="20" height="2"  fill="#548a3c"/>
+      <rect x="16" y="16" width="6"  height="2"  fill="#f0d090"/>
+      <rect x="16" y="26" width="4"  height="4"  fill="#1a1a1a"/>
+      <rect x="28" y="26" width="4"  height="4"  fill="#1a1a1a"/>
+      <rect x="17" y="27" width="1"  height="1"  fill="#f0d090"/>
+      <rect x="29" y="27" width="1"  height="1"  fill="#f0d090"/>
+      <rect x="8" y="42" width="32" height="3" fill="#1a1a1a" opacity="0.25"/>
+    </g>
+  </g>
+</svg>

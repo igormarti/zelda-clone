@@ -1,19 +1,46 @@
 import Environment from '../classes/Environment.js';
 
-// Renderizador Exclusivo do Inimigo (Simples)
+// Renderizador Exclusivo do Inimigo (com suporte a Sprite Sheet)
 export default class EnemyRenderer {
     constructor(entity) {
         this.entity = entity;
     }
 
     draw(ctx) {
-        ctx.fillStyle = this.entity.color;
-        ctx.fillRect(this.entity.x, this.entity.y, this.entity.width, this.entity.height);
-        
+        const e = this.entity;
+
+        // Se tem sprite sheet carregado e pronto, usa o sprite animado
+        if (e.spriteSheet && e.spriteSheet.complete && e.spriteSheet.naturalWidth > 0) {
+            const srcX = e.spriteCurrentFrame * e.spriteFrameWidth;
+            const srcY = 0;
+
+            // Flash branco quando invulnerável (pisca)
+            if (e.invulnerableTimer > 0 && Math.floor(e.invulnerableTimer / 2) % 2 === 0) {
+                ctx.globalAlpha = 0.4;
+            }
+
+            ctx.drawImage(
+                e.spriteSheet,
+                srcX, srcY, e.spriteFrameWidth, e.spriteFrameHeight,
+                e.x, e.y, e.width, e.height
+            );
+
+            ctx.globalAlpha = 1;
+        } else {
+            // Fallback: bloco colorido (comportamento original)
+            if (e.invulnerableTimer > 0 && Math.floor(e.invulnerableTimer / 2) % 2 === 0) {
+                ctx.globalAlpha = 0.4;
+            }
+            ctx.fillStyle = e.color;
+            ctx.fillRect(e.x, e.y, e.width, e.height);
+            ctx.globalAlpha = 1;
+        }
+
+        // Barra de vida acima do inimigo
         ctx.fillStyle = 'white';
         ctx.font = '12px Arial';
-        ctx.fillText(`${this.entity.stateComponent.health}`, this.entity.x, this.entity.y - 6);
-         this.drawHitbox(ctx);
+        ctx.fillText(`${e.stateComponent.health}`, e.x, e.y - 6);
+
         if (Environment.isDeveloperMode()) {
             this.drawHitbox(ctx);
             this.drawHitboxAttack(ctx);

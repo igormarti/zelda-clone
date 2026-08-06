@@ -20,9 +20,13 @@ export default class World {
         this.locationUI = { active: false, timer: 0, text: "" };
 
         this.tileGenerator = new TileGenerator();
-        // Carrega a folha de blocos baixada
+        // Carrega a folha de blocos baixada (tileset original para sala inicial)
         this.tileset = new Image();
-        this.tileset.src = 'assets/tilesets/Legend of Memore Tileset.png'; 
+        this.tileset.src = 'assets/tilesets/Legend of Memore Tileset.png';
+
+        // Tileset SVG novo para todas as outras salas
+        this.worldTileset = new Image();
+        this.worldTileset.src = 'assets/tilesets/world-tileset.svg';
         this.tileMap = {
             // [Coluna, Linha] baseados na imagem
             'big_grass_0':      [8, 0],
@@ -183,8 +187,9 @@ export default class World {
                         maxHealth: 3, attackDamage: 1 , 
                         collisionBox:{ x: 32, y: 58, width: 32, height: 30 },
                         aiType: 'stationary', 
-                        color:'orange',
-                        gameContext 
+                        gameContext,
+                        spriteSheet: 'assets/sprites/enemies/slime.svg',
+                        spriteFrames: 4,
                     }),
 
                     // 2. Inimigo de Patrulha Horizontal
@@ -195,8 +200,9 @@ export default class World {
                         aiType: 'patrol_linear', 
                         patrolAxis: 'horizontal', 
                         speed: 1, 
-                        color:'yellow',
-                        gameContext 
+                        gameContext,
+                        spriteSheet: 'assets/sprites/enemies/slime.svg',
+                        spriteFrames: 4,
                     }),
 
                     // 2b. Inimigo de Patrulha Vertical (em um corredor por exemplo)
@@ -207,8 +213,10 @@ export default class World {
                         aiType: 'patrol_linear', 
                         patrolAxis: 'vertical', 
                         speed: 1, 
-                        color:'pink',
-                        gameContext 
+                        gameContext,
+                        detectionRange: 110,
+                        spriteSheet: 'assets/sprites/enemies/red-skeleton.svg',
+                        spriteFrames: 4,
                     }),
 
                     // 3. Inimigo Vagante/Aleatório
@@ -219,8 +227,10 @@ export default class World {
                         aiType: 'patrol_random', 
                         speed: 0.8, 
                         detectionRange: 120, // Raio de visão maior!
-                        color:'blue',
-                        gameContext 
+                        gameContext ,
+                        detectionRange: 110,
+                        spriteSheet: 'assets/sprites/enemies/red-skeleton.svg',
+                        spriteFrames: 4,
                     })
                 ], 
                 items: [
@@ -240,7 +250,31 @@ export default class World {
             },
             "1,0": { name: "Caverna Sombria", color: "#2e3b4e", obstacles: [], doors: [
                 new Door(0, 220, 10, 100, "0,0", { x: 725, y: 220 })
-            ], enemies: [],
+            ], enemies: [
+                new Enemy({
+                    x: 400, y: 300,
+                    maxHealth: 4, attackDamage: 1,
+                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
+                    aiType: 'patrol_random',
+                    speed: 0.7,
+                    detectionRange: 100,
+                    spriteSheet: 'assets/sprites/enemies/slime.svg',
+                    spriteFrames: 4,
+                    gameContext
+                }),
+                new Enemy({
+                    x: 600, y: 150,
+                    maxHealth: 5, attackDamage: 2,
+                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
+                    aiType: 'patrol_linear',
+                    patrolAxis: 'horizontal',
+                    speed: 0.9,
+                    detectionRange: 110,
+                    spriteSheet: 'assets/sprites/enemies/red-skeleton.svg',
+                    spriteFrames: 4,
+                    gameContext
+                })
+            ],
              items: [
                 new InventoryItem(200, 200, 'mana_potion_01', "mana_potion", "Poção de Mana", 2, null, "#0000ff"),
                 new HeartItem(300, 300, 16, 16, 1)
@@ -248,7 +282,31 @@ export default class World {
         },
             "0,1": { name: "Deserto do Sul", color: "#6e3a3a", obstacles: [], doors: [
                 new Door(350, 0, 100, 10, "0,0", { x: 350, y: 485 })
-            ], enemies: [], items: []},
+            ], enemies: [
+                new Enemy({
+                    x: 200, y: 350,
+                    maxHealth: 3, attackDamage: 1,
+                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
+                    aiType: 'patrol_linear',
+                    patrolAxis: 'horizontal',
+                    speed: 1,
+                    detectionRange: 90,
+                    spriteSheet: 'assets/sprites/enemies/slime.svg',
+                    spriteFrames: 4,
+                    gameContext
+                }),
+                new Enemy({
+                    x: 550, y: 450,
+                    maxHealth: 4, attackDamage: 2,
+                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
+                    aiType: 'patrol_random',
+                    speed: 0.8,
+                    detectionRange: 100,
+                    spriteSheet: 'assets/sprites/enemies/red-skeleton.svg',
+                    spriteFrames: 4,
+                    gameContext
+                })
+            ], items: []},
             "0,-1": { name: "Cemitério", color: "#5a3a6e", obstacles: [
                  { x: 120, y: 100, width: 80, height: 80 },
                  { x: 600, y: 100, width: 80, height: 80 },
@@ -256,7 +314,31 @@ export default class World {
                  { x: 600, y: 400, width: 80, height: 80 }
             ], doors: [
                 new Door(350, 590, 100, 10, "0,0", { x: 370, y: 0 }),
-            ], enemies: [], items: [
+            ], enemies: [
+                new Enemy({
+                    x: 350, y: 250,
+                    maxHealth: 5, attackDamage: 2,
+                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
+                    aiType: 'patrol_random',
+                    speed: 0.6,
+                    detectionRange: 130,
+                    spriteSheet: 'assets/sprites/enemies/red-skeleton.svg',
+                    spriteFrames: 4,
+                    gameContext
+                }),
+                new Enemy({
+                    x: 500, y: 300,
+                    maxHealth: 3, attackDamage: 1,
+                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
+                    aiType: 'patrol_linear',
+                    patrolAxis: 'vertical',
+                    speed: 0.8,
+                    detectionRange: 90,
+                    spriteSheet: 'assets/sprites/enemies/slime.svg',
+                    spriteFrames: 4,
+                    gameContext
+                })
+            ], items: [
                 new InventoryItem(200, 200, 'soul_gem_01', "soul_gem", "Gema da Alma", 2, null, "#00ff00")
             ]}
         };

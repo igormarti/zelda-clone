@@ -1,0 +1,779 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="256" height="128"
+     viewBox="0 0 256 128"
+     shape-rendering="crispEdges"
+     image-rendering="pixelated">
+
+  <title>World Tileset (16 col x 8 lin, tile 16x16)</title>
+  <desc>Tileset reaproveitável para todas as salas exceto a inicial.
+        Coordenadas [col, row] casam com World.js#tileMap.
+        Paleta neutra verde/marrom/cinza para combinar com qualquer bioma.</desc>
+
+  <!-- ============================================================
+       MAPA DE TILES (coluna, linha) -> uso
+       Linhas 0-7, colunas 0-15
+       Linha 0:   grama clara, grama escura, terra clara, terra escura, pedra, areia, neve, água clara
+       Linha 1:   água escura, borda grama-água H, borda grama-água V, borda terra-grama, borda terra-água, borda pedra-grama, parede pedra, parede tijolo
+       Linha 2:   flores (3 cores), cogumelo, grama alta, moita, rachadura, pedra solta, nada
+       Linha 3:   cerca H, cerca V, cerca R (canto), poste, placa, tocha, barril, caixa
+       Linha 4:   tronco árvore, copa verde (parte 1), copa verde (parte 2), copa vermelha (parte 1), copa vermelha (parte 2), arbusto, moita2, nada
+       Linha 5:   baú fechado verde, baú aberto verde, baú fechado vermelho, baú aberto vermelho, baú fechado azul, baú aberto azul, estátua, chave
+       Linha 6:   tile piso cinza, tile piso cinza claro, tapete vermelho, tapete azul, mosaico, água cristalina, sangue, escada
+       Linha 7:   porta madeira fechada, porta madeira aberta, porta pedra, grades, nada, nada, nada, nada
+       ============================================================ -->
+
+  <!-- ======================== LINHA 0 ============================ -->
+  <!-- (0,0) grama clara -->
+  <g transform="translate(0,0)">
+    <rect width="16" height="16" fill="#548a3c"/>
+    <rect x="0" y="0" width="4" height="4" fill="#7ba85a" opacity="0.5"/>
+    <rect x="8" y="6" width="3" height="3" fill="#7ba85a" opacity="0.4"/>
+    <rect x="12" y="10" width="2" height="2" fill="#3e6b2a" opacity="0.5"/>
+  </g>
+  <!-- (1,0) grama escura -->
+  <g transform="translate(16,0)">
+    <rect width="16" height="16" fill="#3e6b2a"/>
+    <rect x="2" y="2" width="4" height="4" fill="#548a3c" opacity="0.6"/>
+    <rect x="10" y="8" width="3" height="3" fill="#548a3c" opacity="0.5"/>
+    <rect x="6" y="12" width="2" height="2" fill="#1a1a1a" opacity="0.4"/>
+  </g>
+  <!-- (2,0) terra clara -->
+  <g transform="translate(32,0)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+    <rect x="0" y="0" width="3" height="3" fill="#a35e2c" opacity="0.5"/>
+    <rect x="10" y="4" width="3" height="3" fill="#523a24" opacity="0.5"/>
+    <rect x="4" y="11" width="4" height="2" fill="#523a24" opacity="0.5"/>
+  </g>
+  <!-- (3,0) terra escura -->
+  <g transform="translate(48,0)">
+    <rect width="16" height="16" fill="#523a24"/>
+    <rect x="2" y="3" width="3" height="3" fill="#7c4a1d" opacity="0.5"/>
+    <rect x="9" y="9" width="4" height="3" fill="#7c4a1d" opacity="0.4"/>
+    <rect x="5" y="13" width="2" height="2" fill="#1a1a1a" opacity="0.4"/>
+  </g>
+  <!-- (4,0) pedra -->
+  <g transform="translate(64,0)">
+    <rect width="16" height="16" fill="#7a7a7a"/>
+    <rect x="0" y="0" width="6" height="6" fill="#9a9a9a" opacity="0.7"/>
+    <rect x="8" y="8" width="6" height="6" fill="#5a5a5a" opacity="0.7"/>
+    <rect x="2" y="2" width="4" height="1" fill="#1a1a1a" opacity="0.4"/>
+  </g>
+  <!-- (5,0) areia -->
+  <g transform="translate(80,0)">
+    <rect width="16" height="16" fill="#d9b97a"/>
+    <rect x="2" y="3" width="1" height="1" fill="#a08650" opacity="0.7"/>
+    <rect x="9" y="6" width="1" height="1" fill="#a08650" opacity="0.7"/>
+    <rect x="5" y="11" width="1" height="1" fill="#a08650" opacity="0.7"/>
+    <rect x="12" y="13" width="1" height="1" fill="#a08650" opacity="0.7"/>
+    <rect x="14" y="2" width="1" height="1" fill="#f0d090" opacity="0.7"/>
+  </g>
+  <!-- (6,0) neve -->
+  <g transform="translate(96,0)">
+    <rect width="16" height="16" fill="#e8eef4"/>
+    <rect x="3" y="4" width="2" height="2" fill="#c0c8d0" opacity="0.6"/>
+    <rect x="10" y="8" width="3" height="2" fill="#c0c8d0" opacity="0.6"/>
+    <rect x="6" y="12" width="2" height="2" fill="#c0c8d0" opacity="0.6"/>
+  </g>
+  <!-- (7,0) água clara -->
+  <g transform="translate(112,0)">
+    <rect width="16" height="16" fill="#2a4f6e"/>
+    <rect x="0" y="2" width="4" height="1" fill="#7eb8d0" opacity="0.6"/>
+    <rect x="8" y="6" width="4" height="1" fill="#7eb8d0" opacity="0.6"/>
+    <rect x="2" y="11" width="4" height="1" fill="#7eb8d0" opacity="0.6"/>
+    <rect x="12" y="14" width="3" height="1" fill="#7eb8d0" opacity="0.6"/>
+  </g>
+  <!-- (8,0) big_grass_0 (placeholder 1x1 do tile, conteúdo desenhado maior no draw) -->
+  <g transform="translate(128,0)">
+    <rect width="16" height="16" fill="#548a3c"/>
+    <rect x="0" y="0" width="16" height="4" fill="#3e6b2a" opacity="0.6"/>
+    <rect x="0" y="12" width="16" height="4" fill="#3e6b2a" opacity="0.6"/>
+    <rect x="3" y="5" width="2" height="2" fill="#7ba85a" opacity="0.5"/>
+    <rect x="9" y="7" width="2" height="2" fill="#7ba85a" opacity="0.5"/>
+  </g>
+  <!-- (9,0) fallback genérico de chão -->
+  <g transform="translate(144,0)">
+    <rect width="16" height="16" fill="#548a3c"/>
+    <rect x="2" y="2" width="2" height="2" fill="#7ba85a"/>
+    <rect x="10" y="6" width="2" height="2" fill="#7ba85a"/>
+    <rect x="6" y="11" width="2" height="2" fill="#7ba85a"/>
+  </g>
+  <!-- (10,0) -->
+  <g transform="translate(160,0)">
+    <rect width="16" height="16" fill="#3e6b2a"/>
+  </g>
+  <!-- (11,0) -->
+  <g transform="translate(176,0)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+  </g>
+  <!-- (12,0) -->
+  <g transform="translate(192,0)">
+    <rect width="16" height="16" fill="#523a24"/>
+  </g>
+  <!-- (13,0) -->
+  <g transform="translate(208,0)">
+    <rect width="16" height="16" fill="#7a7a7a"/>
+  </g>
+  <!-- (14,0) -->
+  <g transform="translate(224,0)">
+    <rect width="16" height="16" fill="#d9b97a"/>
+  </g>
+  <!-- (15,0) -->
+  <g transform="translate(240,0)">
+    <rect width="16" height="16" fill="#e8eef4"/>
+  </g>
+
+  <!-- ======================== LINHA 1 ============================ -->
+  <!-- (0,1) água escura -->
+  <g transform="translate(0,16)">
+    <rect width="16" height="16" fill="#1a3a55"/>
+    <rect x="1" y="3" width="3" height="1" fill="#5e8fb0" opacity="0.6"/>
+    <rect x="9" y="8" width="4" height="1" fill="#5e8fb0" opacity="0.6"/>
+    <rect x="3" y="12" width="4" height="1" fill="#5e8fb0" opacity="0.6"/>
+  </g>
+  <!-- (1,1) borda grama-água H (grama em cima, água embaixo) -->
+  <g transform="translate(16,16)">
+    <rect width="16" height="16" fill="#548a3c"/>
+    <rect x="0" y="8" width="16" height="8" fill="#2a4f6e"/>
+    <rect x="0" y="6" width="16" height="2" fill="#3e6b2a"/>
+    <rect x="0" y="14" width="16" height="2" fill="#1a3a55"/>
+    <rect x="3" y="2" width="2" height="2" fill="#7ba85a" opacity="0.6"/>
+    <rect x="10" y="3" width="2" height="2" fill="#7ba85a" opacity="0.6"/>
+  </g>
+  <!-- (2,1) borda grama-água V (grama esquerda, água direita) -->
+  <g transform="translate(32,16)">
+    <rect width="16" height="16" fill="#548a3c"/>
+    <rect x="8" y="0" width="8" height="16" fill="#2a4f6e"/>
+    <rect x="6" y="0" width="2" height="16" fill="#3e6b2a"/>
+    <rect x="14" y="0" width="2" height="16" fill="#1a3a55"/>
+  </g>
+  <!-- (3,1) borda terra-grama -->
+  <g transform="translate(48,16)">
+    <rect width="16" height="16" fill="#548a3c"/>
+    <rect x="0" y="8" width="16" height="8" fill="#7c4a1d"/>
+    <rect x="0" y="6" width="16" height="2" fill="#3e6b2a"/>
+    <rect x="0" y="14" width="16" height="2" fill="#523a24"/>
+  </g>
+  <!-- (4,1) borda terra-água -->
+  <g transform="translate(64,16)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+    <rect x="0" y="8" width="16" height="8" fill="#2a4f6e"/>
+    <rect x="0" y="6" width="16" height="2" fill="#523a24"/>
+    <rect x="0" y="14" width="16" height="2" fill="#1a3a55"/>
+  </g>
+  <!-- (5,1) borda pedra-grama -->
+  <g transform="translate(80,16)">
+    <rect width="16" height="16" fill="#548a3c"/>
+    <rect x="0" y="8" width="16" height="8" fill="#7a7a7a"/>
+    <rect x="0" y="6" width="16" height="2" fill="#3e6b2a"/>
+    <rect x="0" y="14" width="16" height="2" fill="#5a5a5a"/>
+  </g>
+  <!-- (6,1) parede pedra -->
+  <g transform="translate(96,16)">
+    <rect width="16" height="16" fill="#7a7a7a"/>
+    <rect x="0" y="0" width="16" height="2" fill="#5a5a5a"/>
+    <rect x="0" y="7" width="16" height="2" fill="#5a5a5a"/>
+    <rect x="0" y="14" width="16" height="2" fill="#5a5a5a"/>
+    <rect x="0" y="3" width="8" height="2" fill="#9a9a9a"/>
+    <rect x="8" y="3" width="8" height="2" fill="#5a5a5a"/>
+    <rect x="0" y="10" width="8" height="2" fill="#9a9a9a"/>
+    <rect x="8" y="10" width="8" height="2" fill="#5a5a5a"/>
+  </g>
+  <!-- (7,1) parede tijolo -->
+  <g transform="translate(112,16)">
+    <rect width="16" height="16" fill="#a35e2c"/>
+    <rect x="0" y="3" width="16" height="1" fill="#523a24"/>
+    <rect x="0" y="7" width="16" height="1" fill="#523a24"/>
+    <rect x="0" y="11" width="16" height="1" fill="#523a24"/>
+    <rect x="0" y="15" width="16" height="1" fill="#523a24"/>
+    <rect x="7" y="0" width="1" height="3" fill="#523a24"/>
+    <rect x="3" y="4" width="1" height="3" fill="#523a24"/>
+    <rect x="11" y="4" width="1" height="3" fill="#523a24"/>
+    <rect x="7" y="8" width="1" height="3" fill="#523a24"/>
+    <rect x="3" y="12" width="1" height="3" fill="#523a24"/>
+    <rect x="11" y="12" width="1" height="3" fill="#523a24"/>
+  </g>
+  <!-- (8,1) (placeholder) -->
+  <g transform="translate(128,16)">
+    <rect width="16" height="16" fill="#3e6b2a"/>
+  </g>
+  <!-- (9,1) -->
+  <g transform="translate(144,16)">
+    <rect width="16" height="16" fill="#1a3a55"/>
+  </g>
+  <!-- (10,1) -->
+  <g transform="translate(160,16)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+  </g>
+  <!-- (11,1) -->
+  <g transform="translate(176,16)">
+    <rect width="16" height="16" fill="#523a24"/>
+  </g>
+  <!-- (12,1) -->
+  <g transform="translate(192,16)">
+    <rect width="16" height="16" fill="#7a7a7a"/>
+  </g>
+  <!-- (13,1) -->
+  <g transform="translate(208,16)">
+    <rect width="16" height="16" fill="#a35e2c"/>
+  </g>
+  <!-- (14,1) fence_v (cerca vertical) -->
+  <g transform="translate(224,16)">
+    <rect width="16" height="16" fill="#548a3c" opacity="0.3"/>
+    <rect x="6" y="0" width="4" height="16" fill="#7c4a1d"/>
+    <rect x="6" y="2" width="4" height="2" fill="#523a24"/>
+    <rect x="6" y="6" width="4" height="2" fill="#523a24"/>
+    <rect x="6" y="10" width="4" height="2" fill="#523a24"/>
+    <rect x="6" y="14" width="4" height="2" fill="#523a24"/>
+    <rect x="7" y="0" width="2" height="16" fill="#a35e2c"/>
+  </g>
+  <!-- (15,1) -->
+  <g transform="translate(240,16)">
+    <rect width="16" height="16" fill="#3e6b2a"/>
+  </g>
+
+  <!-- ======================== LINHA 2 ============================ -->
+  <!-- (0,2) flor vermelha -->
+  <g transform="translate(0,32)">
+    <rect width="16" height="16" fill="#548a3c"/>
+    <rect x="7" y="6" width="2" height="2" fill="#3e6b2a"/>
+    <rect x="6" y="8" width="4" height="4" fill="#3e6b2a"/>
+    <rect x="5" y="9" width="2" height="2" fill="#f0d090"/>
+    <rect x="9" y="9" width="2" height="2" fill="#f0d090"/>
+    <rect x="6" y="7" width="1" height="1" fill="#c0392b"/>
+    <rect x="9" y="7" width="1" height="1" fill="#c0392b"/>
+    <rect x="7" y="5" width="2" height="1" fill="#c0392b"/>
+  </g>
+  <!-- (1,2) flor amarela -->
+  <g transform="translate(16,32)">
+    <rect width="16" height="16" fill="#548a3c"/>
+    <rect x="7" y="6" width="2" height="2" fill="#3e6b2a"/>
+    <rect x="6" y="8" width="4" height="4" fill="#3e6b2a"/>
+    <rect x="5" y="9" width="2" height="2" fill="#f0d090"/>
+    <rect x="9" y="9" width="2" height="2" fill="#f0d090"/>
+    <rect x="6" y="7" width="1" height="1" fill="#e0b030"/>
+    <rect x="9" y="7" width="1" height="1" fill="#e0b030"/>
+    <rect x="7" y="5" width="2" height="1" fill="#e0b030"/>
+  </g>
+  <!-- (2,2) flor azul -->
+  <g transform="translate(32,32)">
+    <rect width="16" height="16" fill="#548a3c"/>
+    <rect x="7" y="6" width="2" height="2" fill="#3e6b2a"/>
+    <rect x="6" y="8" width="4" height="4" fill="#3e6b2a"/>
+    <rect x="5" y="9" width="2" height="2" fill="#f0d090"/>
+    <rect x="9" y="9" width="2" height="2" fill="#f0d090"/>
+    <rect x="6" y="7" width="1" height="1" fill="#3a6eb8"/>
+    <rect x="9" y="7" width="1" height="1" fill="#3a6eb8"/>
+    <rect x="7" y="5" width="2" height="1" fill="#3a6eb8"/>
+  </g>
+  <!-- (3,2) cogumelo -->
+  <g transform="translate(48,32)">
+    <rect width="16" height="16" fill="#548a3c"/>
+    <rect x="6" y="10" width="4" height="4" fill="#f0d090"/>
+    <rect x="6" y="10" width="4" height="1" fill="#c08030"/>
+    <rect x="5" y="8" width="6" height="3" fill="#c0392b"/>
+    <rect x="6" y="7" width="4" height="1" fill="#c0392b"/>
+    <rect x="7" y="6" width="2" height="1" fill="#c0392b"/>
+    <rect x="6" y="9" width="1" height="1" fill="#f0d090"/>
+    <rect x="9" y="9" width="1" height="1" fill="#f0d090"/>
+  </g>
+  <!-- (4,2) grama alta -->
+  <g transform="translate(64,32)">
+    <rect width="16" height="16" fill="#548a3c"/>
+    <rect x="2" y="10" width="2" height="6" fill="#3e6b2a"/>
+    <rect x="5" y="8" width="2" height="8" fill="#3e6b2a"/>
+    <rect x="9" y="9" width="2" height="7" fill="#3e6b2a"/>
+    <rect x="12" y="11" width="2" height="5" fill="#3e6b2a"/>
+    <rect x="2" y="10" width="1" height="1" fill="#7ba85a"/>
+    <rect x="5" y="8" width="1" height="1" fill="#7ba85a"/>
+  </g>
+  <!-- (5,2) moita -->
+  <g transform="translate(80,32)">
+    <rect width="16" height="16" fill="#548a3c"/>
+    <rect x="4" y="8" width="8" height="6" fill="#3e6b2a"/>
+    <rect x="3" y="9" width="10" height="4" fill="#548a3c"/>
+    <rect x="5" y="7" width="2" height="2" fill="#3e6b2a"/>
+    <rect x="9" y="7" width="2" height="2" fill="#3e6b2a"/>
+    <rect x="7" y="10" width="2" height="2" fill="#7ba85a" opacity="0.6"/>
+  </g>
+  <!-- (6,2) rachadura -->
+  <g transform="translate(96,32)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+    <rect x="2" y="3" width="1" height="4" fill="#1a1a1a"/>
+    <rect x="3" y="7" width="1" height="2" fill="#1a1a1a"/>
+    <rect x="2" y="9" width="1" height="3" fill="#1a1a1a"/>
+    <rect x="10" y="4" width="1" height="5" fill="#1a1a1a"/>
+    <rect x="11" y="9" width="1" height="3" fill="#1a1a1a"/>
+    <rect x="6" y="11" width="2" height="2" fill="#1a1a1a"/>
+  </g>
+  <!-- (7,2) pedra solta -->
+  <g transform="translate(112,32)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+    <rect x="4" y="6" width="8" height="6" fill="#7a7a7a"/>
+    <rect x="5" y="5" width="6" height="2" fill="#9a9a9a"/>
+    <rect x="4" y="6" width="8" height="1" fill="#5a5a5a"/>
+    <rect x="4" y="11" width="8" height="1" fill="#5a5a5a"/>
+  </g>
+  <!-- (8,2) folha decorativa 1 -->
+  <g transform="translate(128,32)">
+    <rect width="16" height="16" fill="#548a3c"/>
+    <rect x="3" y="9" width="2" height="2" fill="#c0392b"/>
+    <rect x="11" y="10" width="2" height="2" fill="#3a6eb8"/>
+    <rect x="7" y="6" width="2" height="2" fill="#e0b030"/>
+  </g>
+  <!-- (9,2) -->
+  <g transform="translate(144,32)">
+    <rect width="16" height="16" fill="#548a3c"/>
+  </g>
+  <!-- (10,2) -->
+  <g transform="translate(160,32)">
+    <rect width="16" height="16" fill="#3e6b2a"/>
+  </g>
+  <!-- (11,2) -->
+  <g transform="translate(176,32)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+  </g>
+  <!-- (12,2) -->
+  <g transform="translate(192,32)">
+    <rect width="16" height="16" fill="#523a24"/>
+  </g>
+  <!-- (13,2) -->
+  <g transform="translate(208,32)">
+    <rect width="16" height="16" fill="#7a7a7a"/>
+  </g>
+  <!-- (14,2) -->
+  <g transform="translate(224,32)">
+    <rect width="16" height="16" fill="#a35e2c"/>
+  </g>
+  <!-- (15,2) -->
+  <g transform="translate(240,32)">
+    <rect width="16" height="16" fill="#1a1a1a" opacity="0.4"/>
+  </g>
+
+  <!-- ======================== LINHA 3 ============================ -->
+  <!-- (0,3) fence_h (cerca horizontal) -->
+  <g transform="translate(0,48)">
+    <rect width="16" height="16" fill="#548a3c" opacity="0.3"/>
+    <rect x="0" y="6" width="16" height="4" fill="#7c4a1d"/>
+    <rect x="0" y="6" width="16" height="1" fill="#a35e2c"/>
+    <rect x="0" y="9" width="16" height="1" fill="#523a24"/>
+    <rect x="2" y="4" width="2" height="2" fill="#523a24"/>
+    <rect x="12" y="4" width="2" height="2" fill="#523a24"/>
+  </g>
+  <!-- (1,3) cerca H variante clara -->
+  <g transform="translate(16,48)">
+    <rect width="16" height="16" fill="#548a3c" opacity="0.3"/>
+    <rect x="0" y="6" width="16" height="4" fill="#a35e2c"/>
+    <rect x="0" y="6" width="16" height="1" fill="#f0d090"/>
+    <rect x="0" y="9" width="16" height="1" fill="#523a24"/>
+    <rect x="2" y="4" width="2" height="2" fill="#523a24"/>
+    <rect x="12" y="4" width="2" height="2" fill="#523a24"/>
+  </g>
+  <!-- (2,3) cerca V variante clara -->
+  <g transform="translate(32,48)">
+    <rect width="16" height="16" fill="#548a3c" opacity="0.3"/>
+    <rect x="6" y="0" width="4" height="16" fill="#a35e2c"/>
+    <rect x="7" y="0" width="2" height="16" fill="#f0d090"/>
+    <rect x="4" y="2" width="2" height="2" fill="#523a24"/>
+    <rect x="4" y="12" width="2" height="2" fill="#523a24"/>
+  </g>
+  <!-- (3,3) cerca R (canto) -->
+  <g transform="translate(48,48)">
+    <rect width="16" height="16" fill="#548a3c" opacity="0.3"/>
+    <rect x="6" y="6" width="4" height="4" fill="#7c4a1d"/>
+    <rect x="6" y="0" width="4" height="6" fill="#7c4a1d"/>
+    <rect x="6" y="6" width="10" height="4" fill="#7c4a1d"/>
+    <rect x="7" y="0" width="2" height="16" fill="#a35e2c"/>
+    <rect x="6" y="7" width="16" height="2" fill="#a35e2c"/>
+  </g>
+  <!-- (4,3) poste de madeira -->
+  <g transform="translate(64,48)">
+    <rect width="16" height="16" fill="#548a3c" opacity="0.3"/>
+    <rect x="6" y="0" width="4" height="16" fill="#7c4a1d"/>
+    <rect x="6" y="0" width="1" height="16" fill="#a35e2c"/>
+    <rect x="6" y="6" width="4" height="1" fill="#523a24"/>
+  </g>
+  <!-- (5,3) placa (signpost) -->
+  <g transform="translate(80,48)">
+    <rect width="16" height="16" fill="#548a3c" opacity="0.3"/>
+    <rect x="6" y="8" width="4" height="8" fill="#7c4a1d"/>
+    <rect x="6" y="8" width="1" height="8" fill="#a35e2c"/>
+    <rect x="2" y="2" width="12" height="6" fill="#7c4a1d"/>
+    <rect x="2" y="2" width="12" height="1" fill="#a35e2c"/>
+    <rect x="2" y="7" width="12" height="1" fill="#523a24"/>
+    <rect x="7" y="3" width="1" height="1" fill="#f0d090"/>
+    <rect x="9" y="3" width="1" height="1" fill="#f0d090"/>
+    <rect x="7" y="5" width="1" height="1" fill="#f0d090"/>
+    <rect x="9" y="5" width="1" height="1" fill="#f0d090"/>
+  </g>
+  <!-- (6,3) tocha -->
+  <g transform="translate(96,48)">
+    <rect width="16" height="16" fill="#7a7a7a"/>
+    <rect x="7" y="4" width="2" height="12" fill="#7c4a1d"/>
+    <rect x="6" y="0" width="4" height="4" fill="#e0b030"/>
+    <rect x="7" y="0" width="2" height="4" fill="#f0d090"/>
+    <rect x="5" y="2" width="2" height="1" fill="#c0392b"/>
+    <rect x="9" y="2" width="2" height="1" fill="#c0392b"/>
+  </g>
+  <!-- (7,3) barril -->
+  <g transform="translate(112,48)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+    <rect x="3" y="2" width="10" height="12" fill="#a35e2c"/>
+    <rect x="3" y="4" width="10" height="1" fill="#523a24"/>
+    <rect x="3" y="10" width="10" height="1" fill="#523a24"/>
+    <rect x="3" y="2" width="10" height="2" fill="#f0d090"/>
+    <rect x="3" y="12" width="10" height="2" fill="#523a24"/>
+  </g>
+  <!-- (8,3) caixa -->
+  <g transform="translate(128,48)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+    <rect x="2" y="2" width="12" height="12" fill="#a35e2c"/>
+    <rect x="2" y="7" width="12" height="2" fill="#523a24"/>
+    <rect x="7" y="2" width="2" height="12" fill="#523a24"/>
+  </g>
+  <!-- (9,3) -->
+  <g transform="translate(144,48)">
+    <rect width="16" height="16" fill="#548a3c"/>
+  </g>
+  <!-- (10,3) -->
+  <g transform="translate(160,48)">
+    <rect width="16" height="16" fill="#3e6b2a"/>
+  </g>
+  <!-- (11,3) -->
+  <g transform="translate(176,48)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+  </g>
+  <!-- (12,3) -->
+  <g transform="translate(192,48)">
+    <rect width="16" height="16" fill="#523a24"/>
+  </g>
+  <!-- (13,3) -->
+  <g transform="translate(208,48)">
+    <rect width="16" height="16" fill="#7a7a7a"/>
+  </g>
+  <!-- (14,3) -->
+  <g transform="translate(224,48)">
+    <rect width="16" height="16" fill="#a35e2c"/>
+  </g>
+  <!-- (15,3) -->
+  <g transform="translate(240,48)">
+    <rect width="16" height="16" fill="#1a1a1a" opacity="0.4"/>
+  </g>
+
+  <!-- ======================== LINHA 4 ============================ -->
+  <!-- (0,4) -->
+  <g transform="translate(0,64)">
+    <rect width="16" height="16" fill="#548a3c"/>
+  </g>
+  <!-- (1,4) -->
+  <g transform="translate(16,64)">
+    <rect width="16" height="16" fill="#3e6b2a"/>
+  </g>
+  <!-- (2,4) -->
+  <g transform="translate(32,64)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+  </g>
+  <!-- (3,4) -->
+  <g transform="translate(48,64)">
+    <rect width="16" height="16" fill="#523a24"/>
+  </g>
+  <!-- (4,4) -->
+  <g transform="translate(64,64)">
+    <rect width="16" height="16" fill="#7a7a7a"/>
+  </g>
+  <!-- (5,4) -->
+  <g transform="translate(80,64)">
+    <rect width="16" height="16" fill="#d9b97a"/>
+  </g>
+  <!-- (6,4) -->
+  <g transform="translate(96,64)">
+    <rect width="16" height="16" fill="#e8eef4"/>
+  </g>
+  <!-- (7,4) -->
+  <g transform="translate(112,64)">
+    <rect width="16" height="16" fill="#2a4f6e"/>
+  </g>
+  <!-- (8,4) -->
+  <g transform="translate(128,64)">
+    <rect width="16" height="16" fill="#1a3a55"/>
+  </g>
+  <!-- (9,4) -->
+  <g transform="translate(144,64)">
+    <rect width="16" height="16" fill="#548a3c"/>
+  </g>
+  <!-- (10,4) -->
+  <g transform="translate(160,64)">
+    <rect width="16" height="16" fill="#3e6b2a"/>
+  </g>
+  <!-- (11,4) -->
+  <g transform="translate(176,64)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+  </g>
+  <!-- (12,4) -->
+  <g transform="translate(192,64)">
+    <rect width="16" height="16" fill="#523a24"/>
+  </g>
+  <!-- (13,4) -->
+  <g transform="translate(208,64)">
+    <rect width="16" height="16" fill="#7a7a7a"/>
+  </g>
+  <!-- (14,4) -->
+  <g transform="translate(224,64)">
+    <rect width="16" height="16" fill="#a35e2c"/>
+  </g>
+  <!-- (15,4) flower_set (4 flores - 1 tile) -->
+  <g transform="translate(240,64)">
+    <rect width="16" height="16" fill="#548a3c"/>
+    <!-- top-left red -->
+    <rect x="3" y="3" width="2" height="2" fill="#c0392b"/>
+    <rect x="4" y="2" width="1" height="1" fill="#c0392b"/>
+    <!-- top-right blue -->
+    <rect x="11" y="3" width="2" height="2" fill="#3a6eb8"/>
+    <rect x="12" y="2" width="1" height="1" fill="#3a6eb8"/>
+    <!-- bottom-left pink -->
+    <rect x="3" y="11" width="2" height="2" fill="#d97aa0"/>
+    <rect x="4" y="10" width="1" height="1" fill="#d97aa0"/>
+    <!-- bottom-right mushroom -->
+    <rect x="11" y="11" width="2" height="2" fill="#f0d090"/>
+    <rect x="10" y="10" width="4" height="2" fill="#c0392b"/>
+  </g>
+
+  <!-- ======================== LINHA 5 ============================ -->
+  <!-- (0,5) -->
+  <g transform="translate(0,80)">
+    <rect width="16" height="16" fill="#548a3c"/>
+  </g>
+  <!-- (1,5) -->
+  <g transform="translate(16,80)">
+    <rect width="16" height="16" fill="#3e6b2a"/>
+  </g>
+  <!-- (2,5) -->
+  <g transform="translate(32,80)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+  </g>
+  <!-- (3,5) -->
+  <g transform="translate(48,80)">
+    <rect width="16" height="16" fill="#523a24"/>
+  </g>
+  <!-- (4,5) -->
+  <g transform="translate(64,80)">
+    <rect width="16" height="16" fill="#7a7a7a"/>
+  </g>
+  <!-- (5,5) -->
+  <g transform="translate(80,80)">
+    <rect width="16" height="16" fill="#d9b97a"/>
+  </g>
+  <!-- (6,5) -->
+  <g transform="translate(96,80)">
+    <rect width="16" height="16" fill="#e8eef4"/>
+  </g>
+  <!-- (7,5) -->
+  <g transform="translate(112,80)">
+    <rect width="16" height="16" fill="#2a4f6e"/>
+  </g>
+  <!-- (8,5) grass_border_with_soil_y (grama com terra em baixo) -->
+  <g transform="translate(128,80)">
+    <rect width="16" height="16" fill="#548a3c"/>
+    <rect x="0" y="10" width="16" height="6" fill="#7c4a1d"/>
+    <rect x="0" y="10" width="16" height="2" fill="#3e6b2a"/>
+    <rect x="0" y="14" width="16" height="2" fill="#523a24"/>
+  </g>
+  <!-- (9,5) -->
+  <g transform="translate(144,80)">
+    <rect width="16" height="16" fill="#548a3c"/>
+  </g>
+  <!-- (10,5) -->
+  <g transform="translate(160,80)">
+    <rect width="16" height="16" fill="#3e6b2a"/>
+  </g>
+  <!-- (11,5) -->
+  <g transform="translate(176,80)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+  </g>
+  <!-- (12,5) -->
+  <g transform="translate(192,80)">
+    <rect width="16" height="16" fill="#523a24"/>
+  </g>
+  <!-- (13,5) -->
+  <g transform="translate(208,80)">
+    <rect width="16" height="16" fill="#7a7a7a"/>
+  </g>
+  <!-- (14,5) tree_top_orange (parte 1 - topo) -->
+  <g transform="translate(224,80)">
+    <rect width="16" height="16" fill="#1a1a1a" opacity="0.3"/>
+    <rect x="2" y="2" width="12" height="12" fill="#c0392b"/>
+    <rect x="3" y="3" width="10" height="10" fill="#e06030"/>
+    <rect x="5" y="5" width="6" height="6" fill="#f0d090"/>
+    <rect x="2" y="2" width="12" height="2" fill="#e06030"/>
+    <rect x="2" y="12" width="12" height="2" fill="#a03020"/>
+  </g>
+  <!-- (15,5) tree_top_green (parte 1) -->
+  <g transform="translate(240,80)">
+    <rect width="16" height="16" fill="#1a1a1a" opacity="0.3"/>
+    <rect x="2" y="2" width="12" height="12" fill="#3e6b2a"/>
+    <rect x="3" y="3" width="10" height="10" fill="#548a3c"/>
+    <rect x="5" y="5" width="6" height="6" fill="#7ba85a"/>
+    <rect x="2" y="2" width="12" height="2" fill="#548a3c"/>
+    <rect x="2" y="12" width="12" height="2" fill="#2a4a1a"/>
+  </g>
+
+  <!-- ======================== LINHA 6 ============================ -->
+  <!-- (0,6) -->
+  <g transform="translate(0,96)">
+    <rect width="16" height="16" fill="#548a3c"/>
+  </g>
+  <!-- (1,6) -->
+  <g transform="translate(16,96)">
+    <rect width="16" height="16" fill="#3e6b2a"/>
+  </g>
+  <!-- (2,6) dirt_patch -->
+  <g transform="translate(32,96)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+    <rect x="0" y="0" width="3" height="3" fill="#548a3c"/>
+    <rect x="13" y="0" width="3" height="3" fill="#548a3c"/>
+    <rect x="0" y="13" width="3" height="3" fill="#548a3c"/>
+    <rect x="13" y="13" width="3" height="3" fill="#548a3c"/>
+    <rect x="3" y="3" width="2" height="2" fill="#a35e2c"/>
+    <rect x="9" y="5" width="2" height="2" fill="#a35e2c"/>
+    <rect x="5" y="10" width="3" height="2" fill="#a35e2c"/>
+  </g>
+  <!-- (3,6) -->
+  <g transform="translate(48,96)">
+    <rect width="16" height="16" fill="#523a24"/>
+  </g>
+  <!-- (4,6) -->
+  <g transform="translate(64,96)">
+    <rect width="16" height="16" fill="#7a7a7a"/>
+  </g>
+  <!-- (5,6) -->
+  <g transform="translate(80,96)">
+    <rect width="16" height="16" fill="#d9b97a"/>
+  </g>
+  <!-- (6,6) -->
+  <g transform="translate(96,96)">
+    <rect width="16" height="16" fill="#e8eef4"/>
+  </g>
+  <!-- (7,6) -->
+  <g transform="translate(112,96)">
+    <rect width="16" height="16" fill="#2a4f6e"/>
+  </g>
+  <!-- (8,6) -->
+  <g transform="translate(128,96)">
+    <rect width="16" height="16" fill="#1a3a55"/>
+  </g>
+  <!-- (9,6) -->
+  <g transform="translate(144,96)">
+    <rect width="16" height="16" fill="#548a3c"/>
+  </g>
+  <!-- (10,6) -->
+  <g transform="translate(160,96)">
+    <rect width="16" height="16" fill="#3e6b2a"/>
+  </g>
+  <!-- (11,6) -->
+  <g transform="translate(176,96)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+  </g>
+  <!-- (12,6) dirt_patch_1 -->
+  <g transform="translate(192,96)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+    <rect x="0" y="0" width="4" height="4" fill="#548a3c"/>
+    <rect x="12" y="0" width="4" height="4" fill="#548a3c"/>
+    <rect x="2" y="2" width="2" height="2" fill="#a35e2c"/>
+    <rect x="10" y="6" width="2" height="2" fill="#a35e2c"/>
+    <rect x="6" y="11" width="2" height="2" fill="#a35e2c"/>
+  </g>
+  <!-- (13,6) dirt_patch_2 -->
+  <g transform="translate(208,96)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+    <rect x="0" y="12" width="4" height="4" fill="#548a3c"/>
+    <rect x="12" y="12" width="4" height="4" fill="#548a3c"/>
+    <rect x="3" y="3" width="2" height="2" fill="#a35e2c"/>
+    <rect x="11" y="5" width="2" height="2" fill="#a35e2c"/>
+    <rect x="5" y="9" width="2" height="2" fill="#a35e2c"/>
+  </g>
+  <!-- (14,6) dirt_patch_3 -->
+  <g transform="translate(224,96)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+    <rect x="0" y="0" width="4" height="4" fill="#548a3c"/>
+    <rect x="12" y="12" width="4" height="4" fill="#548a3c"/>
+    <rect x="3" y="3" width="2" height="2" fill="#a35e2c"/>
+    <rect x="9" y="6" width="2" height="2" fill="#a35e2c"/>
+    <rect x="6" y="10" width="2" height="2" fill="#a35e2c"/>
+  </g>
+  <!-- (15,6) -->
+  <g transform="translate(240,96)">
+    <rect width="16" height="16" fill="#1a1a1a" opacity="0.4"/>
+  </g>
+
+  <!-- ======================== LINHA 7 ============================ -->
+  <!-- (0,7) -->
+  <g transform="translate(0,112)">
+    <rect width="16" height="16" fill="#548a3c"/>
+  </g>
+  <!-- (1,7) -->
+  <g transform="translate(16,112)">
+    <rect width="16" height="16" fill="#3e6b2a"/>
+  </g>
+  <!-- (2,7) dirt_patch_1 (mesmo padrão da linha 6 col 12 para dar variedade) -->
+  <g transform="translate(32,112)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+    <rect x="0" y="12" width="4" height="4" fill="#548a3c"/>
+    <rect x="12" y="0" width="4" height="4" fill="#548a3c"/>
+    <rect x="2" y="2" width="2" height="2" fill="#a35e2c"/>
+    <rect x="10" y="9" width="2" height="2" fill="#a35e2c"/>
+    <rect x="5" y="5" width="2" height="2" fill="#a35e2c"/>
+  </g>
+  <!-- (3,7) -->
+  <g transform="translate(48,112)">
+    <rect width="16" height="16" fill="#523a24"/>
+  </g>
+  <!-- (4,7) -->
+  <g transform="translate(64,112)">
+    <rect width="16" height="16" fill="#7a7a7a"/>
+  </g>
+  <!-- (5,7) -->
+  <g transform="translate(80,112)">
+    <rect width="16" height="16" fill="#d9b97a"/>
+  </g>
+  <!-- (6,7) -->
+  <g transform="translate(96,112)">
+    <rect width="16" height="16" fill="#e8eef4"/>
+  </g>
+  <!-- (7,7) -->
+  <g transform="translate(112,112)">
+    <rect width="16" height="16" fill="#2a4f6e"/>
+  </g>
+  <!-- (8,7) -->
+  <g transform="translate(128,112)">
+    <rect width="16" height="16" fill="#1a3a55"/>
+  </g>
+  <!-- (9,7) -->
+  <g transform="translate(144,112)">
+    <rect width="16" height="16" fill="#548a3c"/>
+  </g>
+  <!-- (10,7) -->
+  <g transform="translate(160,112)">
+    <rect width="16" height="16" fill="#3e6b2a"/>
+  </g>
+  <!-- (11,7) -->
+  <g transform="translate(176,112)">
+    <rect width="16" height="16" fill="#7c4a1d"/>
+  </g>
+  <!-- (12,7) -->
+  <g transform="translate(192,112)">
+    <rect width="16" height="16" fill="#523a24"/>
+  </g>
+  <!-- (13,7) -->
+  <g transform="translate(208,112)">
+    <rect width="16" height="16" fill="#7a7a7a"/>
+  </g>
+  <!-- (14,7) -->
+  <g transform="translate(224,112)">
+    <rect width="16" height="16" fill="#a35e2c"/>
+  </g>
+  <!-- (15,7) -->
+  <g transform="translate(240,112)">
+    <rect width="16" height="16" fill="#1a1a1a" opacity="0.4"/>
+  </g>
+
+</svg>

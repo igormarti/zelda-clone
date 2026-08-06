@@ -17,7 +17,11 @@ export default class Enemy extends Entity {
         // --- NOVOS PARÂMETROS DE COMPORTAMENTO ---
         aiType = 'stationary',      // Options: 'stationary', 'patrol_linear', 'patrol_random'
         patrolAxis = 'horizontal',  // Options: 'horizontal', 'vertical' (usado apenas no 'patrol_linear')
-        detectionRange = 90
+        detectionRange = 90,
+        spriteSheet = null,         // Caminho opcional para sprite SVG/PNG
+        spriteFrames = 4,           // Quantos frames no sheet
+        spriteFrameWidth = 48,      // Largura de cada frame
+        spriteFrameHeight = 48      // Altura de cada frame
     } = {}) {
         super(x, y);
 
@@ -42,6 +46,15 @@ export default class Enemy extends Entity {
         this.patrolDirection = 1; // 1 = Direita/Baixo, -1 = Esquerda/Cima
         this.randomMoveTimer = 0;
         this.randomDir = { x: 0, y: 0 };
+
+        // Sprite Sheet (opcional — se fornecido, renderiza via imagem em vez de cor)
+        this.spriteSheet = spriteSheet ? gameContext.assetManager.loadImage(spriteSheet) : null;
+        this.spriteFrames = spriteFrames;
+        this.spriteFrameWidth = spriteFrameWidth;
+        this.spriteFrameHeight = spriteFrameHeight;
+        this.spriteCurrentFrame = 0;
+        this.spriteAnimTimer = 0;
+        this.spriteAnimSpeed = 12; // frames de jogo por frame de animação
 
         // Composição de Componentes
         this.stateComponent = new StateComponent(this);
@@ -124,6 +137,15 @@ export default class Enemy extends Entity {
 
         this.stateComponent.update();
         this.equipmentComponent.update();
+
+        // Avança animação do sprite sheet (se existir)
+        if (this.spriteSheet) {
+            this.spriteAnimTimer++;
+            if (this.spriteAnimTimer >= this.spriteAnimSpeed) {
+                this.spriteAnimTimer = 0;
+                this.spriteCurrentFrame = (this.spriteCurrentFrame + 1) % this.spriteFrames;
+            }
+        }
 
         if (!player || !world) return;
 
