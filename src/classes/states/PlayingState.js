@@ -1,5 +1,7 @@
 import CombatSystem from '../CombatSystem.js';
+import ConfirmSaveState from './ConfirmSaveState.js';
 import GameOverState from './GameOverState.js';
+import GameSnapshot from '../persistence/GameSnapshot.js';
 import InventoryState from './InventoryState.js';
 import PausedState from './PausedState.js';
 import State from './State.js';
@@ -10,6 +12,7 @@ export default class PlayingState extends State {
         this.combatSystem = context.combatSystem || new CombatSystem();
         this.attackedEnemies = new Set();
         this.lastAttackState = null;
+        this._captureAndSave = false;
     }
 
     enter() {
@@ -18,6 +21,7 @@ export default class PlayingState extends State {
             this.context.npcManager.loadForRoom(roomKey);
         }
         this.currentRoomKey = roomKey;
+        this._captureAndSave = false;
     }
 
     update() {
@@ -97,6 +101,15 @@ export default class PlayingState extends State {
 
             if(!world.hasObjectForInteractInCurrentRoom()) return;
             console.log("Tem objeto")
+            
+            // Tenta interagir com Árvore Sagrada (prioridade)
+            if (world.interactWithSacredTree(player)) {
+                // Marca para capturar o snapshot no próximo draw(),
+                // quando o canvas já estiver com o mundo renderizado.
+                this._captureAndSave = true;
+                return;
+            }
+
             // Tenta interagir com baús próximos
             const opened = world.interactWithChests(player);
             if (typeof opened === 'object' && opened !== null) {
@@ -126,6 +139,15 @@ export default class PlayingState extends State {
         ctx.fillStyle = 'white';
         ctx.font = '16px Arial';
         ctx.fillText(`Vida: ${Math.max(player.health, 0)}/${player.maxHealth}`, 640, 42);
+
+        // Se o update sinalizou que devemos capturar e salvar,
+        // agora o canvas TEM o mundo renderizado. Captura aqui.
+        if (this._captureAndSave) {
+            this._captureAndSave = false;
+            // Captura o snapshot com o canvas atualizado (mundo visível)
+            this.context.pendingSnapshot = GameSnapshot.capture(this.context);
+            this.stateManager.changeState(ConfirmSaveState);
+        }
     }
 
     exit() {}
