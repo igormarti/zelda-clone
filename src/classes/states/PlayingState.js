@@ -95,10 +95,18 @@ export default class PlayingState extends State {
         if (!dialogManager?.isActive() && (input.keys['X'] || input.keys['x'])) {
             input.keys['X'] = input.keys['x'] = false;
 
+            if(!world.hasObjectForInteractInCurrentRoom()) return;
+            console.log("Tem objeto")
             // Tenta interagir com baús próximos
             const opened = world.interactWithChests(player);
             if (typeof opened === 'object' && opened !== null) {
                 dialogManager.showInfo(opened.text ?? '', { player });
+            }
+
+            // Tenta interagir com placas de informações próximas
+            const hasSignPostMessage = world.interactWithSignPost(player);
+            if(typeof hasSignPostMessage === 'string' || Array.isArray(hasSignPostMessage)){
+                dialogManager.showInfo(hasSignPostMessage ?? '...', { player });
             }
             
         }

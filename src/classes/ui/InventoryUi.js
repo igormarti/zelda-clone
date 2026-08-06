@@ -87,8 +87,9 @@ export default class InventoryUi {
             }
 
             if (content) {
-                if (content.sprite && content.sprite.complete) {
-                    ctx.drawImage(content.sprite, slotX + 6, slotY + 6, this.slotSize - 12, this.slotSize - 12);
+                console.log(content)
+                if ((content.icon && content.icon.complete)) {
+                    ctx.drawImage(content.icon, slotX + 6, slotY + 6, this.slotSize - 12, this.slotSize - 12);
                 } else {
                     ctx.fillStyle = content.color || "#00ff00";
                     this._drawRoundedRect(ctx, slotX + 15, slotY + 15, this.slotSize - 30, this.slotSize - 30, 4, true, false);

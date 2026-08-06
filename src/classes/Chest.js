@@ -41,7 +41,7 @@ export default class Chest {
     /**
      * Tenta abrir o baú e entrega a recompensa
      */
-    open(player, world) {
+    open(player) {
         if (this.isOpen) {
             console.log("[CHEST] Este baú já foi aberto!");
             return {open: false, text:"Este baú já foi aberto!"};

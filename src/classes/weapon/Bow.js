@@ -12,6 +12,7 @@ export default class Bow extends Weapon {
             range = 300, // O alcance máximo ou tempo de vida do projétil
             cooldownFrames = 35, // Arcos geralmente possuem cooldown maior que espadas
             spritePath = null,
+            icon = null,
             scale = 2,
             arrowSpeed = 2 // Velocidade da flecha
         } = config;
@@ -22,28 +23,37 @@ export default class Bow extends Weapon {
             description,
             damage,
             range,
-            cooldownFrames
+            cooldownFrames,
+            spritePath,
+            icon
         });
 
         // Resolução dinâmica do carregador (Função vs Objeto) igual à Sword
         if (typeof assetManager === 'function') {
+            console.log("icon",icon)
             this.sprite = spritePath ? assetManager(spritePath) : null;
+            this.icon = icon ? assetManager(icon) : null;
         } else if (assetManager && typeof assetManager.loadImage === 'function') {
+                        console.log("icon",icon)
+
             this.sprite = spritePath ? assetManager.loadImage(spritePath) : null;
+            this.icon = icon ? assetManager.loadImage(icon) : null;
         } else {
             this.sprite = null;
+            this.icon = null;
         }
 
         this.assetManagerReference = assetManager; // Guardamos para repassar para as flechas
         this.scale = scale;
         this.arrowSpeed = arrowSpeed;
-        this.frameSize = 48; // Suposição padrão de tamanho de frame quando houver sprite
-        this.totalAttackFrames = 4; 
-
-        this.animationMap = {
-            front: 0,
-            side: 1,
-            back: 2
+        this.frameSize = 32; // Suposição padrão de tamanho de frame quando houver sprite
+        
+        // --- MAPA DE COLUNAS DA LINHA 0 ---
+        // Configura quais colunas [início, fim] da Linha 0 pertencem a cada direção
+        this.frameRanges = {
+            front: [0, 3], // Coluna 0
+            side: [4, 6],  // Colunas 1 até 3 (Inverte no 'left')
+            back: [7, 10]   // Coluna 4
         };
     }
 
@@ -54,10 +64,21 @@ export default class Bow extends Weapon {
         const direction = this.owner.stateComponent.direction; // 'front', 'back', 'side'
         const facing = this.owner.stateComponent.facing;       // 'left', 'right'
         
-        // Pega a posição central do jogador para disparar a flecha
+       // Pega a posição central do jogador
         const ownerRect = this.owner.movementComponent.getCollisionRect();
-        const startX = ownerRect.x + ownerRect.width / 2;
-        const startY = ownerRect.y + ownerRect.height / 2;
+        let startX = ownerRect.x + ownerRect.width / 2;
+        let startY = ownerRect.y + ownerRect.height / 2;
+
+        // Offsets para ajustar onde a flecha nasce em cada direção
+        if (direction === 'back') {
+            startY -= 24; // Sobe a flecha para nascer acima da cabeça do player
+        } else if (direction === 'front') {
+            startY += 8;  // Opcional: desce ligeiramente quando atira pra baixo
+        }
+        //else if (direction === 'side') {
+        //     const mod = (facing === 'right') ? 12 : -12;
+        //     startX += mod; // Desloca para o lado da mão do arco
+        // }
 
         // Instancia a flecha
         const arrow = new Arrow(
@@ -72,19 +93,15 @@ export default class Bow extends Weapon {
             }
         );
 
-        // Se o seu World ou Sala gerencia uma lista global de projéteis ativos, 
-        // nós injetamos a flecha nela para que seja atualizada no jogo.
         if (this.owner.world && typeof this.owner.world.addProjectile === 'function') {
             this.owner.world.addProjectile(arrow);
         } else if (this.owner.room && typeof this.owner.room.addProjectile === 'function') {
             this.owner.room.addProjectile(arrow);
         } else {
-            // Fallback: Se não houver gerenciador global configurado ainda, o arco pode guardar no owner
             if (!this.owner.activeProjectiles) this.owner.activeProjectiles = [];
             this.owner.activeProjectiles.push(arrow);
         }
 
-        // Retorna um rect vazio ou nulo porque o arco não causa dano "corpo a corpo" imediato
         return null; 
     }
 
@@ -94,21 +111,49 @@ export default class Bow extends Weapon {
         }
 
         // ==========================================
-        // FLUXO A: RENDERIZAR COM SPRITE (Se existir)
+        // FLUXO A: RENDERIZAR COM SPRITE (LINHA 0)
         // ==========================================
         if (this.sprite && this.sprite.complete) {
-            const currentFrame = this.owner.animationComponent.currentFrame % this.totalAttackFrames;
-            const row = this.animationMap[direction] ?? 0;
-            const sx = currentFrame * this.frameSize;
-            const sy = row * this.frameSize;
+            const [startCol, endCol] = this.frameRanges[direction] || [0, 0];
+            const rangeLength = (endCol - startCol) + 1;
+
+            // Calcula o frame atual dentro do intervalo daquela direção na linha 0
+            const currentAnimFrame = (this.owner.animationComponent?.currentFrame || 0) % rangeLength;
+            const targetColumn = startCol + currentAnimFrame;
+
+            const sx = targetColumn * this.frameSize;
+            const sy = 0; // Sempre linha 0!
+
             const width = this.frameSize * this.scale;
             const height = this.frameSize * this.scale;
+
+            // Inverte o sprite na horizontal apenas quando atacando de lado para a esquerda
             const shouldFlip = (direction === 'side' && facing === 'left');
 
             ctx.save();
             ctx.translate(socketPos.x, socketPos.y);
-            if (shouldFlip) ctx.scale(-1, 1);
-            ctx.drawImage(this.sprite, sx, sy, this.frameSize, this.frameSize, -width/2, -height/2, width, height);
+
+            if (shouldFlip) {
+                ctx.scale(-1, 1);
+            }
+
+            const offsets = {
+                front: { x: -3, y: 10 },  // Desce 12px virado pra frente
+                side:  { x: -15, y: 22 },   // Desce 8px virado pro lado
+                back:  { x: 0 , y: 32 }   // Sobe 4px virado pra trás
+            };
+
+        const currentOffset = offsets[direction] || { x: 0, y: 0 };
+
+        ctx.drawImage(
+            this.sprite, 
+            sx, sy, 
+            this.frameSize, this.frameSize, 
+            -width / 2 + currentOffset.x, 
+            -height / 2 + currentOffset.y, // Aplica o ajuste de Y por direção
+            width, height
+        );
+
             ctx.restore();
             return;
         }
@@ -117,27 +162,22 @@ export default class Bow extends Weapon {
         // FLUXO B: RENDERIZAR COMO "BOX" (Fallback provisório)
         // ==========================================
         ctx.save();
-        ctx.fillStyle = '#b5651d'; // Marrom para o arco de madeira
+        ctx.fillStyle = '#b5651d';
         ctx.lineWidth = 2;
-        ctx.strokeStyle = '#ffffff'; // Linha da corda do arco
+        ctx.strokeStyle = '#ffffff';
 
-        // Desenha uma representação de arco simples baseado na direção
         if (direction === 'side') {
             const mod = (facing === 'right') ? 1 : -1;
-            // Corpo do arco (D)
             ctx.beginPath();
-            ctx.arc(socketPos.x + (10 * mod), socketPos.y, 16, -Math.PI/2, Math.PI/2, facing === 'left');
+            ctx.arc(socketPos.x + (10 * mod), socketPos.y, 16, -Math.PI / 2, Math.PI / 2, facing === 'left');
             ctx.stroke();
-            // Caixa simulando a empunhadura
             ctx.fillRect(socketPos.x + (5 * mod) - 2, socketPos.y - 6, 4, 12);
         } else if (direction === 'back') {
-            // Olhando para cima: arco horizontal atrás da cabeça
             ctx.beginPath();
             ctx.arc(socketPos.x, socketPos.y - 10, 16, 0, Math.PI, true);
             ctx.stroke();
             ctx.fillRect(socketPos.x - 6, socketPos.y - 12, 12, 4);
         } else {
-            // Olhando para frente (baixo): arco horizontal na frente do corpo
             ctx.beginPath();
             ctx.arc(socketPos.x, socketPos.y + 10, 16, 0, Math.PI, false);
             ctx.stroke();

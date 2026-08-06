@@ -53,7 +53,7 @@ gameContext.combatSystem = combatSystem;
 
 
 
-let spriteSheetImage = assetManager.loadImage('assets/sprites/player/player-sheet-without-sword.png');
+let spriteSheetImage = assetManager.loadImage('assets/sprites/player/player-sheet-without-sword-sheet_teste.png');
 
 async function init() {
     const npcData = await assetManager.loadJSON('assets/data/npcs.json');

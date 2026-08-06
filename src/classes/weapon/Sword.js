@@ -10,6 +10,7 @@ export default class Sword extends Weapon {
             range = 70,
             cooldownFrames = 20,
             spritePath = null,
+            icon = null,
             scale = 2,
             offsetPrecision = 10
         } = config;
@@ -19,7 +20,9 @@ export default class Sword extends Weapon {
             name,
             damage,
             range,
-            cooldownFrames
+            cooldownFrames,
+            spritePath,
+            icon
         });
 
         // ===================================================

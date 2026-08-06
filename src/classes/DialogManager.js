@@ -152,7 +152,7 @@ export default class DialogManager {
         ctx.fillStyle = '#fff';
         ctx.font = '18px Arial';
         ctx.textAlign = 'left';
-        ctx.fillText(`${this.npc?.name || '...'}: `, x + 20, y + 35);
+        ctx.fillText(`${this.npc?.name || ''} `, x + 20, y + 35);
         this.drawWrappedText(ctx, this.displayedText.replace('${name}', this.player?.name), x + 20, y + 65, width - 40, 25);
         ctx.fillText('Pressione X para avançar ou encerrar.', x + 200, y + 130);
 

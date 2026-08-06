@@ -7,7 +7,8 @@ export default class Weapon {
         this.damage = config.damage || 1;
         this.range = config.range || 50;
         this.cooldownFrames = config.cooldownFrames || 20;
-        this.sprite = config.sprite || null;
+        this.spritePath = config.spritePath || null;
+        this.icon = config.icon | null;
     }
 
     // Calcula a área física de colisão do golpe

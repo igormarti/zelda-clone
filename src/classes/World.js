@@ -6,6 +6,7 @@ import { TileGenerator } from './generators/TileGenerator.js';
 import { HeartItem } from './items/HeartItem.js';
 import { InventoryItem } from './items/InventoryItem.js';
 import { WeaponItem } from './items/WeaponItem.js';
+import SignPost from './SignPost.js';
 import Bow from './weapon/Bow.js';
 
 export default class World {
@@ -144,7 +145,10 @@ export default class World {
                             quantity: 19
                         }
                     ),
-                    { type: 'signpost', x: 700, y: 280, width: 32, height: 32 },
+                    new SignPost(700,280, 32, 32 , [
+                        ' Seguindo para o Norte - Cemitério',
+                        ' Seguindo para o Sul - Deserto de MassaLand',
+                    ]),
                     new Chest(680, 65, 32, 32, 'red', { type: 'gold', amount: 10 }),
                 ],
 
@@ -226,7 +230,9 @@ export default class World {
                             {
                                 id: 'bow_01',
                                 name: 'Arco de Madeira',
-                                description: "Arco de Madeira que consegue atingir inimigos de uma distância considerável"
+                                description: "Arco de Madeira que consegue atingir inimigos de uma distância considerável",
+                                spritePath: 'assets/sprites/weapon/bow-sheet.png',
+                                icon: 'assets/icons/weapons/bow-icon.png'
                             }
                         )
                     )
@@ -260,6 +266,22 @@ export default class World {
         this.projectiles.push(projectile);
     }
 
+
+    /**
+     *  Sala tem objetos para o player interagir
+    */
+    hasObjectForInteractInCurrentRoom(){
+        const roomKey = `${this.currentRoom.x},${this.currentRoom.y}`;
+        const room = this.worldMap[roomKey];
+        if (!room) return false;
+
+        const objects = room.obstacles.filter((o) => 
+            o instanceof Chest || o instanceof SignPost
+        );
+
+        return objects.length > 0;
+    }
+
     /**
      * Procura por baús próximos ao jogador ao pressionar Interagir (E / Enter)
      */
@@ -274,7 +296,27 @@ export default class World {
 
         for (const chest of cheests) {
             if (chest.isPlayerNearby(player) && !chest.isOpen) {
-                return chest.open(player, this);
+                return chest.open(player);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Procura por placas próximas ao jogador ao pressionar Interagir (E / Enter)
+     */
+    interactWithSignPost(player) {
+        const roomKey = `${this.currentRoom.x},${this.currentRoom.y}`;
+        const room = this.worldMap[roomKey];
+        if (!room) return false;
+
+        const signposts = room.obstacles.filter((o) => o instanceof SignPost);
+
+        if(signposts.length < 1) return false;
+
+        for (const signpost of signposts) {
+            if (signpost.isPlayerNearby(player)) {
+                return signpost.message;
             }
         }
         return false;
