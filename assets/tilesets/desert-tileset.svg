@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="800" height="600"
+     viewBox="0 0 800 600"
+     shape-rendering="crispEdges"
+     image-rendering="pixelated">
+
+  <title>Deserto do Sul - Background Tileset</title>
+  <desc>Fundo temático para a sala do Deserto. Paleta areia/marrom quente.</desc>
+
+  <!-- Fundo base areia -->
+  <rect width="800" height="600" fill="#d9b97a"/>
+
+  <defs>
+    <!-- Padrão de areia com grãos -->
+    <pattern id="sand-floor" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <rect width="32" height="32" fill="#d9b97a"/>
+      <rect x="3" y="5" width="1" height="1" fill="#c0a060" opacity="0.7"/>
+      <rect x="12" y="2" width="1" height="1" fill="#c0a060" opacity="0.6"/>
+      <rect x="22" y="8" width="1" height="1" fill="#c0a060" opacity="0.7"/>
+      <rect x="7" y="18" width="1" height="1" fill="#c0a060" opacity="0.5"/>
+      <rect x="28" y="14" width="1" height="1" fill="#c0a060" opacity="0.6"/>
+      <rect x="16" y="26" width="1" height="1" fill="#c0a060" opacity="0.7"/>
+      <rect x="4" y="28" width="1" height="1" fill="#e8d090" opacity="0.5"/>
+      <rect x="24" y="24" width="1" height="1" fill="#e8d090" opacity="0.4"/>
+    </pattern>
+
+    <!-- Duna (monte de areia) -->
+    <g id="dune">
+      <rect x="0" y="12" width="48" height="8" fill="#c0a060" opacity="0.5"/>
+      <rect x="4" y="8" width="40" height="4" fill="#c0a060" opacity="0.4"/>
+      <rect x="8" y="6" width="32" height="2" fill="#c0a060" opacity="0.3"/>
+      <rect x="0" y="18" width="48" height="2" fill="#b09050" opacity="0.3"/>
+    </g>
+
+    <!-- Cacto -->
+    <g id="cactus">
+      <rect x="6" y="4" width="4" height="20" fill="#3e6b2a"/>
+      <rect x="6" y="4" width="1" height="20" fill="#548a3c"/>
+      <rect x="10" y="8" width="6" height="3" fill="#3e6b2a"/>
+      <rect x="14" y="4" width="3" height="7" fill="#3e6b2a"/>
+      <rect x="14" y="4" width="1" height="7" fill="#548a3c"/>
+      <rect x="0" y="12" width="6" height="3" fill="#3e6b2a"/>
+      <rect x="0" y="8" width="3" height="7" fill="#3e6b2a"/>
+      <rect x="0" y="8" width="1" height="7" fill="#548a3c"/>
+      <!-- Espinhos -->
+      <rect x="5" y="6" width="1" height="1" fill="#f0d090"/>
+      <rect x="5" y="14" width="1" height="1" fill="#f0d090"/>
+      <rect x="10" y="10" width="1" height="1" fill="#f0d090"/>
+    </g>
+
+    <!-- Pedra do deserto -->
+    <g id="desert-rock">
+      <rect x="0" y="4" width="16" height="10" fill="#8a6a3a"/>
+      <rect x="2" y="2" width="12" height="4" fill="#a07840"/>
+      <rect x="0" y="12" width="16" height="2" fill="#6a5030"/>
+      <rect x="4" y="4" width="4" height="2" fill="#b89050" opacity="0.6"/>
+    </g>
+
+    <!-- Crânio de animal -->
+    <g id="animal-skull">
+      <rect x="2" y="2" width="10" height="6" fill="#e8e0d0"/>
+      <rect x="0" y="4" width="14" height="3" fill="#e8e0d0"/>
+      <rect x="3" y="4" width="2" height="2" fill="#1a1a1a"/>
+      <rect x="9" y="4" width="2" height="2" fill="#1a1a1a"/>
+      <rect x="4" y="8" width="6" height="4" fill="#d0c8b0"/>
+      <rect x="5" y="8" width="1" height="1" fill="#1a1a1a"/>
+      <rect x="8" y="8" width="1" height="1" fill="#1a1a1a"/>
+    </g>
+
+    <!-- Ondulação de areia (vento) -->
+    <g id="sand-wave">
+      <rect x="0" y="0" width="40" height="1" fill="#c0a060" opacity="0.5"/>
+      <rect x="4" y="2" width="32" height="1" fill="#c0a060" opacity="0.4"/>
+      <rect x="8" y="4" width="24" height="1" fill="#c0a060" opacity="0.3"/>
+    </g>
+  </defs>
+
+  <!-- Chão com padrão de areia -->
+  <rect width="800" height="600" fill="url(#sand-floor)"/>
+
+  <!-- Trilha mais escura (caminho pisado) -->
+  <rect x="200" y="0" width="60" height="600" fill="#b09050" opacity="0.3"/>
+  <rect x="500" y="0" width="50" height="600" fill="#b09050" opacity="0.25"/>
+
+  <!-- Dunas -->
+  <use href="#dune" x="50" y="80"/>
+  <use href="#dune" x="600" y="60"/>
+  <use href="#dune" x="350" y="180"/>
+  <use href="#dune" x="100" y="380"/>
+  <use href="#dune" x="500" y="320"/>
+  <use href="#dune" x="700" y="450"/>
+  <use href="#dune" x="250" y="520"/>
+  <use href="#dune" x="650" y="550"/>
+
+  <!-- Cactos -->
+  <use href="#cactus" x="120" y="120"/>
+  <use href="#cactus" x="680" y="100"/>
+  <use href="#cactus" x="400" y="80"/>
+  <use href="#cactus" x="60" y="480"/>
+  <use href="#cactus" x="720" y="350"/>
+  <use href="#cactus" x="300" y="420"/>
+
+  <!-- Pedras -->
+  <use href="#desert-rock" x="180" y="220"/>
+  <use href="#desert-rock" x="560" y="180"/>
+  <use href="#desert-rock" x="450" y="450"/>
+  <use href="#desert-rock" x="100" y="300"/>
+  <use href="#desert-rock" x="650" y="280"/>
+
+  <!-- Crânios de animais -->
+  <use href="#animal-skull" x="350" y="300"/>
+  <use href="#animal-skull" x="600" y="500"/>
+  <use href="#animal-skull" x="150" y="550"/>
+
+  <!-- Ondulações de vento na areia -->
+  <use href="#sand-wave" x="50" y="150"/>
+  <use href="#sand-wave" x="300" y="250"/>
+  <use href="#sand-wave" x="550" y="400"/>
+  <use href="#sand-wave" x="150" y="450"/>
+  <use href="#sand-wave" x="650" y="180"/>
+  <use href="#sand-wave" x="400" y="550"/>
+  <use href="#sand-wave" x="50" y="350"/>
+  <use href="#sand-wave" x="700" y="520"/>
+
+  <!-- Manchas de sol / reflexo -->
+  <rect x="380" y="50" width="4" height="4" fill="#f0e0a0" opacity="0.3"/>
+  <rect x="600" y="130" width="6" height="4" fill="#f0e0a0" opacity="0.25"/>
+  <rect x="200" y="380" width="4" height="6" fill="#f0e0a0" opacity="0.3"/>
+  <rect x="500" y="480" width="6" height="4" fill="#f0e0a0" opacity="0.25"/>
+</svg>

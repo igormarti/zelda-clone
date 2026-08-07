@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="800" height="600"
+     viewBox="0 0 800 600"
+     shape-rendering="crispEdges"
+     image-rendering="pixelated">
+
+  <title>Cemitério - Background Tileset</title>
+  <desc>Fundo temático para a sala do Cemitério. Paleta roxa/cinza sombria.</desc>
+
+  <!-- Fundo base roxo escuro -->
+  <rect width="800" height="600" fill="#3a2a4e"/>
+
+  <!-- Padrão de chão em grade (pedra/terra escura) -->
+  <defs>
+    <pattern id="cemetery-floor" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <rect width="32" height="32" fill="#4a3a5e"/>
+      <rect x="0" y="0" width="16" height="16" fill="#3a2a4e" opacity="0.5"/>
+      <rect x="16" y="16" width="16" height="16" fill="#3a2a4e" opacity="0.5"/>
+      <rect x="2" y="2" width="2" height="2" fill="#5a4a6e" opacity="0.6"/>
+      <rect x="10" y="6" width="1" height="1" fill="#6a5a7e" opacity="0.4"/>
+      <rect x="20" y="22" width="2" height="2" fill="#5a4a6e" opacity="0.6"/>
+      <rect x="28" y="12" width="1" height="1" fill="#6a5a7e" opacity="0.4"/>
+    </pattern>
+
+    <!-- Cruz/Lápide simples -->
+    <g id="tombstone">
+      <rect x="0" y="8" width="12" height="16" fill="#6a6a7a"/>
+      <rect x="2" y="6" width="8" height="4" fill="#7a7a8a"/>
+      <rect x="4" y="4" width="4" height="2" fill="#8a8a9a"/>
+      <rect x="0" y="22" width="12" height="2" fill="#4a4a5a"/>
+      <!-- Cruz -->
+      <rect x="5" y="9" width="2" height="10" fill="#9a9aaa"/>
+      <rect x="3" y="12" width="6" height="2" fill="#9a9aaa"/>
+    </g>
+
+    <!-- Cruz pequena -->
+    <g id="cross-small">
+      <rect x="3" y="0" width="2" height="12" fill="#5a5a6a"/>
+      <rect x="1" y="3" width="6" height="2" fill="#5a5a6a"/>
+    </g>
+
+    <!-- Caveira decorativa -->
+    <g id="skull">
+      <rect x="2" y="0" width="8" height="8" fill="#d0c8b0"/>
+      <rect x="0" y="2" width="12" height="4" fill="#d0c8b0"/>
+      <rect x="2" y="3" width="2" height="2" fill="#1a1a2a"/>
+      <rect x="8" y="3" width="2" height="2" fill="#1a1a2a"/>
+      <rect x="4" y="6" width="1" height="1" fill="#1a1a2a"/>
+      <rect x="5" y="7" width="2" height="1" fill="#1a1a2a"/>
+      <rect x="7" y="6" width="1" height="1" fill="#1a1a2a"/>
+    </g>
+
+    <!-- Névoa -->
+    <g id="fog-patch">
+      <rect x="0" y="4" width="24" height="4" fill="#8a7a9a" opacity="0.2"/>
+      <rect x="4" y="2" width="16" height="2" fill="#8a7a9a" opacity="0.15"/>
+      <rect x="2" y="8" width="20" height="2" fill="#8a7a9a" opacity="0.15"/>
+    </g>
+  </defs>
+
+  <!-- Chão com padrão -->
+  <rect width="800" height="600" fill="url(#cemetery-floor)"/>
+
+  <!-- Caminho de terra central -->
+  <rect x="350" y="0" width="100" height="600" fill="#2a1a3e" opacity="0.6"/>
+  <rect x="360" y="0" width="80" height="600" fill="#3a2a4e" opacity="0.4"/>
+
+  <!-- Lápides espalhadas -->
+  <use href="#tombstone" x="80" y="60"/>
+  <use href="#tombstone" x="80" y="160"/>
+  <use href="#tombstone" x="80" y="320"/>
+  <use href="#tombstone" x="80" y="460"/>
+
+  <use href="#tombstone" x="200" y="100"/>
+  <use href="#tombstone" x="200" y="280"/>
+  <use href="#tombstone" x="200" y="440"/>
+
+  <use href="#tombstone" x="520" y="80"/>
+  <use href="#tombstone" x="520" y="240"/>
+  <use href="#tombstone" x="520" y="400"/>
+  <use href="#tombstone" x="520" y="520"/>
+
+  <use href="#tombstone" x="680" y="60"/>
+  <use href="#tombstone" x="680" y="180"/>
+  <use href="#tombstone" x="680" y="340"/>
+  <use href="#tombstone" x="680" y="480"/>
+
+  <!-- Cruzes pequenas -->
+  <use href="#cross-small" x="150" y="50"/>
+  <use href="#cross-small" x="270" y="180"/>
+  <use href="#cross-small" x="460" y="120"/>
+  <use href="#cross-small" x="580" y="300"/>
+  <use href="#cross-small" x="730" y="250"/>
+  <use href="#cross-small" x="150" y="500"/>
+  <use href="#cross-small" x="460" y="480"/>
+
+  <!-- Caveiras no chão -->
+  <use href="#skull" x="300" y="150"/>
+  <use href="#skull" x="480" y="350"/>
+  <use href="#skull" x="650" y="550"/>
+  <use href="#skull" x="100" y="400"/>
+
+  <!-- Névoa atmosférica -->
+  <use href="#fog-patch" x="50" y="100"/>
+  <use href="#fog-patch" x="300" y="200"/>
+  <use href="#fog-patch" x="600" y="150"/>
+  <use href="#fog-patch" x="150" y="350"/>
+  <use href="#fog-patch" x="500" y="450"/>
+  <use href="#fog-patch" x="700" y="400"/>
+  <use href="#fog-patch" x="50" y="550"/>
+  <use href="#fog-patch" x="400" y="550"/>
+
+  <!-- Manchas de musgo/limo -->
+  <rect x="160" y="230" width="8" height="4" fill="#3e6b2a" opacity="0.5"/>
+  <rect x="420" y="270" width="6" height="6" fill="#3e6b2a" opacity="0.4"/>
+  <rect x="640" y="130" width="10" height="4" fill="#3e6b2a" opacity="0.5"/>
+  <rect x="290" y="480" width="8" height="6" fill="#3e6b2a" opacity="0.4"/>
+
+  <!-- Rachaduras no chão -->
+  <rect x="250" y="350" width="1" height="20" fill="#1a1a2a" opacity="0.6"/>
+  <rect x="251" y="370" width="1" height="15" fill="#1a1a2a" opacity="0.6"/>
+  <rect x="550" y="200" width="1" height="25" fill="#1a1a2a" opacity="0.6"/>
+  <rect x="400" y="500" width="1" height="18" fill="#1a1a2a" opacity="0.6"/>
+
+  <!-- Brilho fantasmagórico sutil -->
+  <rect x="85" y="58" width="2" height="2" fill="#b0a0d0" opacity="0.4"/>
+  <rect x="525" y="78" width="2" height="2" fill="#b0a0d0" opacity="0.4"/>
+  <rect x="685" y="58" width="2" height="2" fill="#b0a0d0" opacity="0.4"/>
+  <rect x="205" y="98" width="2" height="2" fill="#b0a0d0" opacity="0.4"/>
+</svg>

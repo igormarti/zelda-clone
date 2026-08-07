@@ -1,4 +1,24 @@
 {
+  "home_julie_01": [
+    "Bom dia, meu filho! Está vendo como as flores estão bonitas hoje?",
+    "Estou regando o jardim desde cedo. Essas plantinhas precisam de cuidado.",
+    "Seu pai está ali cortando lenha para o inverno. Ele trabalha tanto...",
+    "Tenha cuidado lá fora, querido. Ouvi dizer que criaturas estranhas apareceram nas redondezas."
+  ],
+  "home_julie_01_after_reward": [
+    "Que bom te ver de novo! As plantas estão crescendo lindamente.",
+    "Cuide-se por aí, meu filho. Sua mãe está sempre aqui te esperando."
+  ],
+  "home_ozie_01": [
+    "Olá, filho! Estou cortando lenha para a lareira. O inverno está chegando.",
+    "Quando eu era jovem, também explorava essas terras. Muita coisa mudou desde então.",
+    "Esse machado já era do meu pai, e do pai dele antes. É uma boa ferramenta.",
+    "Se precisar de algo, pode contar comigo. Mas primeiro, deixe-me terminar esse tronco!"
+  ],
+  "home_ozie_01_after_reward": [
+    "Continue treinando, rapaz! Um dia você vai ser tão forte quanto seu velho.",
+    "Ah, e não esqueça de visitar sua mãe de vez em quando!"
+  ],
   "cemiterio_srpoo_01": [
     "Olá, viajante. Atualmente moro aqui no cemitério. Desde que aquele monstro apareceu a situação se tornou perigosa.",
     "Ele vem explorando a população com altos impostos e até serviços escravos.",

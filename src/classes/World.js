@@ -28,6 +28,14 @@ export default class World {
         // Tileset SVG novo para todas as outras salas
         this.worldTileset = new Image();
         this.worldTileset.src = 'assets/tilesets/world-tileset.svg';
+
+        // Tilesets temáticos por bioma (backgrounds completos 800x600)
+        this.caveTileset = new Image();
+        this.caveTileset.src = 'assets/tilesets/cave-tileset.svg';
+        this.desertTileset = new Image();
+        this.desertTileset.src = 'assets/tilesets/desert-tileset.svg';
+        this.cemeteryTileset = new Image();
+        this.cemeteryTileset.src = 'assets/tilesets/cemetery-tileset.svg';
         this.tileMap = {
             // [Coluna, Linha] baseados na imagem
             'big_grass_0':      [8, 0],
@@ -181,8 +189,119 @@ export default class World {
                  ]})
                 ],
                 enemies: [
+                ],
+                items: [
+                    new InventoryItem(745, 10,'health_potion_01', "health_potion", "Poção de Saúde", 3, null, "#ff0000"),
+                    new WeaponItem(540, 25, 32, 32, 
+                        new Bow(player, {context:gameContext.ctx, assetManager: gameContext.assetManager}, 
+                            {
+                                id: 'bow_01',
+                                name: 'Arco de Madeira',
+                                description: "Arco de Madeira que consegue atingir inimigos de uma distância considerável",
+                                spritePath: 'assets/sprites/weapon/bow-sheet.png',
+                                icon: 'assets/icons/weapons/bow-icon.png'
+                            }
+                        )
+                    )
+                ]
+            },
+            "1,0": { name: "Caverna Sombria", color: "#2e3b4e", backgroundTileset: this.caveTileset, obstacles: [
+                new SacredTree(400, 280, 48, 64, [
+                    "A Árvore Sagrada pulsa com uma energia ancestral.",
+                    "Pressione X para registrar seu progresso aqui."
+                ])
+            ], doors: [
+                new Door(0, 220, 10, 100, "0,0", { x: 725, y: 220 })
+            ], enemies: [
+                new Enemy({
+                    x: 450, y: 300,
+                    maxHealth: 4, attackDamage: 1,
+                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
+                    aiType: 'patrol_random',
+                    speed: 0.7,
+                    detectionRange: 100,
+                    spriteSheet: 'assets/sprites/enemies/slime.svg',
+                    spriteFrames: 4,
+                    gameContext
+                }),
+                new Enemy({
+                    x: 680, y: 150,
+                    maxHealth: 5, attackDamage: 2,
+                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
+                    aiType: 'patrol_linear',
+                    patrolAxis: 'horizontal',
+                    speed: 0.9,
+                    detectionRange: 110,
+                    spriteSheet: 'assets/sprites/enemies/red-skeleton.svg',
+                    spriteFrames: 4,
+                    gameContext
+                })
+            ],
+             items: [
+                new InventoryItem(200, 200, 'mana_potion_01', "mana_potion", "Poção de Mana", 2, null, "#0000ff"),
+                new HeartItem(300, 300, 16, 16, 1)
+             ]
+        },
+            "0,1": { name: "Deserto do Sul", color: "#6e3a3a", backgroundTileset: this.desertTileset, obstacles: [], doors: [
+                new Door(350, 0, 100, 10, "0,0", { x: 350, y: 485 })
+            ], enemies: [
+                new Enemy({
+                    x: 200, y: 350,
+                    maxHealth: 3, attackDamage: 1,
+                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
+                    aiType: 'patrol_linear',
+                    patrolAxis: 'horizontal',
+                    speed: 1,
+                    detectionRange: 90,
+                    spriteSheet: 'assets/sprites/enemies/slime.svg',
+                    spriteFrames: 4,
+                    gameContext
+                }),
+                new Enemy({
+                    x: 550, y: 450,
+                    maxHealth: 4, attackDamage: 2,
+                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
+                    aiType: 'patrol_random',
+                    speed: 0.8,
+                    detectionRange: 100,
+                    spriteSheet: 'assets/sprites/enemies/red-skeleton.svg',
+                    spriteFrames: 4,
+                    gameContext
+                })
+            ], items: []},
+            "0,-1": { name: "Cemitério", color: "#5a3a6e", backgroundTileset: this.cemeteryTileset, obstacles: [
+                 { x: 120, y: 100, width: 80, height: 80 },
+                 { x: 600, y: 100, width: 80, height: 80 },
+                 { x: 120, y: 400, width: 80, height: 80 },
+                 { x: 600, y: 400, width: 80, height: 80 }
+            ], doors: [
+                new Door(350, 590, 100, 10, "0,0", { x: 370, y: 0 }),
+            ], enemies: [
+                new Enemy({
+                    x: 350, y: 250,
+                    maxHealth: 5, attackDamage: 2,
+                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
+                    aiType: 'patrol_random',
+                    speed: 0.6,
+                    detectionRange: 130,
+                    spriteSheet: 'assets/sprites/enemies/red-skeleton.svg',
+                    spriteFrames: 4,
+                    gameContext
+                }),
+                new Enemy({
+                    x: 500, y: 300,
+                    maxHealth: 3, attackDamage: 1,
+                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
+                    aiType: 'patrol_linear',
+                    patrolAxis: 'vertical',
+                    speed: 0.8,
+                    detectionRange: 90,
+                    spriteSheet: 'assets/sprites/enemies/slime.svg',
+                    spriteFrames: 4,
+                    gameContext
+                }),
 
-                    // 1. Inimigo Estático (Tipo Padrão) - RENASCE SEMPRE
+                  // 1. Inimigo Estático (Tipo Padrão) - RENASCE SEMPRE
                     new Enemy({
                         x: 200, y: 40,
                         maxHealth: 3, attackDamage: 1 ,
@@ -238,117 +357,6 @@ export default class World {
                         spriteFrames: 4,
                         persistent: true
                     })
-                ],
-                items: [
-                    new InventoryItem(745, 10,'health_potion_01', "health_potion", "Poção de Saúde", 3, null, "#ff0000"),
-                    new WeaponItem(540, 25, 32, 32, 
-                        new Bow(player, {context:gameContext.ctx, assetManager: gameContext.assetManager}, 
-                            {
-                                id: 'bow_01',
-                                name: 'Arco de Madeira',
-                                description: "Arco de Madeira que consegue atingir inimigos de uma distância considerável",
-                                spritePath: 'assets/sprites/weapon/bow-sheet.png',
-                                icon: 'assets/icons/weapons/bow-icon.png'
-                            }
-                        )
-                    )
-                ]
-            },
-            "1,0": { name: "Caverna Sombria", color: "#2e3b4e", obstacles: [
-                new SacredTree(400, 280, 48, 64, [
-                    "A Árvore Sagrada pulsa com uma energia ancestral.",
-                    "Pressione X para registrar seu progresso aqui."
-                ])
-            ], doors: [
-                new Door(0, 220, 10, 100, "0,0", { x: 725, y: 220 })
-            ], enemies: [
-                new Enemy({
-                    x: 400, y: 300,
-                    maxHealth: 4, attackDamage: 1,
-                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
-                    aiType: 'patrol_random',
-                    speed: 0.7,
-                    detectionRange: 100,
-                    spriteSheet: 'assets/sprites/enemies/slime.svg',
-                    spriteFrames: 4,
-                    gameContext
-                }),
-                new Enemy({
-                    x: 600, y: 150,
-                    maxHealth: 5, attackDamage: 2,
-                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
-                    aiType: 'patrol_linear',
-                    patrolAxis: 'horizontal',
-                    speed: 0.9,
-                    detectionRange: 110,
-                    spriteSheet: 'assets/sprites/enemies/red-skeleton.svg',
-                    spriteFrames: 4,
-                    gameContext
-                })
-            ],
-             items: [
-                new InventoryItem(200, 200, 'mana_potion_01', "mana_potion", "Poção de Mana", 2, null, "#0000ff"),
-                new HeartItem(300, 300, 16, 16, 1)
-             ]
-        },
-            "0,1": { name: "Deserto do Sul", color: "#6e3a3a", obstacles: [], doors: [
-                new Door(350, 0, 100, 10, "0,0", { x: 350, y: 485 })
-            ], enemies: [
-                new Enemy({
-                    x: 200, y: 350,
-                    maxHealth: 3, attackDamage: 1,
-                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
-                    aiType: 'patrol_linear',
-                    patrolAxis: 'horizontal',
-                    speed: 1,
-                    detectionRange: 90,
-                    spriteSheet: 'assets/sprites/enemies/slime.svg',
-                    spriteFrames: 4,
-                    gameContext
-                }),
-                new Enemy({
-                    x: 550, y: 450,
-                    maxHealth: 4, attackDamage: 2,
-                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
-                    aiType: 'patrol_random',
-                    speed: 0.8,
-                    detectionRange: 100,
-                    spriteSheet: 'assets/sprites/enemies/red-skeleton.svg',
-                    spriteFrames: 4,
-                    gameContext
-                })
-            ], items: []},
-            "0,-1": { name: "Cemitério", color: "#5a3a6e", obstacles: [
-                 { x: 120, y: 100, width: 80, height: 80 },
-                 { x: 600, y: 100, width: 80, height: 80 },
-                 { x: 120, y: 400, width: 80, height: 80 },
-                 { x: 600, y: 400, width: 80, height: 80 }
-            ], doors: [
-                new Door(350, 590, 100, 10, "0,0", { x: 370, y: 0 }),
-            ], enemies: [
-                new Enemy({
-                    x: 350, y: 250,
-                    maxHealth: 5, attackDamage: 2,
-                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
-                    aiType: 'patrol_random',
-                    speed: 0.6,
-                    detectionRange: 130,
-                    spriteSheet: 'assets/sprites/enemies/red-skeleton.svg',
-                    spriteFrames: 4,
-                    gameContext
-                }),
-                new Enemy({
-                    x: 500, y: 300,
-                    maxHealth: 3, attackDamage: 1,
-                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
-                    aiType: 'patrol_linear',
-                    patrolAxis: 'vertical',
-                    speed: 0.8,
-                    detectionRange: 90,
-                    spriteSheet: 'assets/sprites/enemies/slime.svg',
-                    spriteFrames: 4,
-                    gameContext
-                })
             ], items: [
                 new InventoryItem(200, 200, 'soul_gem_01', "soul_gem", "Gema da Alma", 2, null, "#00ff00")
             ]}
@@ -668,13 +676,18 @@ export default class World {
         const roomKey = `${this.currentRoom.x},${this.currentRoom.y}`;
         const room = this.worldMap[roomKey] || { color: "#000", obstacles: [], doors: [] };
         
-        // Desenha Fundo
-        ctx.fillStyle = room.color;
-        ctx.fillRect(0, 0, this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
+        // Desenha Fundo: se a sala tem um backgroundTileset SVG temático, usa ele.
+        // Senão, usa o sistema antigo (cor sólida + floorDecorations via tileset PNG).
+        if (room.backgroundTileset && room.backgroundTileset.complete && room.backgroundTileset.naturalWidth > 0) {
+            ctx.drawImage(room.backgroundTileset, 0, 0, this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
+        } else {
+            ctx.fillStyle = room.color;
+            ctx.fillRect(0, 0, this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
 
-        (room.floorDecorations || []).forEach(decor => {
-            this._drawFloorElement(ctx, decor);
-        });
+            (room.floorDecorations || []).forEach(decor => {
+                this._drawFloorElement(ctx, decor);
+            });
+        }
 
         // Desenha portas
         (room.doors || []).forEach(door => {

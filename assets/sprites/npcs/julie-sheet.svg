@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="288" height="288"
+     viewBox="0 0 288 288"
+     shape-rendering="crispEdges"
+     image-rendering="pixelated">
+
+  <title>Julie Sheet - Mãe do Player (camponesa medieval)</title>
+  <desc>6 frames por linha, 6 linhas (idle front/side/back + move front/side/back)</desc>
+
+  <!-- Paleta medieval feminina:
+       #2a1d12  cabelo castanho escuro
+       #4a2f1a  cabelo meio
+       #f4d8b0  pele clara
+       #d8a878  pele sombra
+       #6b3a26  marrom vestido (sombra)
+       #8b5a3c  marrom vestido (claro)
+       #f0e6cf  camisa branca/giz
+       #c9a86a  avental bege
+       #8b6b3a  avental sombra
+       #4a4a4a  regador sombra
+       #7a7a7a  regador claro
+       #b8b8b8  brilho metal
+       #2c4a2c  folhas/plantas (água)
+       #1a1a1a  contorno/preto
+  -->
+
+  <defs>
+    <!-- =================== FRENTE (FRONT) =================== -->
+    <g id="julie-front">
+      <!-- Sombra no chão -->
+      <rect x="10" y="44" width="28" height="3" fill="#1a1a1a" opacity="0.3"/>
+
+      <!-- Corpo vestido (saia) -->
+      <rect x="14" y="28" width="20" height="14" fill="#6b3a26"/>
+      <rect x="14" y="40" width="20" height="2" fill="#4a2f1a"/>
+      <!-- barra do vestido com dobras -->
+      <rect x="16" y="32" width="2" height="8" fill="#4a2f1a"/>
+      <rect x="22" y="30" width="2" height="10" fill="#4a2f1a"/>
+      <rect x="28" y="32" width="2" height="8" fill="#4a2f1a"/>
+
+      <!-- Avental bege -->
+      <rect x="16" y="30" width="16" height="12" fill="#c9a86a"/>
+      <rect x="16" y="40" width="16" height="2" fill="#8b6b3a"/>
+      <rect x="22" y="32" width="2" height="8" fill="#8b6b3a"/>
+
+      <!-- Braço esquerdo (segura regador) -->
+      <rect x="8" y="22" width="4" height="8" fill="#f0e6cf"/>
+      <rect x="8" y="28" width="4" height="2" fill="#d8a878"/>
+      <!-- Braço direito -->
+      <rect x="36" y="22" width="4" height="8" fill="#f0e6cf"/>
+      <rect x="36" y="28" width="4" height="2" fill="#d8a878"/>
+
+      <!-- Regador na mão esquerda (cilindro + bico) -->
+      <rect x="4" y="26" width="6" height="6" fill="#7a7a7a"/>
+      <rect x="4" y="26" width="6" height="2" fill="#b8b8b8"/>
+      <rect x="2" y="28" width="2" height="2" fill="#4a4a4a"/>
+      <rect x="6" y="24" width="2" height="2" fill="#4a4a4a"/>
+      <!-- Alça do regador -->
+      <rect x="4" y="24" width="6" height="1" fill="#4a4a4a"/>
+      <!-- Água caindo do bico (gotinhas) -->
+      <rect x="1" y="32" width="2" height="2" fill="#3a78b8"/>
+      <rect x="0" y="34" width="1" height="2" fill="#5a98d8"/>
+      <rect x="2" y="36" width="1" height="2" fill="#5a98d8"/>
+
+      <!-- Pescoço -->
+      <rect x="21" y="20" width="6" height="4" fill="#d8a878"/>
+      <rect x="22" y="20" width="4" height="2" fill="#f4d8b0"/>
+
+      <!-- Cabeça (rosto) -->
+      <rect x="18" y="8" width="12" height="14" fill="#f4d8b0"/>
+      <rect x="18" y="20" width="12" height="2" fill="#d8a878"/>
+
+      <!-- Cabelo (parte superior/frente) -->
+      <rect x="16" y="6" width="16" height="6" fill="#4a2f1a"/>
+      <rect x="14" y="8" width="2" height="8" fill="#4a2f1a"/>
+      <rect x="32" y="8" width="2" height="8" fill="#4a2f1a"/>
+      <rect x="16" y="6" width="16" height="2" fill="#2a1d12"/>
+      <!-- Cabelo nas laterais do rosto -->
+      <rect x="16" y="12" width="2" height="6" fill="#4a2f1a"/>
+      <rect x="30" y="12" width="2" height="6" fill="#4a2f1a"/>
+
+      <!-- Olhos -->
+      <rect x="20" y="14" width="2" height="2" fill="#1a1a1a"/>
+      <rect x="26" y="14" width="2" height="2" fill="#1a1a1a"/>
+      <!-- Brilho nos olhos -->
+      <rect x="21" y="14" width="1" height="1" fill="#f4d8b0"/>
+      <rect x="27" y="14" width="1" height="1" fill="#f4d8b0"/>
+
+      <!-- Boca (sorriso suave) -->
+      <rect x="22" y="18" width="4" height="1" fill="#8b3a3a"/>
+
+      <!-- Maçãs do rosto (leve blush) -->
+      <rect x="19" y="17" width="2" height="1" fill="#e89a8a" opacity="0.5"/>
+      <rect x="27" y="17" width="2" height="1" fill="#e89a8a" opacity="0.5"/>
+    </g>
+
+    <!-- =================== LADO (SIDE) =================== -->
+    <g id="julie-side">
+      <!-- Sombra no chão -->
+      <rect x="10" y="44" width="28" height="3" fill="#1a1a1a" opacity="0.3"/>
+
+      <!-- Corpo vestido (perfil) -->
+      <rect x="16" y="28" width="18" height="14" fill="#6b3a26"/>
+      <rect x="16" y="40" width="18" height="2" fill="#4a2f1a"/>
+      <rect x="20" y="30" width="2" height="10" fill="#4a2f1a"/>
+      <rect x="26" y="32" width="2" height="8" fill="#4a2f1a"/>
+
+      <!-- Avental bege (perfil) -->
+      <rect x="18" y="30" width="14" height="12" fill="#c9a86a"/>
+      <rect x="18" y="40" width="14" height="2" fill="#8b6b3a"/>
+
+      <!-- Braço esquerdo (frente, com regador) -->
+      <rect x="12" y="24" width="4" height="8" fill="#f0e6cf"/>
+      <rect x="12" y="30" width="4" height="2" fill="#d8a878"/>
+      <!-- Mão -->
+      <rect x="12" y="30" width="4" height="3" fill="#f4d8b0"/>
+
+      <!-- Regador à frente (perfil) -->
+      <rect x="6" y="28" width="8" height="8" fill="#7a7a7a"/>
+      <rect x="6" y="28" width="8" height="2" fill="#b8b8b8"/>
+      <rect x="14" y="30" width="3" height="2" fill="#4a4a4a"/>
+      <rect x="8" y="26" width="2" height="2" fill="#4a4a4a"/>
+      <rect x="6" y="26" width="8" height="1" fill="#4a4a4a"/>
+      <!-- Água caindo -->
+      <rect x="14" y="34" width="2" height="2" fill="#3a78b8"/>
+      <rect x="13" y="36" width="1" height="2" fill="#5a98d8"/>
+      <rect x="16" y="38" width="1" height="2" fill="#5a98d8"/>
+
+      <!-- Pescoço -->
+      <rect x="22" y="20" width="6" height="4" fill="#d8a878"/>
+
+      <!-- Cabeça (perfil - focinho/ponta) -->
+      <rect x="20" y="8" width="10" height="14" fill="#f4d8b0"/>
+      <rect x="20" y="20" width="10" height="2" fill="#d8a878"/>
+      <!-- Nariz perfil -->
+      <rect x="30" y="14" width="2" height="2" fill="#d8a878"/>
+      <rect x="32" y="15" width="1" height="1" fill="#f4d8b0"/>
+
+      <!-- Cabelo (perfil) -->
+      <rect x="18" y="6" width="12" height="6" fill="#4a2f1a"/>
+      <rect x="16" y="10" width="2" height="6" fill="#4a2f1a"/>
+      <rect x="18" y="6" width="12" height="2" fill="#2a1d12"/>
+      <rect x="20" y="22" width="6" height="4" fill="#4a2f1a"/>
+      <rect x="20" y="22" width="6" height="1" fill="#2a1d12"/>
+
+      <!-- Olho -->
+      <rect x="26" y="14" width="2" height="2" fill="#1a1a1a"/>
+      <rect x="27" y="14" width="1" height="1" fill="#f4d8b0"/>
+
+      <!-- Boca -->
+      <rect x="28" y="18" width="2" height="1" fill="#8b3a3a"/>
+
+      <!-- Maçã -->
+      <rect x="25" y="17" width="2" height="1" fill="#e89a8a" opacity="0.5"/>
+    </g>
+
+    <!-- =================== COSTAS (BACK) =================== -->
+    <g id="julie-back">
+      <!-- Sombra no chão -->
+      <rect x="10" y="44" width="28" height="3" fill="#1a1a1a" opacity="0.3"/>
+
+      <!-- Cabelo longo (costas - cobre pescoço) -->
+      <rect x="14" y="6" width="20" height="20" fill="#4a2f1a"/>
+      <rect x="14" y="6" width="20" height="2" fill="#2a1d12"/>
+      <rect x="16" y="26" width="16" height="6" fill="#4a2f1a"/>
+      <rect x="16" y="30" width="16" height="2" fill="#2a1d12"/>
+
+      <!-- Vestido costas -->
+      <rect x="14" y="28" width="20" height="14" fill="#8b5a3c"/>
+      <rect x="14" y="40" width="20" height="2" fill="#6b3a26"/>
+      <!-- Detalhes do vestido (costura) -->
+      <rect x="22" y="30" width="1" height="10" fill="#6b3a26"/>
+      <rect x="26" y="30" width="1" height="10" fill="#6b3a26"/>
+
+      <!-- Braços -->
+      <rect x="8" y="22" width="4" height="8" fill="#f0e6cf"/>
+      <rect x="36" y="22" width="4" height="8" fill="#f0e6cf"/>
+      <rect x="8" y="28" width="4" height="2" fill="#d8a878"/>
+      <rect x="36" y="28" width="4" height="2" fill="#d8a878"/>
+
+      <!-- Regador (costas - fica escondido pelo corpo, apenas topo visível) -->
+      <rect x="6" y="24" width="4" height="2" fill="#7a7a7a"/>
+      <rect x="8" y="22" width="2" height="2" fill="#4a4a4a"/>
+    </g>
+  </defs>
+
+  <!-- =================== ROW 0: IDLE FRONT =================== -->
+  <g transform="translate(0,0)">
+    <use href="#julie-front"/>
+  </g>
+  <g transform="translate(48,0)">
+    <use href="#julie-front"/>
+  </g>
+  <g transform="translate(96,0)">
+    <use href="#julie-front"/>
+  </g>
+  <g transform="translate(144,0)">
+    <use href="#julie-front"/>
+  </g>
+  <g transform="translate(192,0)">
+    <use href="#julie-front"/>
+  </g>
+  <g transform="translate(240,0)">
+    <use href="#julie-front"/>
+  </g>
+
+  <!-- =================== ROW 1: IDLE SIDE =================== -->
+  <g transform="translate(0,48)">
+    <use href="#julie-side"/>
+  </g>
+  <g transform="translate(48,48)">
+    <use href="#julie-side"/>
+  </g>
+  <g transform="translate(96,48)">
+    <use href="#julie-side"/>
+  </g>
+  <g transform="translate(144,48)">
+    <use href="#julie-side"/>
+  </g>
+  <g transform="translate(192,48)">
+    <use href="#julie-side"/>
+  </g>
+  <g transform="translate(240,48)">
+    <use href="#julie-side"/>
+  </g>
+
+  <!-- =================== ROW 2: IDLE BACK =================== -->
+  <g transform="translate(0,96)">
+    <use href="#julie-back"/>
+  </g>
+  <g transform="translate(48,96)">
+    <use href="#julie-back"/>
+  </g>
+  <g transform="translate(96,96)">
+    <use href="#julie-back"/>
+  </g>
+  <g transform="translate(144,96)">
+    <use href="#julie-back"/>
+  </g>
+  <g transform="translate(192,96)">
+    <use href="#julie-back"/>
+  </g>
+  <g transform="translate(240,96)">
+    <use href="#julie-back"/>
+  </g>
+
+  <!-- =================== ROW 3: MOVE FRONT (animação sutil de pernas/pés) =================== -->
+  <g transform="translate(0,144)">
+    <use href="#julie-front"/>
+    <!-- Pés (sapatos) -->
+    <rect x="14" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="28" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+  <g transform="translate(48,144)">
+    <use href="#julie-front"/>
+    <rect x="14" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="26" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+  <g transform="translate(96,144)">
+    <use href="#julie-front"/>
+    <rect x="16" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="28" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+  <g transform="translate(144,144)">
+    <use href="#julie-front"/>
+    <rect x="14" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="28" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+  <g transform="translate(192,144)">
+    <use href="#julie-front"/>
+    <rect x="14" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="26" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+  <g transform="translate(240,144)">
+    <use href="#julie-front"/>
+    <rect x="16" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="28" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+
+  <!-- =================== ROW 4: MOVE SIDE =================== -->
+  <g transform="translate(0,192)">
+    <use href="#julie-side"/>
+    <rect x="16" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="28" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+  <g transform="translate(48,192)">
+    <use href="#julie-side"/>
+    <rect x="18" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="26" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+  <g transform="translate(96,192)">
+    <use href="#julie-side"/>
+    <rect x="16" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="28" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+  <g transform="translate(144,192)">
+    <use href="#julie-side"/>
+    <rect x="18" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="26" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+  <g transform="translate(192,192)">
+    <use href="#julie-side"/>
+    <rect x="16" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="28" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+  <g transform="translate(240,192)">
+    <use href="#julie-side"/>
+    <rect x="18" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="26" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+
+  <!-- =================== ROW 5: MOVE BACK =================== -->
+  <g transform="translate(0,240)">
+    <use href="#julie-back"/>
+    <rect x="14" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="28" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+  <g transform="translate(48,240)">
+    <use href="#julie-back"/>
+    <rect x="14" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="28" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+  <g transform="translate(96,240)">
+    <use href="#julie-back"/>
+    <rect x="14" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="28" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+  <g transform="translate(144,240)">
+    <use href="#julie-back"/>
+    <rect x="14" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="28" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+  <g transform="translate(192,240)">
+    <use href="#julie-back"/>
+    <rect x="14" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="28" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+  <g transform="translate(240,240)">
+    <use href="#julie-back"/>
+    <rect x="14" y="40" width="6" height="2" fill="#3a2a1a"/>
+    <rect x="28" y="40" width="6" height="2" fill="#3a2a1a"/>
+  </g>
+</svg>

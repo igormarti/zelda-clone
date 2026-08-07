@@ -21,6 +21,27 @@ export default class MenuState extends State {
         // 4. Cooldowns e atributos físicos (ajustados para acessar o componente correto)
         player.stateComponent.doorCooldown = 0;
         world.reset();
+
+        // 5. Limpa inventário e equipamento (garante estado de "novo jogo" limpo)
+        //    Sem isso, qualquer arma/item coletado anteriormente (ex: espada do Srpoo)
+        //    persiste em memória e o player reinicia já com a espada equipada.
+        player.inventory.items = [];
+        player.inventory.weapons = [];
+        player.equipmentComponent.equippedWeapon = null;
+        player.equipmentComponent.attackCooldown = 0;
+        player.gold = 0;
+
+        // 6. Reseta estado de coleta dos itens das salas para que possam
+        //    ser coletados novamente em um novo jogo.
+        if (world.worldMap) {
+            Object.values(world.worldMap).forEach(room => {
+                if (room && Array.isArray(room.items)) {
+                    room.items.forEach(item => {
+                        if (item) item.isCollected = false;
+                    });
+                }
+            });
+        }
     }
 
     update() {

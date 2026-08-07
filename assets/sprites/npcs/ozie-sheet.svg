@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="288" height="288"
+     viewBox="0 0 288 288"
+     shape-rendering="crispEdges"
+     image-rendering="pixelated">
+
+  <title>Ozie Sheet - Pai do Player (camponês medieval lenhador)</title>
+  <desc>6 frames por linha, 6 linhas (idle front/side/back + move front/side/back)</desc>
+
+  <!-- Paleta medieval masculina:
+       #8b3a1a  cabelo ruivo escuro
+       #c95a2a  cabelo ruivo claro
+       #f0c8a0  pele clara
+       #c89878  pele sombra
+       #3a2a1a  calça marrom escuro
+       #5a3a26  calça meio
+       #b89060  camisa bege
+       #8b6b3a  camisa sombra
+       #4a2f1a  colete couro
+       #6b4a2a  colete couro claro
+       #5a5a5a  lâmina machado
+       #8a8a8a  lâmina brilho
+       #6b3a1a  cabo machado
+       #4a2f1a  cabo sombra
+       #2c4a2c  folhas (ambiente)
+       #1a1a1a  contorno/preto
+  -->
+
+  <defs>
+    <!-- =================== FRENTE (FRONT) =================== -->
+    <g id="ozie-front">
+      <!-- Sombra no chão -->
+      <rect x="10" y="44" width="28" height="3" fill="#1a1a1a" opacity="0.3"/>
+
+      <!-- Calça marrom -->
+      <rect x="14" y="36" width="20" height="8" fill="#3a2a1a"/>
+      <rect x="14" y="42" width="20" height="2" fill="#1a0f08"/>
+      <rect x="16" y="38" width="2" height="6" fill="#5a3a26"/>
+      <rect x="22" y="38" width="2" height="6" fill="#5a3a26"/>
+      <rect x="28" y="38" width="2" height="6" fill="#5a3a26"/>
+
+      <!-- Botas -->
+      <rect x="14" y="42" width="6" height="2" fill="#1a0f08"/>
+      <rect x="28" y="42" width="6" height="2" fill="#1a0f08"/>
+
+      <!-- Cintura/cinto -->
+      <rect x="14" y="34" width="20" height="2" fill="#2a1d12"/>
+      <rect x="22" y="34" width="2" height="2" fill="#8b6b3a"/>
+
+      <!-- Camisa bege (tronco) -->
+      <rect x="14" y="22" width="20" height="12" fill="#b89060"/>
+      <rect x="14" y="22" width="20" height="2" fill="#d8a878"/>
+      <rect x="14" y="32" width="20" height="2" fill="#8b6b3a"/>
+      <rect x="22" y="24" width="1" height="8" fill="#8b6b3a"/>
+      <rect x="26" y="24" width="1" height="8" fill="#8b6b3a"/>
+
+      <!-- Colete couro por cima da camisa -->
+      <rect x="14" y="22" width="4" height="12" fill="#4a2f1a"/>
+      <rect x="30" y="22" width="4" height="12" fill="#4a2f1a"/>
+      <rect x="18" y="22" width="12" height="12" fill="#6b4a2a"/>
+      <rect x="18" y="24" width="12" height="2" fill="#8b6b3a"/>
+      <!-- Abertura do colete (V) -->
+      <rect x="22" y="24" width="4" height="6" fill="#b89060"/>
+      <rect x="22" y="24" width="4" height="1" fill="#d8a878"/>
+
+      <!-- Braço esquerdo (segura machado) -->
+      <rect x="6" y="24" width="6" height="6" fill="#b89060"/>
+      <rect x="6" y="28" width="6" height="2" fill="#8b6b3a"/>
+      <rect x="8" y="30" width="4" height="4" fill="#f0c8a0"/>
+
+      <!-- Machado na mão esquerda -->
+      <!-- Cabo vertical -->
+      <rect x="8" y="8" width="2" height="20" fill="#6b3a1a"/>
+      <rect x="9" y="8" width="1" height="20" fill="#8b4a2a"/>
+      <!-- Lâmina do machado (cabeça) -->
+      <rect x="2" y="6" width="6" height="6" fill="#5a5a5a"/>
+      <rect x="2" y="6" width="6" height="2" fill="#8a8a8a"/>
+      <rect x="2" y="10" width="6" height="2" fill="#3a3a3a"/>
+      <rect x="0" y="7" width="2" height="4" fill="#5a5a5a"/>
+      <!-- Prego na junção cabo+lâmina -->
+      <rect x="8" y="12" width="2" height="1" fill="#1a1a1a"/>
+
+      <!-- Braço direito -->
+      <rect x="36" y="24" width="4" height="8" fill="#b89060"/>
+      <rect x="36" y="30" width="4" height="2" fill="#8b6b3a"/>
+      <rect x="36" y="32" width="4" height="4" fill="#f0c8a0"/>
+
+      <!-- Pescoço -->
+      <rect x="21" y="20" width="6" height="2" fill="#c89878"/>
+
+      <!-- Cabeça (rosto) -->
+      <rect x="18" y="8" width="12" height="12" fill="#f0c8a0"/>
+      <rect x="18" y="18" width="12" height="2" fill="#c89878"/>
+
+      <!-- Cabelo ruivo (topo) -->
+      <rect x="16" y="6" width="16" height="6" fill="#8b3a1a"/>
+      <rect x="16" y="6" width="16" height="2" fill="#c95a2a"/>
+      <rect x="14" y="8" width="2" height="6" fill="#8b3a1a"/>
+      <rect x="32" y="8" width="2" height="6" fill="#8b3a1a"/>
+
+      <!-- Sobrancelhas grossas -->
+      <rect x="20" y="12" width="3" height="1" fill="#5a2a0a"/>
+      <rect x="25" y="12" width="3" height="1" fill="#5a2a0a"/>
+
+      <!-- Olhos -->
+      <rect x="20" y="14" width="2" height="2" fill="#1a1a1a"/>
+      <rect x="26" y="14" width="2" height="2" fill="#1a1a1a"/>
+      <rect x="21" y="14" width="1" height="1" fill="#f0c8a0"/>
+      <rect x="27" y="14" width="1" height="1" fill="#f0c8a0"/>
+
+      <!-- Bigode ruivo -->
+      <rect x="20" y="17" width="8" height="2" fill="#8b3a1a"/>
+      <rect x="22" y="19" width="4" height="1" fill="#6b2a0a"/>
+
+      <!-- Boca -->
+      <rect x="22" y="19" width="4" height="1" fill="#5a2a1a"/>
+    </g>
+
+    <!-- =================== LADO (SIDE) =================== -->
+    <g id="ozie-side">
+      <!-- Sombra no chão -->
+      <rect x="10" y="44" width="28" height="3" fill="#1a1a1a" opacity="0.3"/>
+
+      <!-- Calça marrom (perfil) -->
+      <rect x="16" y="36" width="18" height="8" fill="#3a2a1a"/>
+      <rect x="16" y="42" width="18" height="2" fill="#1a0f08"/>
+      <rect x="20" y="38" width="2" height="6" fill="#5a3a26"/>
+      <rect x="28" y="38" width="2" height="6" fill="#5a3a26"/>
+
+      <!-- Botas -->
+      <rect x="16" y="42" width="6" height="2" fill="#1a0f08"/>
+      <rect x="28" y="42" width="6" height="2" fill="#1a0f08"/>
+
+      <!-- Cintura -->
+      <rect x="16" y="34" width="18" height="2" fill="#2a1d12"/>
+
+      <!-- Camisa bege (perfil) -->
+      <rect x="16" y="22" width="18" height="12" fill="#b89060"/>
+      <rect x="16" y="22" width="18" height="2" fill="#d8a878"/>
+      <rect x="16" y="32" width="18" height="2" fill="#8b6b3a"/>
+
+      <!-- Colete (perfil) -->
+      <rect x="16" y="22" width="4" height="12" fill="#4a2f1a"/>
+      <rect x="30" y="22" width="4" height="12" fill="#4a2f1a"/>
+      <rect x="20" y="22" width="10" height="12" fill="#6b4a2a"/>
+
+      <!-- Braço esquerdo (frente, com machado) -->
+      <rect x="10" y="26" width="6" height="6" fill="#b89060"/>
+      <rect x="10" y="30" width="6" height="2" fill="#8b6b3a"/>
+      <rect x="10" y="32" width="4" height="3" fill="#f0c8a0"/>
+
+      <!-- Machado (perfil - segurado na frente) -->
+      <rect x="6" y="20" width="2" height="14" fill="#6b3a1a"/>
+      <rect x="7" y="20" width="1" height="14" fill="#8b4a2a"/>
+      <rect x="2" y="14" width="6" height="6" fill="#5a5a5a"/>
+      <rect x="2" y="14" width="6" height="2" fill="#8a8a8a"/>
+      <rect x="2" y="18" width="6" height="2" fill="#3a3a3a"/>
+      <rect x="0" y="15" width="2" height="4" fill="#5a5a5a"/>
+
+      <!-- Pescoço -->
+      <rect x="22" y="20" width="6" height="2" fill="#c89878"/>
+
+      <!-- Cabeça (perfil - com queixo proeminente) -->
+      <rect x="20" y="8" width="10" height="12" fill="#f0c8a0"/>
+      <rect x="20" y="18" width="12" height="2" fill="#c89878"/>
+      <!-- Nariz grande -->
+      <rect x="30" y="14" width="2" height="3" fill="#c89878"/>
+      <rect x="30" y="17" width="2" height="1" fill="#a87858"/>
+
+      <!-- Cabelo (perfil) -->
+      <rect x="18" y="6" width="12" height="6" fill="#8b3a1a"/>
+      <rect x="18" y="6" width="12" height="2" fill="#c95a2a"/>
+      <rect x="16" y="8" width="2" height="6" fill="#8b3a1a"/>
+      <!-- Cabelo na nuca -->
+      <rect x="20" y="18" width="10" height="4" fill="#8b3a1a"/>
+      <rect x="20" y="18" width="10" height="1" fill="#5a2a0a"/>
+
+      <!-- Sobrancelha -->
+      <rect x="24" y="12" width="4" height="1" fill="#5a2a0a"/>
+
+      <!-- Olho -->
+      <rect x="26" y="14" width="2" height="2" fill="#1a1a1a"/>
+      <rect x="27" y="14" width="1" height="1" fill="#f0c8a0"/>
+
+      <!-- Bigode (perfil) -->
+      <rect x="28" y="16" width="4" height="2" fill="#8b3a1a"/>
+
+      <!-- Boca -->
+      <rect x="28" y="18" width="2" height="1" fill="#5a2a1a"/>
+    </g>
+
+    <!-- =================== COSTAS (BACK) =================== -->
+    <g id="ozie-back">
+      <!-- Sombra no chão -->
+      <rect x="10" y="44" width="28" height="3" fill="#1a1a1a" opacity="0.3"/>
+
+      <!-- Cabelo (costas - cobre pescoço parcialmente) -->
+      <rect x="16" y="6" width="16" height="14" fill="#8b3a1a"/>
+      <rect x="16" y="6" width="16" height="2" fill="#c95a2a"/>
+      <rect x="14" y="8" width="2" height="10" fill="#8b3a1a"/>
+      <rect x="32" y="8" width="2" height="10" fill="#8b3a1a"/>
+
+      <!-- Camisa bege (costas) -->
+      <rect x="14" y="22" width="20" height="12" fill="#b89060"/>
+      <rect x="14" y="22" width="20" height="2" fill="#d8a878"/>
+      <rect x="14" y="32" width="20" height="2" fill="#8b6b3a"/>
+      <rect x="22" y="24" width="1" height="8" fill="#8b6b3a"/>
+      <rect x="26" y="24" width="1" height="8" fill="#8b6b3a"/>
+
+      <!-- Colete couro (costas) -->
+      <rect x="14" y="22" width="20" height="12" fill="#4a2f1a"/>
+      <rect x="14" y="22" width="20" height="2" fill="#6b4a2a"/>
+      <!-- Costura central do colete -->
+      <rect x="23" y="22" width="1" height="12" fill="#2a1d12"/>
+
+      <!-- Cintura -->
+      <rect x="14" y="34" width="20" height="2" fill="#2a1d12"/>
+      <rect x="22" y="34" width="2" height="2" fill="#8b6b3a"/>
+
+      <!-- Calça -->
+      <rect x="14" y="36" width="20" height="8" fill="#3a2a1a"/>
+      <rect x="14" y="42" width="20" height="2" fill="#1a0f08"/>
+      <rect x="16" y="38" width="2" height="6" fill="#5a3a26"/>
+      <rect x="22" y="38" width="2" height="6" fill="#5a3a26"/>
+      <rect x="28" y="38" width="2" height="6" fill="#5a3a26"/>
+
+      <!-- Botas -->
+      <rect x="14" y="42" width="6" height="2" fill="#1a0f08"/>
+      <rect x="28" y="42" width="6" height="2" fill="#1a0f08"/>
+
+      <!-- Braço esquerdo (costas - segurando machado) -->
+      <rect x="6" y="24" width="6" height="6" fill="#4a2f1a"/>
+      <rect x="8" y="30" width="4" height="3" fill="#f0c8a0"/>
+
+      <!-- Machado (costas - só topo do cabo visível) -->
+      <rect x="8" y="6" width="2" height="18" fill="#6b3a1a"/>
+      <rect x="9" y="6" width="1" height="18" fill="#8b4a2a"/>
+      <rect x="4" y="4" width="6" height="4" fill="#5a5a5a"/>
+      <rect x="4" y="4" width="6" height="1" fill="#8a8a8a"/>
+
+      <!-- Braço direito (costas) -->
+      <rect x="36" y="24" width="4" height="8" fill="#4a2f1a"/>
+      <rect x="36" y="32" width="4" height="3" fill="#f0c8a0"/>
+    </g>
+  </defs>
+
+  <!-- =================== ROW 0: IDLE FRONT =================== -->
+  <g transform="translate(0,0)">
+    <use href="#ozie-front"/>
+  </g>
+  <g transform="translate(48,0)">
+    <use href="#ozie-front"/>
+  </g>
+  <g transform="translate(96,0)">
+    <use href="#ozie-front"/>
+  </g>
+  <g transform="translate(144,0)">
+    <use href="#ozie-front"/>
+  </g>
+  <g transform="translate(192,0)">
+    <use href="#ozie-front"/>
+  </g>
+  <g transform="translate(240,0)">
+    <use href="#ozie-front"/>
+  </g>
+
+  <!-- =================== ROW 1: IDLE SIDE =================== -->
+  <g transform="translate(0,48)">
+    <use href="#ozie-side"/>
+  </g>
+  <g transform="translate(48,48)">
+    <use href="#ozie-side"/>
+  </g>
+  <g transform="translate(96,48)">
+    <use href="#ozie-side"/>
+  </g>
+  <g transform="translate(144,48)">
+    <use href="#ozie-side"/>
+  </g>
+  <g transform="translate(192,48)">
+    <use href="#ozie-side"/>
+  </g>
+  <g transform="translate(240,48)">
+    <use href="#ozie-side"/>
+  </g>
+
+  <!-- =================== ROW 2: IDLE BACK =================== -->
+  <g transform="translate(0,96)">
+    <use href="#ozie-back"/>
+  </g>
+  <g transform="translate(48,96)">
+    <use href="#ozie-back"/>
+  </g>
+  <g transform="translate(96,96)">
+    <use href="#ozie-back"/>
+  </g>
+  <g transform="translate(144,96)">
+    <use href="#ozie-back"/>
+  </g>
+  <g transform="translate(192,96)">
+    <use href="#ozie-back"/>
+  </g>
+  <g transform="translate(240,96)">
+    <use href="#ozie-back"/>
+  </g>
+
+  <!-- =================== ROW 3: MOVE FRONT =================== -->
+  <g transform="translate(0,144)">
+    <use href="#ozie-front"/>
+    <rect x="14" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="28" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+  <g transform="translate(48,144)">
+    <use href="#ozie-front"/>
+    <rect x="14" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="26" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+  <g transform="translate(96,144)">
+    <use href="#ozie-front"/>
+    <rect x="16" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="28" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+  <g transform="translate(144,144)">
+    <use href="#ozie-front"/>
+    <rect x="14" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="28" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+  <g transform="translate(192,144)">
+    <use href="#ozie-front"/>
+    <rect x="14" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="26" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+  <g transform="translate(240,144)">
+    <use href="#ozie-front"/>
+    <rect x="16" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="28" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+
+  <!-- =================== ROW 4: MOVE SIDE =================== -->
+  <g transform="translate(0,192)">
+    <use href="#ozie-side"/>
+    <rect x="16" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="28" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+  <g transform="translate(48,192)">
+    <use href="#ozie-side"/>
+    <rect x="18" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="26" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+  <g transform="translate(96,192)">
+    <use href="#ozie-side"/>
+    <rect x="16" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="28" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+  <g transform="translate(144,192)">
+    <use href="#ozie-side"/>
+    <rect x="18" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="26" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+  <g transform="translate(192,192)">
+    <use href="#ozie-side"/>
+    <rect x="16" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="28" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+  <g transform="translate(240,192)">
+    <use href="#ozie-side"/>
+    <rect x="18" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="26" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+
+  <!-- =================== ROW 5: MOVE BACK =================== -->
+  <g transform="translate(0,240)">
+    <use href="#ozie-back"/>
+    <rect x="14" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="28" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+  <g transform="translate(48,240)">
+    <use href="#ozie-back"/>
+    <rect x="14" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="28" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+  <g transform="translate(96,240)">
+    <use href="#ozie-back"/>
+    <rect x="14" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="28" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+  <g transform="translate(144,240)">
+    <use href="#ozie-back"/>
+    <rect x="14" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="28" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+  <g transform="translate(192,240)">
+    <use href="#ozie-back"/>
+    <rect x="14" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="28" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+  <g transform="translate(240,240)">
+    <use href="#ozie-back"/>
+    <rect x="14" y="42" width="6" height="2" fill="#1a0f08"/>
+    <rect x="28" y="42" width="6" height="2" fill="#1a0f08"/>
+  </g>
+</svg>
