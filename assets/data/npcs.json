@@ -53,16 +53,14 @@
         "move": { "front": 3, "side": 4, "back": 5 }
       },
       "zOrder": "auto"
-    }
-  ],
-  "0,-1": [
-    {
+    },
+        {
       "id": "srpoo_01",
       "name": "Sr. Poo",
       "sprite": "assets/sprites/npcs/srpoo-sheet.png",
       "frameSize": 48,
       "scale": 2,
-      "position": { "x": 0, "y": 180 },
+      "position": { "x": 120, "y": 180 },
       "collisionBox": { "x": 32, "y": 58, "width": 32, "height": 30 },
       "behavior": {
         "type": "randomWalk",

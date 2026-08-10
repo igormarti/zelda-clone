@@ -3,6 +3,7 @@ import ConfirmSaveState from './ConfirmSaveState.js';
 import GameOverState from './GameOverState.js';
 import GameSnapshot from '../persistence/GameSnapshot.js';
 import InventoryState from './InventoryState.js';
+import MapState from './MapState.js';
 import PausedState from './PausedState.js';
 import State from './State.js';
 
@@ -94,6 +95,11 @@ export default class PlayingState extends State {
         if(!dialogManager?.isActive() && (input.keys['i'] || input.keys['I'])){
             input.keys['i'] = input.keys['I'] = false;
             this.stateManager.changeState(InventoryState);
+        }
+
+        if (!dialogManager?.isActive() && (input.keys['m'] || input.keys['M'])) {
+            input.keys['m'] = input.keys['M'] = false;
+            this.stateManager.changeState(MapState);
         }
 
         if (!dialogManager?.isActive() && (input.keys['X'] || input.keys['x'])) {

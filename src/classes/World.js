@@ -73,146 +73,168 @@ export default class World {
         this.TILE_SIZE = 16; // Tamanho original do asset pack
     }
 
-    initWorldMap(gameContext, player){
-        this.worldMap = {
-            "0,0": {
-                name: "Clareira Verdejante",
-                color: "#548a3c", // Cor de fundo verde-grama correspondente à paleta
+    /**
+     * Cria uma sala "vazia" com bioma, conectores e cor de fundo,
+     * mas sem obstáculos/enemies/itens (preenchimento posterior).
+     */
+    _createEmptyRoom(name, color, biome = {}) {
+        return {
+            name,
+            color,
+            backgroundTileset: biome.backgroundTileset || null,
+            floorDecorations: [],
+            obstacles: [],
+            overlays: [],
+            doors: [],
+            enemies: [],
+            items: []
+        };
+    }
 
-                // Detalhes estéticos do chão pelos quais o player passa livremente por cima
-                floorDecorations: [
-                    {type: 'grass', x: 0, y:0, width: 800, height: 600},
-                    this.tileGenerator.generate(
-                        {   
-                            config: { type: 'big_grass_0', x: 120, y:400, width: 64, height: 64, drawMode:'x'},
-                            quantity: 1
-                        }
-                    ),
-                    ...this.tileGenerator.generate(
-                        {   
-                            config: { type: 'dirt_patch', x: 375, y: 0, width: 70, height: 60, drawMode:'y'},
-                            quantity: 10
-                        }
-                    ),
-                    ...this.tileGenerator.generate(
-                        {   
-                            config: { type: 'dirt_patch', x: 120, y: 240, width: 100, height: 60},
-                            quantity: 7
-                        }
-                    ),
-                    {type: 'dirt_patch_1', x: 125, y: 240, width: 32, height: 32},
-                    {type: 'dirt_patch_2', x: 125, y: 245, width: 32, height: 32},
-                    {type: 'dirt_patch_3', x: 405, y: 245, width: 32, height: 32},
-                    {type: 'dirt_patch_1', x: 405, y: 248, width: 32, height: 32},
-                    {type: 'dirt_patch_2', x: 400, y: 248, width: 32, height: 32},
-                    {type: 'dirt_patch_1', x: 410, y: 250, width: 32, height: 32},
-                    { type: 'flower_set', x: 120, y: 150 },
-                    { type: 'flower_set_1', x: 140, y: 160 },
-                    { type: 'flower_blue_top_right', x: 300, y: 160 },
-                    { type: 'water', x: 0, y: 0 , width: 70, height: 600 },
-                    ...this.tileGenerator.generate(
-                        {   
-                            config: { type: 'grass_border_with_soil_y',  x: 60, y: 0,  width: 16, height: 16, drawMode: 'y' },
-                            quantity: 38
-                        }
-                    ),
-                ],
+    /**
+     * Constrói o mapa-múndi com 7 regiões e 37 salas, conforme
+     * assets/map-world.png e a documentação em
+     * docs/features/07-mapa-mundo.md.
+     */
+    buildWorldMap(gameContext, player) {
+        // === Salas "ricas" (existentes, conteúdo preservado) ===
+        const rica_0_0 = {
+            name: "Clareira Verdejante",
+            color: "#548a3c",
 
-                // Objetos físicos. O player vai colidir contra estas coordenadas!
-                obstacles: [
-                    // Tronco da árvore sólida no chão
-                    { type: 'tree_trunk', x: 200, y: 120, width: 64, height: 48 , collisionBox:{x: 210, y: 130, width: 48, height: 32}}, 
-                    { type: 'tree_trunk', x: 615, y: 38, width: 32, height: 32 , drawMode: 'y',  collisionBox:{x: 615, y: 38, width: 32, height: 32}},
-                    { type: 'tree_trunk', x: 680, y: 38, width: 32, height: 32 , drawMode: 'y',  collisionBox:{x: 680, y: 38, width: 32, height: 32}},
-                    { type: 'tree_trunk', x: 745, y: 38, width: 32, height: 32 , drawMode: 'y',  collisionBox:{ x: 745, y: 38, width: 32, height: 32}},
-                    { type: 'tree_trunk', x: 615, y: 80, width: 32, height: 32 , drawMode: 'y',  collisionBox:{x: 615, y: 80, width: 32, height: 32}},
-                    { type: 'tree_trunk', x: 615, y: 130, width: 32, height: 32 , drawMode: 'y',  collisionBox:{x: 615, y: 130, width: 32, height: 32}},
-                    { type: 'tree_trunk', x: 745, y: 78, width: 32, height: 32 , drawMode: 'y',  collisionBox:{x: 745, y: 78, width: 32, height: 32}},
-                    { type: 'tree_trunk', x: 748, y: 136, width: 32, height: 32 , drawMode: 'y',  collisionBox:{x: 748, y: 136, width: 32, height: 32}},
-                    ...this.tileGenerator.generate(
-                        {   
-                            config: { type: 'grass_border_x',  x: 120, y: 300,  width: 64, height: 32, drawMode: 'x' },
-                            quantity: 4,
-                            collisionBox:{ x: 10, y: 10,  width: 40, height: 16}
-                        }
-                    ),
-                    // Cerca fechando uma área de perigo
-                     ...this.tileGenerator.generate(
-                        {   
-                            config: { type: 'fence_h', x: 118, y: 200, width: 32, height: 32 },
-                            collisionBox: {x:5, y: 5,  width: 28, height: 12 },
-                            quantity: 8
-                        }
-                    ),
-                     ...this.tileGenerator.generate(
-                        {   
-                            config: { type: 'fence_h', x: 450, y: 200, width: 32, height: 32 },
-                            collisionBox: {x:5, y: 5, width: 28, height: 12 },
-                            quantity: 11
-                        }
-                    ),
-                    ...this.tileGenerator.generate(
-                        {   
-                            config: { type: 'fence_r', x: 75, y: 0, drawMode: 'y' },
-                            collisionBox: {x:5, y: 5, width: 12, height: 26 },
-                            quantity: 19
-                        }
-                    ),
-                    new SignPost(700,280, 32, 32 , [
-                        ' Seguindo para o Norte - Cemitério',
-                        ' Seguindo para o Sul - Deserto de MassaLand',
-                    ]),
-                    new Chest(680, 65, 32, 32, 'red', { type: 'gold', amount: 10 }),
-                ],
+            floorDecorations: [
+                {type: 'grass', x: 0, y:0, width: 800, height: 600},
+                this.tileGenerator.generate(
+                    {
+                        config: { type: 'big_grass_0', x: 120, y:400, width: 64, height: 64, drawMode:'x'},
+                        quantity: 1
+                    }
+                ),
+                ...this.tileGenerator.generate(
+                    {
+                        config: { type: 'dirt_patch', x: 375, y: 0, width: 70, height: 60, drawMode:'y'},
+                        quantity: 10
+                    }
+                ),
+                ...this.tileGenerator.generate(
+                    {
+                        config: { type: 'dirt_patch', x: 120, y: 240, width: 100, height: 60},
+                        quantity: 7
+                    }
+                ),
+                {type: 'dirt_patch_1', x: 125, y: 240, width: 32, height: 32},
+                {type: 'dirt_patch_2', x: 125, y: 245, width: 32, height: 32},
+                {type: 'dirt_patch_3', x: 405, y: 245, width: 32, height: 32},
+                {type: 'dirt_patch_1', x: 405, y: 248, width: 32, height: 32},
+                {type: 'dirt_patch_2', x: 400, y: 248, width: 32, height: 32},
+                {type: 'dirt_patch_1', x: 410, y: 250, width: 32, height: 32},
+                { type: 'flower_set', x: 120, y: 150 },
+                { type: 'flower_set_1', x: 140, y: 160 },
+                { type: 'flower_blue_top_right', x: 300, y: 160 },
+                { type: 'water', x: 0, y: 0 , width: 70, height: 600 },
+                ...this.tileGenerator.generate(
+                    {
+                        config: { type: 'grass_border_with_soil_y',  x: 60, y: 0,  width: 16, height: 16, drawMode: 'y' },
+                        quantity: 38
+                    }
+                ),
+            ],
 
-                // Copas projetadas. Ficam desenhadas acima do Player e dos inimigos!
-                overlays: [
-                    // Posicionadas ligeiramente acima do tronco (Y menor) para cobrir o topo
-                    { type: 'tree_top_green', x: 192, y: 70, width: 80, height: 100 },
-                    { type: 'tree_top_orange', x: 592, y: 0, width: 80, height: 80 },
-                    { type: 'tree_top_orange', x: 655, y: 0, width: 80, height: 80 },
-                    { type: 'tree_top_orange', x: 725, y: 0, width: 80, height: 80 },
-                    { type: 'tree_top_orange', x: 592, y: 45, width: 80, height: 80 },
-                    { type: 'tree_top_orange', x: 592, y: 95, width: 80, height: 80 },
-                    { type: 'tree_top_orange', x: 725, y: 48, width: 80, height: 80 },
-                    { type: 'tree_top_orange', x: 725, y: 100, width: 80, height: 80 },
-                ],
-                doors: [
-                    new Door(790, 220, 10, 100, "1,0", { x: 0, y: 200 }, { requiresProgression: [
+            obstacles: [
+                { type: 'tree_trunk', x: 200, y: 120, width: 64, height: 48 , collisionBox:{x: 210, y: 130, width: 48, height: 32}},
+                { type: 'tree_trunk', x: 615, y: 38, width: 32, height: 32 , drawMode: 'y',  collisionBox:{x: 615, y: 38, width: 32, height: 32}},
+                { type: 'tree_trunk', x: 680, y: 38, width: 32, height: 32 , drawMode: 'y',  collisionBox:{x: 680, y: 38, width: 32, height: 32}},
+                { type: 'tree_trunk', x: 745, y: 38, width: 32, height: 32 , drawMode: 'y',  collisionBox: { x: 745, y: 38, width: 32, height: 32}},
+                { type: 'tree_trunk', x: 615, y: 80, width: 32, height: 32 , drawMode: 'y',  collisionBox:{x: 615, y: 80, width: 32, height: 32}},
+                { type: 'tree_trunk', x: 615, y: 130, width: 32, height: 32 , drawMode: 'y',  collisionBox:{x: 615, y: 130, width: 32, height: 32}},
+                { type: 'tree_trunk', x: 745, y: 78, width: 32, height: 32 , drawMode: 'y',  collisionBox:{x: 745, y: 78, width: 32, height: 32}},
+                { type: 'tree_trunk', x: 748, y: 136, width: 32, height: 32 , drawMode: 'y',  collisionBox:{x: 748, y: 136, width: 32, height: 32}},
+                ...this.tileGenerator.generate(
+                    {
+                        config: { type: 'grass_border_x',  x: 120, y: 300,  width: 64, height: 32, drawMode: 'x' },
+                        quantity: 4,
+                        collisionBox:{ x: 10, y: 10,  width: 40, height: 16}
+                    }
+                ),
+                ...this.tileGenerator.generate(
+                    {
+                        config: { type: 'fence_h', x: 118, y: 200, width: 32, height: 32 },
+                        collisionBox: {x:5, y: 5,  width: 28, height: 12 },
+                        quantity: 8
+                    }
+                ),
+                ...this.tileGenerator.generate(
+                    {
+                        config: { type: 'fence_h', x: 450, y: 200, width: 32, height: 32 },
+                        collisionBox: {x:5, y: 5, width: 28, height: 12 },
+                        quantity: 11
+                    }
+                ),
+                ...this.tileGenerator.generate(
+                    {
+                        config: { type: 'fence_r', x: 75, y: 0, drawMode: 'y' },
+                        collisionBox: {x:5, y: 5, width: 12, height: 26 },
+                        quantity: 19
+                    }
+                ),
+                new SignPost(700,280, 32, 32 , [
+                    ' Seguindo para o Norte - Cemitério',
+                    ' Seguindo para o Sul - Deserto de MassaLand',
+                ]),
+                new Chest(680, 65, 32, 32, 'red', { type: 'gold', amount: 10 }),
+            ],
+
+            overlays: [
+                { type: 'tree_top_green', x: 192, y: 70, width: 80, height: 100 },
+                { type: 'tree_top_orange', x: 592, y: 0, width: 80, height: 80 },
+                { type: 'tree_top_orange', x: 655, y: 0, width: 80, height: 80 },
+                { type: 'tree_top_orange', x: 725, y: 0, width: 80, height: 80 },
+                { type: 'tree_top_orange', x: 592, y: 45, width: 80, height: 80 },
+                { type: 'tree_top_orange', x: 592, y: 95, width: 80, height: 80 },
+                { type: 'tree_top_orange', x: 725, y: 48, width: 80, height: 80 },
+                { type: 'tree_top_orange', x: 725, y: 100, width: 80, height: 80 },
+            ],
+            doors: [
+                // Leste → Campo com Cercas (1,0)
+                new Door(790, 220, 10, 100, "1,0", { x: 0, y: 220 }, { requiresProgression: [
                     { type: 'equipped', id: 'received_iron_sword_from_srpoo', EquippedID:'iron_sword_01' },
                     { type: 'flag', id: 'conversed_srpoo_01' }
-                 ]}),
-                    new Door(360, 0, 100, 10, "0,-1", { x: 350, y: 504 }),
-                    new Door(360, 590, 100, 10, "0,1", { x: 350, y: 0 }, { requiresProgression: [
-                    { type: 'equipped', id: 'received_iron_sword_from_srpoo', EquippedID:'iron_sword_01' },
-                    { type: 'flag', id: 'conversed_srpoo_01' }
-                 ]})
-                ],
-                enemies: [
-                ],
-                items: [
-                    new InventoryItem(745, 10,'health_potion_01', "health_potion", "Poção de Saúde", 3, null, "#ff0000"),
-                    new WeaponItem(540, 25, 32, 32, 
-                        new Bow(player, {context:gameContext.ctx, assetManager: gameContext.assetManager}, 
-                            {
-                                id: 'bow_01',
-                                name: 'Arco de Madeira',
-                                description: "Arco de Madeira que consegue atingir inimigos de uma distância considerável",
-                                spritePath: 'assets/sprites/weapon/bow-sheet.png',
-                                icon: 'assets/icons/weapons/bow-icon.png'
-                            }
-                        )
+                ]}),
+                // Sul → Campo Sul (0,1)
+                new Door(360, 590, 100, 10, "0,1", { x: 350, y: 0 }),
+            ],
+            enemies: [],
+            items: [
+                new InventoryItem(745, 10,'health_potion_01', "health_potion", "Poção de Saúde", 3, null, "#ff0000"),
+                new WeaponItem(540, 25, 32, 32,
+                    new Bow(player, {context:gameContext.ctx, assetManager: gameContext.assetManager},
+                        {
+                            id: 'bow_01',
+                            name: 'Arco de Madeira',
+                            description: "Arco de Madeira que consegue atingir inimigos de uma distância considerável",
+                            spritePath: 'assets/sprites/weapon/bow-sheet.png',
+                            icon: 'assets/icons/weapons/bow-icon.png'
+                        }
                     )
-                ]
-            },
-            "1,0": { name: "Caverna Sombria", color: "#2e3b4e", backgroundTileset: this.caveTileset, obstacles: [
+                )
+            ]
+        };
+
+        // Porta para a Floresta (0,0 → 2,0): re-aponta "1,0" antigo para "2,0"
+        const rica_2_0 = {
+            name: "Caverna Sombria",
+            color: "#2e3b4e",
+            backgroundTileset: this.caveTileset,
+            obstacles: [
                 new SacredTree(400, 280, 48, 64, [
                     "A Árvore Sagrada pulsa com uma energia ancestral.",
                     "Pressione X para registrar seu progresso aqui."
                 ])
-            ], doors: [
+            ],
+            doors: [
                 new Door(0, 220, 10, 100, "0,0", { x: 725, y: 220 })
-            ], enemies: [
+            ],
+            enemies: [
                 new Enemy({
                     x: 450, y: 300,
                     maxHealth: 4, attackDamage: 1,
@@ -237,131 +259,270 @@ export default class World {
                     gameContext
                 })
             ],
-             items: [
+            items: [
                 new InventoryItem(200, 200, 'mana_potion_01', "mana_potion", "Poção de Mana", 2, null, "#0000ff"),
                 new HeartItem(300, 300, 16, 16, 1)
-             ]
-        },
-            "0,1": { name: "Deserto do Sul", color: "#6e3a3a", backgroundTileset: this.desertTileset, obstacles: [], doors: [
-                new Door(350, 0, 100, 10, "0,0", { x: 350, y: 485 })
-            ], enemies: [
-                new Enemy({
-                    x: 200, y: 350,
-                    maxHealth: 3, attackDamage: 1,
-                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
-                    aiType: 'patrol_linear',
-                    patrolAxis: 'horizontal',
-                    speed: 1,
-                    detectionRange: 90,
-                    spriteSheet: 'assets/sprites/enemies/slime.svg',
-                    spriteFrames: 4,
-                    gameContext
-                }),
-                new Enemy({
-                    x: 550, y: 450,
-                    maxHealth: 4, attackDamage: 2,
-                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
-                    aiType: 'patrol_random',
-                    speed: 0.8,
-                    detectionRange: 100,
-                    spriteSheet: 'assets/sprites/enemies/red-skeleton.svg',
-                    spriteFrames: 4,
-                    gameContext
-                })
-            ], items: []},
-            "0,-1": { name: "Cemitério", color: "#5a3a6e", backgroundTileset: this.cemeteryTileset, obstacles: [
-                 { x: 120, y: 100, width: 80, height: 80 },
-                 { x: 600, y: 100, width: 80, height: 80 },
-                 { x: 120, y: 400, width: 80, height: 80 },
-                 { x: 600, y: 400, width: 80, height: 80 }
-            ], doors: [
-                new Door(350, 590, 100, 10, "0,0", { x: 370, y: 0 }),
-            ], enemies: [
-                new Enemy({
-                    x: 350, y: 250,
-                    maxHealth: 5, attackDamage: 2,
-                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
-                    aiType: 'patrol_random',
-                    speed: 0.6,
-                    detectionRange: 130,
-                    spriteSheet: 'assets/sprites/enemies/red-skeleton.svg',
-                    spriteFrames: 4,
-                    gameContext
-                }),
-                new Enemy({
-                    x: 500, y: 300,
-                    maxHealth: 3, attackDamage: 1,
-                    collisionBox: { x: 32, y: 58, width: 32, height: 30 },
-                    aiType: 'patrol_linear',
-                    patrolAxis: 'vertical',
-                    speed: 0.8,
-                    detectionRange: 90,
-                    spriteSheet: 'assets/sprites/enemies/slime.svg',
-                    spriteFrames: 4,
-                    gameContext
-                }),
+            ]
+        };
 
-                  // 1. Inimigo Estático (Tipo Padrão) - RENASCE SEMPRE
-                    new Enemy({
-                        x: 200, y: 40,
-                        maxHealth: 3, attackDamage: 1 ,
-                        collisionBox:{ x: 32, y: 58, width: 32, height: 30 },
-                        aiType: 'stationary', 
-                        gameContext,
-                        spriteSheet: 'assets/sprites/enemies/slime.svg',
-                        spriteFrames: 4,
-                        persistent: false
-                    }),
-
-                    // 2. Inimigo de Patrulha Horizontal - PERSISTENTE (chefe local)
-                    // Uma vez derrotado, permanece morto mesmo após save/load.
-                    new Enemy({
-                        x: 460, y: 300,
-                        maxHealth: 3, attackDamage: 1 ,
-                        collisionBox:{ x: 32, y: 58, width: 32, height: 30 },
-                        aiType: 'patrol_linear', 
-                        patrolAxis: 'horizontal', 
-                        speed: 1, 
-                        gameContext,
-                        spriteSheet: 'assets/sprites/enemies/slime.svg',
-                        spriteFrames: 4,
-                        persistent: true
-                    }),
-
-                    // 2b. Inimigo de Patrulha Vertical (em um corredor por exemplo) - RENASCE SEMPRE
-                    new Enemy({
-                        x: 500, y: 550,
-                        maxHealth: 3, attackDamage: 1 ,
-                        collisionBox:{ x: 32, y: 58, width: 32, height: 30 },
-                        aiType: 'patrol_linear', 
-                        patrolAxis: 'vertical', 
-                        speed: 1, 
-                        gameContext,
-                        detectionRange: 110,
-                        spriteSheet: 'assets/sprites/enemies/red-skeleton.svg',
-                        spriteFrames: 4,
-                        persistent: false
-                    }),
-
-                    // 3. Inimigo Vagante/Aleatório - PERSISTENTE (chefe local)
-                    // Uma vez derrotado, permanece morto mesmo após save/load.
-                    new Enemy({
-                        x: 550, y: 250,
-                        maxHealth: 3, attackDamage: 1 ,
-                        collisionBox:{ x: 32, y: 58, width: 32, height: 30 },
-                        aiType: 'patrol_random',
-                        speed: 0.8,
-                        detectionRange: 120, // Raio de visão maior!
-                        gameContext ,
-                        spriteSheet: 'assets/sprites/enemies/red-skeleton.svg',
-                        spriteFrames: 4,
-                        persistent: true
-                    })
-            ], items: [
+        // Cemitério (5,0): conecta oeste→Floresta Princesa(4,0), leste→(6,0), sul→(5,1)
+        const rica_5_0 = {
+            name: "Cemitério",
+            color: "#5a3a6e",
+            backgroundTileset: this.cemeteryTileset,
+            obstacles: [
+                { x: 120, y: 100, width: 80, height: 80 },
+                { x: 600, y: 100, width: 80, height: 80 },
+                { x: 120, y: 400, width: 80, height: 80 },
+                { x: 600, y: 400, width: 80, height: 80 }
+            ],
+            doors: [
+                new Door(0, 220, 10, 100, "4,0", { x: 725, y: 220 }),
+                new Door(790, 220, 10, 100, "6,0", { x: 0, y: 220 }),
+                new Door(350, 590, 100, 10, "5,1", { x: 350, y: 0 }),
+            ],
+            enemies: [
+                new Enemy({ x: 350, y: 250, maxHealth: 5, attackDamage: 2, collisionBox: { x: 32, y: 58, width: 32, height: 30 }, aiType: 'patrol_random', speed: 0.6, detectionRange: 130, spriteSheet: 'assets/sprites/enemies/red-skeleton.svg', spriteFrames: 4, gameContext }),
+                new Enemy({ x: 500, y: 300, maxHealth: 3, attackDamage: 1, collisionBox: { x: 32, y: 58, width: 32, height: 30 }, aiType: 'patrol_linear', patrolAxis: 'vertical', speed: 0.8, detectionRange: 90, spriteSheet: 'assets/sprites/enemies/slime.svg', spriteFrames: 4, gameContext }),
+                new Enemy({ x: 200, y: 40, maxHealth: 3, attackDamage: 1 , collisionBox:{ x: 32, y: 58, width: 32, height: 30 }, aiType: 'stationary', gameContext, spriteSheet: 'assets/sprites/enemies/slime.svg', spriteFrames: 4, persistent: false }),
+                new Enemy({ x: 460, y: 300, maxHealth: 3, attackDamage: 1 , collisionBox:{ x: 32, y: 58, width: 32, height: 30 }, aiType: 'patrol_linear', patrolAxis: 'horizontal', speed: 1, gameContext, spriteSheet: 'assets/sprites/enemies/slime.svg', spriteFrames: 4, persistent: true }),
+                new Enemy({ x: 500, y: 550, maxHealth: 3, attackDamage: 1 , collisionBox:{ x: 32, y: 58, width: 32, height: 30 }, aiType: 'patrol_linear', patrolAxis: 'vertical', speed: 1, gameContext, detectionRange: 110, spriteSheet: 'assets/sprites/enemies/red-skeleton.svg', spriteFrames: 4, persistent: false }),
+                new Enemy({ x: 550, y: 250, maxHealth: 3, attackDamage: 1 , collisionBox:{ x: 32, y: 58, width: 32, height: 30 }, aiType: 'patrol_random', speed: 0.8, detectionRange: 120, gameContext , spriteSheet: 'assets/sprites/enemies/red-skeleton.svg', spriteFrames: 4, persistent: true })
+            ],
+            items: [
                 new InventoryItem(200, 200, 'soul_gem_01', "soul_gem", "Gema da Alma", 2, null, "#00ff00")
-            ]}
+            ]
+        };
+
+        // Deserto do Sul (0,3): conecta norte→Campo Sul(0,1), leste→(1,3), sul→(0,4)
+        const rica_0_3 = {
+            name: "Deserto do Sul",
+            color: "#6e3a3a",
+            backgroundTileset: this.desertTileset,
+            obstacles: [],
+            doors: [
+                new Door(350, 0, 100, 10, "0,1", { x: 350, y: 504 }),
+                new Door(790, 220, 10, 100, "1,3", { x: 0, y: 220 }),
+                new Door(350, 590, 100, 10, "0,4", { x: 350, y: 0 }),
+            ],
+            enemies: [
+                new Enemy({ x: 200, y: 350, maxHealth: 3, attackDamage: 1, collisionBox: { x: 32, y: 58, width: 32, height: 30 }, aiType: 'patrol_linear', patrolAxis: 'horizontal', speed: 1, detectionRange: 90, spriteSheet: 'assets/sprites/enemies/slime.svg', spriteFrames: 4, gameContext }),
+                new Enemy({ x: 550, y: 450, maxHealth: 4, attackDamage: 2, collisionBox: { x: 32, y: 58, width: 32, height: 30 }, aiType: 'patrol_random', speed: 0.8, detectionRange: 100, spriteSheet: 'assets/sprites/enemies/red-skeleton.svg', spriteFrames: 4, gameContext })
+            ],
+            items: []
+        };
+
+        // === Salas "vazias" (estrutura + conectores) ===
+        // Campos Verdejante
+        const sala_1_0 = this._createEmptyRoom("Campo com Cercas", "#5a8a4a", { backgroundTileset: this.worldTileset });
+        sala_1_0.doors.push(new Door(0, 220, 10, 100, "0,0", { x: 725, y: 220 }));
+        sala_1_0.doors.push(new Door(790, 220, 10, 100, "2,0", { x: 0, y: 220 }));
+        sala_1_0.doors.push(new Door(350, 590, 100, 10, "1,1", { x: 350, y: 0 }));
+
+        const sala_0_1 = this._createEmptyRoom("Campo Sul", "#4f8a3c", { backgroundTileset: this.worldTileset });
+        sala_0_1.doors.push(new Door(350, 0, 100, 10, "0,0", { x: 350, y: 504 }));
+        sala_0_1.doors.push(new Door(790, 220, 10, 100, "2,1", { x: 0, y: 220 }));
+        sala_0_1.doors.push(new Door(350, 590, 100, 10, "0,3", { x: 350, y: 0 }));
+
+        const sala_1_1 = this._createEmptyRoom("Campo Sudeste", "#5a8a4a", { backgroundTileset: this.worldTileset });
+        sala_1_1.doors.push(new Door(350, 0, 100, 10, "1,0", { x: 350, y: 504 }));
+
+        // Floresta Princesa das Matas
+        const sala_3_0 = this._createEmptyRoom("Coração da Floresta", "#1e5a1e", { backgroundTileset: this.worldTileset });
+        sala_3_0.doors.push(new Door(0, 220, 10, 100, "2,0", { x: 725, y: 220 }));
+        sala_3_0.doors.push(new Door(790, 220, 10, 100, "4,0", { x: 0, y: 220 }));
+        sala_3_0.doors.push(new Door(350, 590, 100, 10, "3,1", { x: 350, y: 0 }));
+
+        const sala_4_0 = this._createEmptyRoom("Clareira da Princesa", "#2d6a2d", { backgroundTileset: this.worldTileset });
+        sala_4_0.doors.push(new Door(0, 220, 10, 100, "3,0", { x: 725, y: 220 }));
+        sala_4_0.doors.push(new Door(790, 220, 10, 100, "5,0", { x: 0, y: 220 }));
+
+        const sala_2_1 = this._createEmptyRoom("Trilha Sul da Floresta", "#1e5a1e", { backgroundTileset: this.worldTileset });
+        sala_2_1.doors.push(new Door(0, 220, 10, 100, "0,1", { x: 725, y: 220 }));
+        sala_2_1.doors.push(new Door(790, 220, 10, 100, "3,1", { x: 0, y: 220 }));
+
+        const sala_3_1 = this._createEmptyRoom("Passagem para a Vila", "#2d6a2d", { backgroundTileset: this.worldTileset });
+        sala_3_1.doors.push(new Door(0, 220, 10, 100, "2,1", { x: 725, y: 220 }));
+        sala_3_1.doors.push(new Door(790, 220, 10, 100, "4,1", { x: 0, y: 220 }));
+        sala_3_1.doors.push(new Door(350, 0, 100, 10, "3,0", { x: 350, y: 504 }));
+        sala_3_1.doors.push(new Door(350, 590, 100, 10, "3,2", { x: 350, y: 0 }));
+
+        // Cemitério
+        const sala_6_0 = this._createEmptyRoom("Ala Leste do Cemitério", "#4a2a5e", { backgroundTileset: this.cemeteryTileset });
+        sala_6_0.doors.push(new Door(0, 220, 10, 100, "5,0", { x: 725, y: 220 }));
+        sala_6_0.doors.push(new Door(790, 220, 10, 100, "7,0", { x: 0, y: 220 }));
+
+        const sala_5_1 = this._createEmptyRoom("Catacumbas Superiores", "#5a3a6e", { backgroundTileset: this.cemeteryTileset });
+        sala_5_1.doors.push(new Door(350, 0, 100, 10, "5,0", { x: 350, y: 504 }));
+        sala_5_1.doors.push(new Door(350, 590, 100, 10, "5,2", { x: 350, y: 0 }));
+        sala_5_1.doors.push(new Door(790, 220, 10, 100, "6,1", { x: 0, y: 220 }));
+
+        const sala_6_1 = this._createEmptyRoom("Cripta Central", "#4a2a5e", { backgroundTileset: this.cemeteryTileset });
+        sala_6_1.doors.push(new Door(0, 220, 10, 100, "5,1", { x: 725, y: 220 }));
+
+        const sala_5_2 = this._createEmptyRoom("Profundezas do Cemitério", "#3a1a4e", { backgroundTileset: this.cemeteryTileset });
+        sala_5_2.doors.push(new Door(350, 0, 100, 10, "5,1", { x: 350, y: 504 }));
+        sala_5_2.doors.push(new Door(790, 220, 10, 100, "6,2", { x: 0, y: 220 }));
+
+        // Floresta Assombrada
+        const sala_7_0 = this._createEmptyRoom("Entrada Sombria", "#3d1f4e", { backgroundTileset: this.cemeteryTileset });
+        sala_7_0.doors.push(new Door(0, 220, 10, 100, "6,0", { x: 725, y: 220 }));
+        sala_7_0.doors.push(new Door(790, 220, 10, 100, "8,0", { x: 0, y: 220 }));
+
+        const sala_8_0 = this._createEmptyRoom("Trilha Nebulosa", "#3d1f4e", { backgroundTileset: this.cemeteryTileset });
+        sala_8_0.doors.push(new Door(0, 220, 10, 100, "7,0", { x: 725, y: 220 }));
+        sala_8_0.doors.push(new Door(790, 220, 10, 100, "9,0", { x: 0, y: 220 }));
+        sala_8_0.doors.push(new Door(350, 590, 100, 10, "8,1", { x: 350, y: 0 }));
+
+        const sala_9_0 = this._createEmptyRoom("Altar Corrompido", "#2a0f3e", { backgroundTileset: this.cemeteryTileset });
+        sala_9_0.doors.push(new Door(0, 220, 10, 100, "8,0", { x: 725, y: 220 }));
+
+        const sala_7_1 = this._createEmptyRoom("Bosque Interior", "#3d1f4e", { backgroundTileset: this.cemeteryTileset });
+        sala_7_1.doors.push(new Door(790, 220, 10, 100, "8,1", { x: 0, y: 220 }));
+
+        const sala_8_1 = this._createEmptyRoom("Coração da Maldição", "#2a0f3e", { backgroundTileset: this.cemeteryTileset });
+        sala_8_1.doors.push(new Door(0, 220, 10, 100, "7,1", { x: 725, y: 220 }));
+        sala_8_1.doors.push(new Door(350, 0, 100, 10, "8,0", { x: 350, y: 504 }));
+
+        // Vila Águas Vermelhas
+        const sala_3_2 = this._createEmptyRoom("Entrada Oeste da Vila", "#8b3a3a", { backgroundTileset: this.worldTileset });
+        sala_3_2.doors.push(new Door(350, 0, 100, 10, "3,1", { x: 350, y: 504 }));
+        sala_3_2.doors.push(new Door(790, 220, 10, 100, "4,2", { x: 0, y: 220 }));
+        sala_3_2.doors.push(new Door(350, 590, 100, 10, "3,3", { x: 350, y: 0 }));
+
+        const sala_4_2 = this._createEmptyRoom("Praça Central", "#9b4a4a", { backgroundTileset: this.worldTileset });
+        sala_4_2.doors.push(new Door(0, 220, 10, 100, "3,2", { x: 725, y: 220 }));
+        sala_4_2.doors.push(new Door(790, 220, 10, 100, "6,2", { x: 0, y: 220 }));
+
+        const sala_6_2 = this._createEmptyRoom("Entrada Leste da Vila", "#8b3a3a", { backgroundTileset: this.worldTileset });
+        sala_6_2.doors.push(new Door(0, 220, 10, 100, "4,2", { x: 725, y: 220 }));
+        sala_6_2.doors.push(new Door(0, 220, 10, 100, "5,2", { x: 725, y: 220 }));
+        sala_6_2.doors.push(new Door(350, 590, 100, 10, "5,3", { x: 350, y: 0 }));
+
+        // Deserto do Sul
+        const sala_1_3 = this._createEmptyRoom("Lago do Deserto", "#c4a035", { backgroundTileset: this.desertTileset });
+        sala_1_3.doors.push(new Door(0, 220, 10, 100, "0,3", { x: 725, y: 220 }));
+        sala_1_3.doors.push(new Door(790, 220, 10, 100, "2,3", { x: 0, y: 220 }));
+        sala_1_3.doors.push(new Door(350, 590, 100, 10, "1,4", { x: 350, y: 0 }));
+
+        const sala_2_3 = this._createEmptyRoom("Desfiladeiro", "#b8902a", { backgroundTileset: this.desertTileset });
+        sala_2_3.doors.push(new Door(0, 220, 10, 100, "1,3", { x: 725, y: 220 }));
+        sala_2_3.doors.push(new Door(790, 220, 10, 100, "3,3", { x: 0, y: 220 }));
+        sala_2_3.doors.push(new Door(350, 590, 100, 10, "2,4", { x: 350, y: 0 }));
+
+        const sala_3_3 = this._createEmptyRoom("Passagem para Montanhas", "#b8902a", { backgroundTileset: this.desertTileset });
+        sala_3_3.doors.push(new Door(0, 220, 10, 100, "2,3", { x: 725, y: 220 }));
+        sala_3_3.doors.push(new Door(350, 0, 100, 10, "3,2", { x: 350, y: 504 }));
+
+        const sala_0_4 = this._createEmptyRoom("Ruínas Sul", "#a89025", { backgroundTileset: this.desertTileset });
+        sala_0_4.doors.push(new Door(350, 0, 100, 10, "0,3", { x: 350, y: 504 }));
+        sala_0_4.doors.push(new Door(790, 220, 10, 100, "1,4", { x: 0, y: 220 }));
+
+        const sala_1_4 = this._createEmptyRoom("Cemitério de Ossos", "#a89025", { backgroundTileset: this.desertTileset });
+        sala_1_4.doors.push(new Door(0, 220, 10, 100, "0,4", { x: 725, y: 220 }));
+        sala_1_4.doors.push(new Door(790, 220, 10, 100, "2,4", { x: 0, y: 220 }));
+        sala_1_4.doors.push(new Door(350, 0, 100, 10, "1,3", { x: 350, y: 504 }));
+
+        const sala_2_4 = this._createEmptyRoom("Portal para Montanhas", "#9c801f", { backgroundTileset: this.desertTileset });
+        sala_2_4.doors.push(new Door(0, 220, 10, 100, "1,4", { x: 725, y: 220 }));
+        sala_2_4.doors.push(new Door(350, 0, 100, 10, "2,3", { x: 350, y: 504 }));
+
+        // Montanhas Cajumas
+        const sala_5_3 = this._createEmptyRoom("Vila das Montanhas", "#5a6478", { backgroundTileset: this.caveTileset });
+        sala_5_3.doors.push(new Door(350, 0, 100, 10, "6,2", { x: 350, y: 504 }));
+        sala_5_3.doors.push(new Door(790, 220, 10, 100, "6,3", { x: 0, y: 220 }));
+        sala_5_3.doors.push(new Door(350, 590, 100, 10, "5,4", { x: 350, y: 0 }));
+
+        const sala_6_3 = this._createEmptyRoom("Passo Rochoso", "#4a5468", { backgroundTileset: this.caveTileset });
+        sala_6_3.doors.push(new Door(0, 220, 10, 100, "5,3", { x: 725, y: 220 }));
+        sala_6_3.doors.push(new Door(790, 220, 10, 100, "7,3", { x: 0, y: 220 }));
+        sala_6_3.doors.push(new Door(350, 590, 100, 10, "6,4", { x: 350, y: 0 }));
+
+        const sala_7_3 = this._createEmptyRoom("Caverna de Cristal", "#5a6478", { backgroundTileset: this.caveTileset });
+        sala_7_3.doors.push(new Door(0, 220, 10, 100, "6,3", { x: 725, y: 220 }));
+        sala_7_3.doors.push(new Door(790, 220, 10, 100, "8,3", { x: 0, y: 220 }));
+        sala_7_3.doors.push(new Door(350, 590, 100, 10, "7,4", { x: 350, y: 0 }));
+
+        const sala_8_3 = this._createEmptyRoom("Pico Nevado", "#6a7488", { backgroundTileset: this.caveTileset });
+        sala_8_3.doors.push(new Door(0, 220, 10, 100, "7,3", { x: 725, y: 220 }));
+        sala_8_3.doors.push(new Door(350, 590, 100, 10, "8,4", { x: 350, y: 0 }));
+
+        const sala_5_4 = this._createEmptyRoom("Base da Cachoeira", "#3a4458", { backgroundTileset: this.caveTileset });
+        sala_5_4.doors.push(new Door(350, 0, 100, 10, "5,3", { x: 350, y: 504 }));
+        sala_5_4.doors.push(new Door(790, 220, 10, 100, "6,4", { x: 0, y: 220 }));
+
+        const sala_6_4 = this._createEmptyRoom("Ravina Profunda", "#3a4458", { backgroundTileset: this.caveTileset });
+        sala_6_4.doors.push(new Door(0, 220, 10, 100, "5,4", { x: 725, y: 220 }));
+        sala_6_4.doors.push(new Door(790, 220, 10, 100, "7,4", { x: 0, y: 220 }));
+        sala_6_4.doors.push(new Door(350, 0, 100, 10, "6,3", { x: 350, y: 504 }));
+
+        const sala_7_4 = this._createEmptyRoom("Passagem Secreta", "#2a3448", { backgroundTileset: this.caveTileset });
+        sala_7_4.doors.push(new Door(0, 220, 10, 100, "6,4", { x: 725, y: 220 }));
+        sala_7_4.doors.push(new Door(790, 220, 10, 100, "8,4", { x: 0, y: 220 }));
+        sala_7_4.doors.push(new Door(350, 0, 100, 10, "7,3", { x: 350, y: 504 }));
+
+        const sala_8_4 = this._createEmptyRoom("Santuário da Montanha", "#3a4458", { backgroundTileset: this.caveTileset });
+        sala_8_4.doors.push(new Door(0, 220, 10, 100, "7,4", { x: 725, y: 220 }));
+        sala_8_4.doors.push(new Door(350, 0, 100, 10, "8,3", { x: 350, y: 504 }));
+
+        this.worldMap = {
+            // === Campos Verdejante ===
+            "0,0": rica_0_0,
+            "1,0": sala_1_0,
+            "0,1": sala_0_1,
+            "1,1": sala_1_1,
+
+            // === Floresta Princesa das Matas ===
+            "2,0": rica_2_0,
+            "3,0": sala_3_0,
+            "4,0": sala_4_0,
+            "2,1": sala_2_1,
+            "3,1": sala_3_1,
+
+            // === Cemitério ===
+            "5,0": rica_5_0,
+            "6,0": sala_6_0,
+            "5,1": sala_5_1,
+            "6,1": sala_6_1,
+            "5,2": sala_5_2,
+
+            // === Floresta Assombrada ===
+            "7,0": sala_7_0,
+            "8,0": sala_8_0,
+            "9,0": sala_9_0,
+            "7,1": sala_7_1,
+            "8,1": sala_8_1,
+
+            // === Vila Águas Vermelhas ===
+            "3,2": sala_3_2,
+            "4,2": sala_4_2,
+            "6,2": sala_6_2,
+
+            // === Deserto do Sul ===
+            "0,3": rica_0_3,
+            "1,3": sala_1_3,
+            "2,3": sala_2_3,
+            "3,3": sala_3_3,
+            "0,4": sala_0_4,
+            "1,4": sala_1_4,
+            "2,4": sala_2_4,
+
+            // === Montanhas Cajumas ===
+            "5,3": sala_5_3,
+            "6,3": sala_6_3,
+            "7,3": sala_7_3,
+            "8,3": sala_8_3,
+            "5,4": sala_5_4,
+            "6,4": sala_6_4,
+            "7,4": sala_7_4,
+            "8,4": sala_8_4,
         };
     }
+
+    initWorldMap(gameContext, player){
+        this.buildWorldMap(gameContext, player);
+    }
+
 
     addProjectile(projectile) {
         this.projectiles.push(projectile);
@@ -532,7 +693,7 @@ export default class World {
     }
 
     reset() {
-        this.currentRoom = { x: 0, y: 0 };
+        this.currentRoom = { x: 8, y: 4 };
         this.progressionState.clear();
         this.locationUI = { active: false, timer: 0, text: "" };
     }
